@@ -47,6 +47,7 @@ table {
 
 body{
 	background-color: rgb(239, 249, 253);
+	font-size: 16px;
 }
 
 
@@ -65,12 +66,14 @@ nav menu ul li {
   display: inline-block;
   padding-right: 20px;
   font-size: 16px;
-  padding: 3px 10px;
+  text-transform: uppercase;
 
 }
 
 nav {
-  margin-bottom: 20px;
+   padding-bottom: 10px;
+  border-bottom: 1px solid rgb(137, 137, 137);
+  width: 60%;
 
 }
 
@@ -96,17 +99,20 @@ img.home_image{
 }
 
 main{
-	margin-top:10px;
-	margin-bottom: 10px;
+	margin-top:40px;
+	margin-bottom: 20px;
 }
+/*  Table
+-----------------------------------------------------------------------------*/
 
-table.citizen{
+table{
 width: 100%;
 }
 
 
-table.citizen th.header { 
-    background-image: url(bg.gif); 
+table th.header { 
+	padding: 5px;
+    background-image: url(../img/bg.gif); 
     cursor: pointer; 
     font-weight: bold; 
     background-repeat: no-repeat; 
@@ -114,20 +120,18 @@ table.citizen th.header {
     padding-left: 20px; 
     border-right: 1px solid #dad9c7; 
     margin-left: -1px; 
+    vertical-align: middle;
 } 
 
-table.citizen th.headerSortUp { 
+table th.headerSortUp { 
     background-image: url(../img/asc.gif); 
     background-color: #3399FF; 
 } 
 
-table.citizen th.headerSortDown { 
+table th.headerSortDown { 
     background-image: url(../img/desc.gif); 
     background-color: #3399FF; 
 } 
-
-/*  Price page
------------------------------------------------------------------------------*/
 
 
 .main  table tr,
@@ -150,16 +154,13 @@ table.citizen th.headerSortDown {
  background-color: rgba(201, 201, 201, 0.4);
 }
 
-.main  table  tr > td:first-child {
- width: 75%;
-}
 .main  table  tr > td:last-child {
  font-weight: bold;
 }
 
 .main  table >tbody> tr:hover {background: yellow}
 
-/* end Price page
+/* end Table */
 
 
 

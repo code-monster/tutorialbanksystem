@@ -7,7 +7,7 @@
 <head>
 <meta charset="utf-8">
 <title>(Это title) Пример страницы на HTML5</title>
-<link href="<c:url  value="/resources/css/home.css" />" rel="stylesheet" />
+<link href="<c:url  value="/resources/css/style.css" />" rel="stylesheet" />
 <script type="text/javascript"
 	src="<c:url  value="/resources/js/jquery-2.1.4.min.js" />"></script>
 <script type="text/javascript"
