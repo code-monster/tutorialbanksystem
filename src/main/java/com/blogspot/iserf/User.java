@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 public class User {
 	private String name;
-	private String title;
+	private String password;
     private ArrayList<HashMap<String, String>> citizenData; 
 	private int userId;
 	private String pageTitle;
@@ -24,11 +24,11 @@ public class User {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getTitle() {
-		return title;
+	public String getPassword() {
+		return password;
 	}
-	public void setTitle(String title) {
-		this.title = title;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	public int getUserId() {
 		return userId;
@@ -36,12 +36,17 @@ public class User {
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
+
+
 	public String getPageTitle() {
 		return pageTitle;
 	}
+
+
 	public void setPageTitle(String pageTitle) {
 		this.pageTitle = pageTitle;
 	}
+
 	
 
 }

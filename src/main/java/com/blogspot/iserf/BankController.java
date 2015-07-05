@@ -36,12 +36,12 @@ public class BankController {
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
-	@RequestMapping(value = "/bank", method = RequestMethod.GET)
+	@RequestMapping(value = "/edit-user", method = RequestMethod.GET)
 	public ModelAndView bank(Locale locale, Model model) {
 //	logger.info("Welcome home! The client locale is {}.", locale);
 		
    if(context.getParameter("user_id")== "") {
-		 return new ModelAndView("bank", "user_id", context.getParameter("user_id"));
+		 return new ModelAndView("edit-user", "user_id", context.getParameter("user_id"));
    }
 		
 		
@@ -62,7 +62,7 @@ public class BankController {
             sql = "SELECT * "
         		+ "FROM  `citizen` "
         		+ "WHERE id = "+context.getParameter("user_id");
-      //  WHERE Country='Mexico';
+
         ResultSet rs = stmt.executeQuery(sql);
 
         HashMap<String, String> hm; 
@@ -99,7 +99,7 @@ public class BankController {
 		user.setPassword("sunset00222");
 		user.setCitizenData(citizenData);
 		
-		return new ModelAndView("bank", "user", user);
+		return new ModelAndView("edit-user", "user", user);
 		
 	
 	}
@@ -129,9 +129,6 @@ public class BankController {
                     "SET firstname ='"+ user.getName().toString()+"'"
                     		+ "WHERE id='"+ user.getUserId()+"';";
        
-    //    UPDATE citizen SET firstname =  'Alfred Schmidt'
-    //    UPDATE citizen SET firstname =`plutto`
-        
         System.out.println(sql);
         stmt.executeUpdate(sql);
         
@@ -146,7 +143,7 @@ public class BankController {
 		}
 
 		
-		return new ModelAndView("redirect:bank?user_id="+user.getUserId());
+		return new ModelAndView("redirect:edit-user?user_id="+user.getUserId());
  
 	}		
 

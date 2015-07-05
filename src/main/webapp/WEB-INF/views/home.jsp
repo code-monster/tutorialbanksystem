@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title></title>
+<title> ${pageTitle}</title>
 <link href="<c:url  value="/resources/css/style.css" />" rel="stylesheet" />
 <script type="text/javascript"
 	src="<c:url  value="/resources/js/jquery-2.1.4.min.js" />"></script>
@@ -24,7 +24,7 @@
 			</menu>
 		</nav>
 		<main>
-		<h2>Citizens${user.getTitle()}</h2>
+		<h2>Citizens:</h2>
 		<table id="citizen_table" class="citizen" border="1">
 			<thead>
 				<tr>
@@ -45,14 +45,14 @@
 						<td>${userItem["address"]}</td>
 						<td>${userItem["dob"]}</td>
 						<td><a
-							href="<c:url value="/bank?user_id="/>${userItem['id']}">edit</a></td>
+							href="<c:url value="/edit-user?user_id="/>${userItem['id']}">edit</a></td>
 					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
 		</main>
 		<footer>
-			<p>тестовое приложение на Spring</p>
+			<jsp:include page="includes/footer.jsp"></jsp:include>
 		</footer>
 		<script type="text/javascript">
 			jQuery(document).ready(function() {

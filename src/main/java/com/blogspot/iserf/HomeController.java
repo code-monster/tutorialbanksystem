@@ -26,9 +26,9 @@ import com.mysql.jdbc.Statement;
  * Handles requests for the application home page.
  */
 @Controller
-public class LoginController {
+public class HomeController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
+	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -81,20 +81,21 @@ public class LoginController {
 	    
 		User user = new User();
 		user.setName("Kubra");
-		user.setTitle("sunset00");
+		user.setPassword("sunset00");
 		user.setCitizenData(citizenData);
+		
+		model.addAttribute("pageTitle", "Home page");
 
-		user.setPageTitle("Home page");
-		return new ModelAndView("login", "user", user);
+		return new ModelAndView("home", "user", user);
 	}
 	
-	
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
-	@RequestMapping(value = "/check-user", method = RequestMethod.POST)
-	public ModelAndView checkUser(@ModelAttribute("user") User user) {
 
-	 return new ModelAndView("main", "user", user);
+	/**
+	 * contact page
+	 */
+	@RequestMapping(value = "/contact", method = RequestMethod.GET)
+	public String home(Locale locale, Model model) {
+		model.addAttribute("pageTitle", "Contact page");
+		return "contact";
 	}
 }
