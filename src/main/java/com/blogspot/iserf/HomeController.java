@@ -37,11 +37,9 @@ public class HomeController {
 	public ModelAndView main(Model model) {
 
 		DBConnection connect = new DBConnection("localhost", "root", "entersite", "java_bank");
-		connect.initProperties();
-		connect.init();
+
 		ArrayList<User> citizenData = new ArrayList<User>();
-        
-		
+
 	    try {
 
 		Statement stmt = null;

@@ -52,6 +52,7 @@
 				</c:forEach>
 			</tbody>
 		</table>
+		<p class="total">total:${clients.size()}</p>
 		</main>
 		<footer>
 			<jsp:include page="includes/footer.jsp"></jsp:include>

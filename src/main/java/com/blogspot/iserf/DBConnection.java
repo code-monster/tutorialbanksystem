@@ -27,6 +27,8 @@ public class DBConnection {
 		this.password = password;
 		this.nameDb = nameDb;
 		
+		initProperties();
+		init();
 		
 	}
 	

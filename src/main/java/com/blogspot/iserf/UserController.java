@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
 
 /**
@@ -38,69 +39,44 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/edit-user", method = RequestMethod.GET)
 	public ModelAndView bank(Locale locale, Model model) {
-//	logger.info("Welcome home! The client locale is {}.", locale);
-		
+
    if(context.getParameter("user_id")== "") {
 		 return new ModelAndView("edit-user", "user_id", context.getParameter("user_id"));
    }
-		
-		/*
+
 		DBConnection connect = new DBConnection("localhost", "root", "entersite", "java_bank");
-		connect.initProperties();
-		connect.init();
-		ArrayList<HashMap<String, String>> citizenData = new ArrayList<HashMap<String,String>>();
-        
+
+		PreparedStatement preparedStatement = null;
+		String selectSQL = "SELECT *  FROM `citizen` WHERE id = ?";
 		
+		User user = new User();
 	    try {
-	 //   Connection conn = null;
-		Statement stmt = null;
+	    	
 		Connection connection    = connect.getConnection();
-		
-        // Execute SQL query
-        stmt = (Statement) connection.createStatement();
-        String sql;
-            sql = "SELECT * "
-        		+ "FROM  `citizen` "
-        		+ "WHERE id = "+context.getParameter("user_id");
-
-        ResultSet rs = stmt.executeQuery(sql);
-
-        HashMap<String, String> hm; 
-        
-        // Extract data from result set
+		preparedStatement = (PreparedStatement) connection.prepareStatement(selectSQL);
+		preparedStatement.setInt(1, new Integer(context.getParameter("user_id")));
+		ResultSet rs = preparedStatement.executeQuery();
+	
         while(rs.next()){
-        	
-        	hm = new HashMap<String, String>();
-        	
 
-           hm.put("id", new Integer(rs.getInt("id")).toString());
-           hm.put("firstname", rs.getString("firstname"));
-           hm.put("lastname", rs.getString("lastname"));
-           hm.put("address", rs.getString("address"));
-           hm.put("dob", rs.getDate("dob").toString());
-           
-       	citizenData.add(hm);
-        }
-
+    		user.setUserId(rs.getInt("id"));
+    		user.setFirstname(rs.getString("firstname"));
+    		user.setLastname(rs.getString("lastname"));
+    		user.setAddress(rs.getString("address"));
+    		user.setDob(rs.getDate("dob").toString());
+       }
 
         // Clean-up environment
         rs.close();
-        stmt.close();
     
 			connection.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	    */
-		User user = new User();
-	//	user.setName(citizenData.get(0).get("firstname"));
-	//	user.setUserId(new Integer(citizenData.get(0).get("id")));
-
-		model.addAttribute("pageTitle", "Edit User");
-		
+	    
+		model.addAttribute("pageTitle", "Edit User");	
 		return new ModelAndView("edit-user", "user", user);
-		
 	}
 	
 	
@@ -125,7 +101,10 @@ public class UserController {
         String sql;
             
         sql = "UPDATE citizen " +
-                    "SET firstname ='"+ user.getFirstname().toString()+"'"
+                    "SET firstname ='"+ user.getFirstname().toString()+"', "
+                    + "lastname ='"+ user.getLastname().toString()+"', "
+                    + "address ='"+ user.getAddress().toString()+"' "
+                 //   + "dob ='"+ user.getDob().to+"' "
                     		+ "WHERE id='"+ user.getUserId()+"';";
        
         stmt.executeUpdate(sql);
