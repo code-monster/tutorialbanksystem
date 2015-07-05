@@ -27,9 +27,9 @@ import com.mysql.jdbc.Statement;
  * Handles requests for the application home page.
  */
 @Controller
-public class BankController {
+public class UserController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(BankController.class);
+	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	
 	@Autowired
 	private HttpServletRequest context;
@@ -98,10 +98,10 @@ public class BankController {
 		user.setUserId(new Integer(citizenData.get(0).get("id")));
 		user.setPassword("sunset00222");
 		user.setCitizenData(citizenData);
+		model.addAttribute("pageTitle", "Edit User");
 		
 		return new ModelAndView("edit-user", "user", user);
 		
-	
 	}
 	
 	
@@ -110,7 +110,7 @@ public class BankController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/change-user", method = RequestMethod.POST)
-	public ModelAndView changeUser(@ModelAttribute("user") User user)  throws Exception {
+	public ModelAndView changeUser(@ModelAttribute("user") User user, Model model)  throws Exception {
  
 		DBConnection connect = new DBConnection("localhost", "root", "entersite", "java_bank");
 		connect.initProperties();
@@ -129,11 +129,7 @@ public class BankController {
                     "SET firstname ='"+ user.getName().toString()+"'"
                     		+ "WHERE id='"+ user.getUserId()+"';";
        
-        System.out.println(sql);
         stmt.executeUpdate(sql);
-        
-        
-   
         stmt.close();
     
 			connection.close();
@@ -142,7 +138,7 @@ public class BankController {
 			e.printStackTrace();
 		}
 
-		
+		model.addAttribute("pageMessage", "update");
 		return new ModelAndView("redirect:edit-user?user_id="+user.getUserId());
  
 	}		
