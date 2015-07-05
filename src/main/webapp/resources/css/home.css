@@ -1,0 +1,42 @@
+.main {
+	margin: 0 auto;
+	background-color: yellow;
+	width: 800px;
+}
+
+.login-form-container {
+	background-color: orange;
+	margin: 0 auto;
+	width: 400px;
+}
+img.home_image{
+	height: 400px;
+    width: auto;
+}
+
+
+table.citizen{
+width: 100%;
+}
+
+
+table.citizen th.header { 
+    background-image: url(bg.gif); 
+    cursor: pointer; 
+    font-weight: bold; 
+    background-repeat: no-repeat; 
+    background-position: center left; 
+    padding-left: 20px; 
+    border-right: 1px solid #dad9c7; 
+    margin-left: -1px; 
+} 
+
+table.citizen th.headerSortUp { 
+    background-image: url(../img/asc.gif); 
+    background-color: #3399FF; 
+} 
+
+table.citizen th.headerSortDown { 
+    background-image: url(../img/desc.gif); 
+    background-color: #3399FF; 
+} 
