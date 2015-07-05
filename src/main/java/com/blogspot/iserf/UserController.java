@@ -44,7 +44,7 @@ public class UserController {
 		 return new ModelAndView("edit-user", "user_id", context.getParameter("user_id"));
    }
 		
-		
+		/*
 		DBConnection connect = new DBConnection("localhost", "root", "entersite", "java_bank");
 		connect.initProperties();
 		connect.init();
@@ -92,12 +92,11 @@ public class UserController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	    
+	    */
 		User user = new User();
-		user.setName(citizenData.get(0).get("firstname"));
-		user.setUserId(new Integer(citizenData.get(0).get("id")));
-		user.setPassword("sunset00222");
-		user.setCitizenData(citizenData);
+	//	user.setName(citizenData.get(0).get("firstname"));
+	//	user.setUserId(new Integer(citizenData.get(0).get("id")));
+
 		model.addAttribute("pageTitle", "Edit User");
 		
 		return new ModelAndView("edit-user", "user", user);
@@ -126,7 +125,7 @@ public class UserController {
         String sql;
             
         sql = "UPDATE citizen " +
-                    "SET firstname ='"+ user.getName().toString()+"'"
+                    "SET firstname ='"+ user.getFirstname().toString()+"'"
                     		+ "WHERE id='"+ user.getUserId()+"';";
        
         stmt.executeUpdate(sql);

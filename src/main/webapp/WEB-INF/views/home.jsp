@@ -6,8 +6,9 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title> ${pageTitle}</title>
-<link href="<c:url  value="/resources/css/style.css" />" rel="stylesheet" />
+<title>${pageTitle}</title>
+<link href="<c:url  value="/resources/css/style.css" />"
+	rel="stylesheet" />
 <script type="text/javascript"
 	src="<c:url  value="/resources/js/jquery-2.1.4.min.js" />"></script>
 <script type="text/javascript"
@@ -37,15 +38,16 @@
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach items="${user.getCitizenData()}" var="userItem">
+				<c:forEach items="${clients}" var="clientItem">
 					<tr>
-						<td>${userItem["id"]}</td>
-						<td>${userItem["firstname"]}</td>
-						<td>${userItem["lastname"]}</td>
-						<td>${userItem["address"]}</td>
-						<td>${userItem["dob"]}</td>
+						<td>${clientItem.getUserId()}</td>
+						<td>${clientItem.getFirstname()}</td>
+						<td>${clientItem.getLastname()}</td>
+						<td>${clientItem.getAddress()}</td>
+						<td>${clientItem.getDob()}</td>
 						<td><a
-							href="<c:url value="/edit-user?user_id="/>${userItem['id']}">edit</a></td>
+							href="<c:url value="/edit-user?user_id="/>${clientItem.getUserId()}">edit</a>
+						</td>
 					</tr>
 				</c:forEach>
 			</tbody>

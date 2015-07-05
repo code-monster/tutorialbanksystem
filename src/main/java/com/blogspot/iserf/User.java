@@ -1,34 +1,24 @@
 package com.blogspot.iserf;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 public class User {
-	private String name;
-	private String password;
-    private ArrayList<HashMap<String, String>> citizenData; 
+	private String firstname;
+	private String lastname;
+	private String address;
+	private String dob;
 	private int userId;
-	private String pageTitle;
 	
-    public ArrayList<HashMap<String, String>> getCitizenData() {
-		return citizenData;
-	}
 
-    
-	public void setCitizenData(ArrayList<HashMap<String, String>> citizenData) {
-		this.citizenData = citizenData;
+	public String getFirstname() {
+		return firstname;
 	}
-	public String getName() {
-		return name;
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public String getLastname() {
+		return lastname;
 	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
 	}
 	public int getUserId() {
 		return userId;
@@ -36,17 +26,18 @@ public class User {
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
-
-
-	public String getPageTitle() {
-		return pageTitle;
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public String getDob() {
+		return dob;
+	}
+	public void setDob(String dob) {
+		this.dob = dob;
 	}
 
-
-	public void setPageTitle(String pageTitle) {
-		this.pageTitle = pageTitle;
-	}
-
-	
 
 }

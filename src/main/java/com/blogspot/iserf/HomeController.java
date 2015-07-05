@@ -39,11 +39,11 @@ public class HomeController {
 		DBConnection connect = new DBConnection("localhost", "root", "entersite", "java_bank");
 		connect.initProperties();
 		connect.init();
-		ArrayList<HashMap<String, String>> citizenData = new ArrayList<HashMap<String,String>>();
+		ArrayList<User> citizenData = new ArrayList<User>();
         
 		
 	    try {
-	 //   Connection conn = null;
+
 		Statement stmt = null;
 		Connection connection    = connect.getConnection();
 		
@@ -56,18 +56,16 @@ public class HomeController {
         // Extract data from result set
         while(rs.next()){
         	
-        	HashMap<String, String> hm = new HashMap<String, String>();
-        	
-
-           hm.put("id", new Integer(rs.getInt("id")).toString());
-           hm.put("firstname", rs.getString("firstname"));
-           hm.put("lastname", rs.getString("lastname"));
-           hm.put("address", rs.getString("address"));
-           hm.put("dob", rs.getDate("dob").toString());
-           
-       	citizenData.add(hm);
+    		User user = new User();
+    		
+    		user.setUserId(rs.getInt("id"));
+    		user.setFirstname(rs.getString("firstname"));
+    		user.setLastname(rs.getString("lastname"));
+    		user.setAddress(rs.getString("address"));
+    		user.setDob(rs.getDate("dob").toString());
+    		       
+        	citizenData.add(user);
         }
-
 
         // Clean-up environment
         rs.close();
@@ -79,14 +77,9 @@ public class HomeController {
 			e.printStackTrace();
 		}
 	    
-		User user = new User();
-		user.setName("Kubra");
-		user.setPassword("sunset00");
-		user.setCitizenData(citizenData);
-		
 		model.addAttribute("pageTitle", "Home page");
 
-		return new ModelAndView("home", "user", user);
+		return new ModelAndView("home", "clients", citizenData);
 	}
 	
 
