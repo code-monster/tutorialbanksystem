@@ -34,7 +34,7 @@ public class LoginController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView main() {
+	public ModelAndView main(Model model) {
 
 		DBConnection connect = new DBConnection("localhost", "root", "entersite", "java_bank");
 		connect.initProperties();
@@ -81,9 +81,10 @@ public class LoginController {
 	    
 		User user = new User();
 		user.setName("Kubra");
-		user.setPassword("sunset00");
+		user.setTitle("sunset00");
 		user.setCitizenData(citizenData);
-		
+
+		user.setPageTitle("Home page");
 		return new ModelAndView("login", "user", user);
 	}
 	

@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>(Это title) Пример страницы на HTML5</title>
+<title></title>
 <link href="<c:url  value="/resources/css/style.css" />" rel="stylesheet" />
 <script type="text/javascript"
 	src="<c:url  value="/resources/js/jquery-2.1.4.min.js" />"></script>
@@ -24,7 +24,7 @@
 			</menu>
 		</nav>
 		<main>
-		<h2>Citizens</h2>
+		<h2>Citizens${user.getTitle()}</h2>
 		<table id="citizen_table" class="citizen" border="1">
 			<thead>
 				<tr>

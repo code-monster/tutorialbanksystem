@@ -5,29 +5,16 @@ import java.util.HashMap;
 
 public class User {
 	private String name;
-	private String password;
+	private String title;
     private ArrayList<HashMap<String, String>> citizenData; 
 	private int userId;
+	private String pageTitle;
 	
     public ArrayList<HashMap<String, String>> getCitizenData() {
 		return citizenData;
 	}
-    public ArrayList<String> getCitizenData2() {
-    	ArrayList<String> poks = new ArrayList<String>();
-    	poks.add("Berta");
-    	poks.add("Laura");
-    	poks.add("Francheska");
-    	poks.add("Limona");
-		return poks;
-	}
+
     
-    public HashMap<String, String> getHashmap() {
-    	HashMap<String, String> hashmap = new HashMap<String, String>();
-    	hashmap.put("fistitem","Artem");
-    	hashmap.put("second","Grisha");
-    	hashmap.put("third","Minder");
-		return hashmap;
-	}
 	public void setCitizenData(ArrayList<HashMap<String, String>> citizenData) {
 		this.citizenData = citizenData;
 	}
@@ -37,17 +24,23 @@ public class User {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getPassword() {
-		return password;
+	public String getTitle() {
+		return title;
 	}
-	public void setPassword(String password) {
-		this.password = password;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	public int getUserId() {
 		return userId;
 	}
 	public void setUserId(int userId) {
 		this.userId = userId;
+	}
+	public String getPageTitle() {
+		return pageTitle;
+	}
+	public void setPageTitle(String pageTitle) {
+		this.pageTitle = pageTitle;
 	}
 	
 
