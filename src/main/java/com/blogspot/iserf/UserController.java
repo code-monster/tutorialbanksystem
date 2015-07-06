@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -29,87 +30,86 @@ import com.mysql.jdbc.Statement;
  */
 @Controller
 public class UserController {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
-	
+
 	@Autowired
 	private HttpServletRequest context;
+
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/edit-user", method = RequestMethod.GET)
 	public ModelAndView bank(Locale locale, Model model) {
 
-   if(context.getParameter("user_id")== "") {
-		 return new ModelAndView("edit-user", "user_id", context.getParameter("user_id"));
-   }
+		if (context.getParameter("user_id") == "") {
+			return new ModelAndView("edit-user", "user_id", context.getParameter("user_id"));
+		}
 
 		DBConnection connect = new DBConnection("localhost", "root", "entersite", "java_bank");
 
 		PreparedStatement preparedStatement = null;
 		String selectSQL = "SELECT *  FROM `citizen` WHERE id = ?";
-		
+
 		User user = new User();
-	    try {
-	    	
-		Connection connection    = connect.getConnection();
-		preparedStatement = (PreparedStatement) connection.prepareStatement(selectSQL);
-		preparedStatement.setInt(1, new Integer(context.getParameter("user_id")));
-		ResultSet rs = preparedStatement.executeQuery();
-	
-        while(rs.next()){
+		try {
 
-    		user.setUserId(rs.getInt("id"));
-    		user.setFirstname(rs.getString("firstname"));
-    		user.setLastname(rs.getString("lastname"));
-    		user.setAddress(rs.getString("address"));
-    		user.setDob(rs.getDate("dob").toString());
-       }
+			Connection connection = connect.getConnection();
+			preparedStatement = (PreparedStatement) connection.prepareStatement(selectSQL);
+			preparedStatement.setInt(1, new Integer(context.getParameter("user_id")));
+			ResultSet rs = preparedStatement.executeQuery();
 
-        // Clean-up environment
-        rs.close();
-    
+			while (rs.next()) {
+
+				user.setUserId(rs.getInt("id"));
+				user.setFirstname(rs.getString("firstname"));
+				user.setLastname(rs.getString("lastname"));
+				user.setAddress(rs.getString("address"));
+				user.setDob(rs.getDate("dob").toString());
+			}
+
+			// Clean-up environment
+			rs.close();
+			preparedStatement.close();
 			connection.close();
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	    
-		model.addAttribute("pageTitle", "Edit User");	
+
+		model.addAttribute("pageTitle", "Edit User");
 		return new ModelAndView("edit-user", "user", user);
 	}
-	
-	
 
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/change-user", method = RequestMethod.POST)
-	public ModelAndView changeUser(@ModelAttribute("user") User user, Model model)  throws Exception {
- 
+	public ModelAndView changeUser(@ModelAttribute("user") User user, Model model) throws Exception {
+
 		DBConnection connect = new DBConnection("localhost", "root", "entersite", "java_bank");
-		connect.initProperties();
-		connect.init();
+		PreparedStatement preparedStatement = null;
+		String updateSQL = "UPDATE `citizen` SET `firstname` =?, `lastname` = ?, `address` = ?, `dob` = ? WHERE `id`=?";
 
-	    try {
+		try {
 
-		Statement stmt = null;
-		Connection connection    = connect.getConnection();
-		
-        // Execute SQL query
-        stmt = (Statement) connection.createStatement();
-        String sql;
-            
-        sql = "UPDATE citizen " +
-                    "SET firstname ='"+ user.getFirstname().toString()+"', "
-                    + "lastname ='"+ user.getLastname().toString()+"', "
-                    + "address ='"+ user.getAddress().toString()+"' "
-                 //   + "dob ='"+ user.getDob().to+"' "
-                    		+ "WHERE id='"+ user.getUserId()+"';";
-       
-        stmt.executeUpdate(sql);
-        stmt.close();
-    
+			Connection connection = connect.getConnection();
+			preparedStatement = (PreparedStatement) connection.prepareStatement(updateSQL);
+			preparedStatement.setString(1, user.getFirstname());
+			preparedStatement.setString(2, user.getLastname());
+			preparedStatement.setString(3, user.getAddress());
+			
+			DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			Date date = formatter.parse(user.getDob());
+			java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+			preparedStatement.setDate(4, sqlDate);
+			
+			preparedStatement.setInt(5, new Integer(user.getUserId()));
+			// System.out.println(preparedStatement);
+			preparedStatement.executeUpdate();
+
+			preparedStatement.close();
 			connection.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -117,9 +117,8 @@ public class UserController {
 		}
 
 		model.addAttribute("pageMessage", "update");
-		return new ModelAndView("redirect:edit-user?user_id="+user.getUserId());
- 
-	}		
+		return new ModelAndView("redirect:edit-user?user_id=" + user.getUserId());
 
-	
+	}
+
 }
