@@ -137,6 +137,35 @@ public class UserController {
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
+	@RequestMapping(value = "/delete-user", method = RequestMethod.GET)
+	public ModelAndView deleteUser(Locale locale, Model model) {
+
+		
+		DBConnection connect = new DBConnection("localhost", "root", "entersite", "java_bank");
+		PreparedStatement preparedStatement = null;
+		
+		String deleteSQL = "DELETE FROM  `citizen` WHERE `id`=?";	
+
+		try {
+
+			Connection connection = connect.getConnection();
+			preparedStatement = (PreparedStatement) connection.prepareStatement(deleteSQL);
+			preparedStatement.setInt(1, new Integer(context.getParameter("user_id")));
+			preparedStatement.executeUpdate();
+
+			preparedStatement.close();
+			connection.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return new ModelAndView("redirect:/");
+	}
+	
+	/**
+	 * Simply selects the home view to render by returning its name.
+	 */
 	@RequestMapping(value = "/save-new-user", method = RequestMethod.POST)
 	public ModelAndView saveNewUser(@ModelAttribute("user") User user, Model model) throws Exception {
 
