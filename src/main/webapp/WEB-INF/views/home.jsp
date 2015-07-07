@@ -46,13 +46,14 @@
 						<td>${clientItem.getAddress()}</td>
 						<td>${clientItem.getDob()}</td>
 						<td><a
-							href="<c:url value="/edit-user?user_id="/>${clientItem.getUserId()}">edit</a>
+							href="<c:url value="/user-profile?user_id="/>${clientItem.getUserId()}">edit</a>
 						</td>
 					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
 		<p class="total">total:${clients.size()}</p>
+		<p><a href="<c:url value="/add"/>">Add new client</a></p>
 		</main>
 		<footer>
 			<jsp:include page="includes/footer.jsp"></jsp:include>

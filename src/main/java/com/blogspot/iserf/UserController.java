@@ -39,8 +39,8 @@ public class UserController {
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
-	@RequestMapping(value = "/edit-user", method = RequestMethod.GET)
-	public ModelAndView bank(Locale locale, Model model) {
+	@RequestMapping(value = "/user-profile", method = RequestMethod.GET)
+	public ModelAndView editUser(Locale locale, Model model) {
 
 		if (context.getParameter("user_id") == "") {
 			return new ModelAndView("edit-user", "user_id", context.getParameter("user_id"));
@@ -79,8 +79,9 @@ public class UserController {
 		}
 
 		model.addAttribute("pageTitle", "Edit User");
-		return new ModelAndView("edit-user", "user", user);
+		return new ModelAndView("user-profile", "user", user);
 	}
+
 
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -117,8 +118,64 @@ public class UserController {
 		}
 
 		model.addAttribute("pageMessage", "update");
-		return new ModelAndView("redirect:edit-user?user_id=" + user.getUserId());
+		return new ModelAndView("redirect:user-profile?user_id=" + user.getUserId());
 
 	}
 
+	/**
+	 * Simply selects the home view to render by returning its name.
+	 */
+	@RequestMapping(value = "/add", method = RequestMethod.GET)
+	public ModelAndView addUser(Locale locale, Model model) {
+
+		User user = new User();
+
+		model.addAttribute("pageTitle", "Add new client");
+		return new ModelAndView("add-user", "user", user);
+	}
+	
+	/**
+	 * Simply selects the home view to render by returning its name.
+	 */
+	@RequestMapping(value = "/save-new-user", method = RequestMethod.POST)
+	public ModelAndView saveNewUser(@ModelAttribute("user") User user, Model model) throws Exception {
+
+		DBConnection connect = new DBConnection("localhost", "root", "entersite", "java_bank");
+		PreparedStatement preparedStatement = null;
+		
+		String insertSQL = "INSERT INTO `citizen` (`firstname`, `lastname`, `address`, `dob`)"
+				+ "VALUES (?,?,?,?)";	
+		int newUserId = 0;
+        ResultSet rs = null;
+		try {
+
+			Connection connection = connect.getConnection();
+			preparedStatement = (PreparedStatement) connection.prepareStatement(insertSQL,Statement.RETURN_GENERATED_KEYS);
+			preparedStatement.setString(1, user.getFirstname());
+			preparedStatement.setString(2, user.getLastname());
+			preparedStatement.setString(3, user.getAddress());
+			
+			DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			Date date = formatter.parse(user.getDob());
+			java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+			preparedStatement.setDate(4, sqlDate);
+			
+			preparedStatement.executeUpdate();
+			rs = preparedStatement.getGeneratedKeys();
+			if(rs != null && rs.next()){
+			newUserId = rs.getInt(1);
+			}
+
+			preparedStatement.close();
+			connection.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		model.addAttribute("pageMessage", "update");
+		return new ModelAndView("redirect:user-profile?user_id=" + newUserId);
+
+	}
+	
 }
