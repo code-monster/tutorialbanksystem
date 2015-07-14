@@ -9,14 +9,20 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
 
 import com.mysql.jdbc.Statement;
 
@@ -29,6 +35,8 @@ import com.mysql.jdbc.Statement;
 public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	@Autowired
+	private HttpServletRequest context;
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -36,7 +44,17 @@ public class HomeController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView main(Model model) {
 
-		DBConnection connect = new DBConnection("localhost", "root", "entersite", "java_bank");
+		
+    	ApplicationContext context = 
+        		new ClassPathXmlApplicationContext(new String[] {"app-beans.xml"});
+
+        	CustomerService custA = (CustomerService)context.getBean("customerService");
+        	custA.setMessage("Message by custA");
+        	System.out.println("Message : " + custA.getMessage());
+		
+	    DBConnection connect = new DBConnection("localhost", "root", "entersite", "java_bank");
+
+
 
 		ArrayList<User> citizenData = new ArrayList<User>();
 
