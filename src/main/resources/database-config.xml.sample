@@ -5,6 +5,11 @@
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 
-     <import resource="database-config.xml" />
+     <bean id="DB" class="com.blogspot.iserf.DB" scope="prototype">
+          <constructor-arg  index="0" name="host"  value="localhost" />
+          <constructor-arg  index="1" name="user"  value="root" />
+          <constructor-arg  index="2" name="password"  value="password" />
+          <constructor-arg  index="3" name="nameDb"  value="java_bank" />
+     </bean>
 		
 </beans>

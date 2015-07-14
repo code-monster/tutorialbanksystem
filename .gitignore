@@ -3,4 +3,5 @@ application.log*
 /.classpath
 /.project
 /target
+/src/main/resources/database-config.xml
 

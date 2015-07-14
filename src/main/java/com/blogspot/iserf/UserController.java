@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -46,7 +47,8 @@ public class UserController {
 			return new ModelAndView("edit-user", "user_id", context.getParameter("user_id"));
 		}
 
-		DBConnection connect = new DBConnection("localhost", "root", "entersite", "java_bank");
+    	ClassPathXmlApplicationContext contextBean = new ClassPathXmlApplicationContext("app-beans.xml");
+    	DB connect = (DB)contextBean.getBean("DB");
 
 		PreparedStatement preparedStatement = null;
 		String selectSQL = "SELECT *  FROM `citizen` WHERE id = ?";
@@ -54,7 +56,7 @@ public class UserController {
 		User user = new User();
 		try {
 
-			Connection connection = connect.getConnection();
+			Connection connection = connect.getMysqlConnections();
 			preparedStatement = (PreparedStatement) connection.prepareStatement(selectSQL);
 			preparedStatement.setInt(1, new Integer(context.getParameter("user_id")));
 			ResultSet rs = preparedStatement.executeQuery();
@@ -89,13 +91,14 @@ public class UserController {
 	@RequestMapping(value = "/change-user", method = RequestMethod.POST)
 	public ModelAndView changeUser(@ModelAttribute("user") User user, Model model) throws Exception {
 
-		DBConnection connect = new DBConnection("localhost", "root", "entersite", "java_bank");
+    	ClassPathXmlApplicationContext contextBean = new ClassPathXmlApplicationContext("app-beans.xml");
+    	DB connect = (DB)contextBean.getBean("DB");
 		PreparedStatement preparedStatement = null;
 		String updateSQL = "UPDATE `citizen` SET `firstname` =?, `lastname` = ?, `address` = ?, `dob` = ? WHERE `id`=?";
 
 		try {
 
-			Connection connection = connect.getConnection();
+			Connection connection = connect.getMysqlConnections();
 			preparedStatement = (PreparedStatement) connection.prepareStatement(updateSQL);
 			preparedStatement.setString(1, user.getFirstname());
 			preparedStatement.setString(2, user.getLastname());
@@ -141,14 +144,15 @@ public class UserController {
 	public ModelAndView deleteUser(Locale locale, Model model) {
 
 		
-		DBConnection connect = new DBConnection("localhost", "root", "entersite", "java_bank");
+    	ClassPathXmlApplicationContext contextBean = new ClassPathXmlApplicationContext("app-beans.xml");
+    	DB connect = (DB)contextBean.getBean("DB");
 		PreparedStatement preparedStatement = null;
 		
 		String deleteSQL = "DELETE FROM  `citizen` WHERE `id`=?";	
 
 		try {
 
-			Connection connection = connect.getConnection();
+			Connection connection = connect.getMysqlConnections();
 			preparedStatement = (PreparedStatement) connection.prepareStatement(deleteSQL);
 			preparedStatement.setInt(1, new Integer(context.getParameter("user_id")));
 			preparedStatement.executeUpdate();
@@ -169,7 +173,8 @@ public class UserController {
 	@RequestMapping(value = "/save-new-user", method = RequestMethod.POST)
 	public ModelAndView saveNewUser(@ModelAttribute("user") User user, Model model) throws Exception {
 
-		DBConnection connect = new DBConnection("localhost", "root", "entersite", "java_bank");
+    	ClassPathXmlApplicationContext contextBean = new ClassPathXmlApplicationContext("app-beans.xml");
+    	DB connect = (DB)contextBean.getBean("DB");
 		PreparedStatement preparedStatement = null;
 		
 		String insertSQL = "INSERT INTO `citizen` (`firstname`, `lastname`, `address`, `dob`)"
@@ -178,7 +183,7 @@ public class UserController {
         ResultSet rs = null;
 		try {
 
-			Connection connection = connect.getConnection();
+			Connection connection = connect.getMysqlConnections();
 			preparedStatement = (PreparedStatement) connection.prepareStatement(insertSQL,Statement.RETURN_GENERATED_KEYS);
 			preparedStatement.setString(1, user.getFirstname());
 			preparedStatement.setString(2, user.getLastname());

@@ -45,23 +45,15 @@ public class HomeController {
 	public ModelAndView main(Model model) {
 
 		
-    	ApplicationContext context = 
-        		new ClassPathXmlApplicationContext(new String[] {"app-beans.xml"});
-
-        	CustomerService custA = (CustomerService)context.getBean("customerService");
-        	custA.setMessage("Message by custA");
-        	System.out.println("Message : " + custA.getMessage());
-		
-	    DBConnection connect = new DBConnection("localhost", "root", "entersite", "java_bank");
-
-
+    	ClassPathXmlApplicationContext contextBean = new ClassPathXmlApplicationContext("app-beans.xml");
+    	DB connect = (DB)contextBean.getBean("DB");
 
 		ArrayList<User> citizenData = new ArrayList<User>();
 
 	    try {
-
+	    	
 		Statement stmt = null;
-		Connection connection    = connect.getConnection();
+		Connection connection    = connect.getMysqlConnections();
 		
         // Execute SQL query
         stmt = (Statement) connection.createStatement();
