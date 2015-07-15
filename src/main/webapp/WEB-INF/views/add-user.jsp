@@ -9,6 +9,9 @@
 <title>${pageTitle}</title>
 <link href="<c:url  value="/resources/css/style.css" />"
 	rel="stylesheet" />
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 </head>
 <body>
 	<div class="main">
@@ -56,6 +59,17 @@
 		<footer>
 			<jsp:include page="includes/footer.jsp"></jsp:include>
 		</footer>
+		  <script>
+		  jQuery(function() {
+		    jQuery( "#dob" ).datepicker({
+		    	  dateFormat: "yy-mm-dd",
+		    	  changeMonth: true,
+		    	  changeYear: true,
+		    	  minDate:  new Date(1900, 1 - 1, 1),
+		    	  maxDate:  new Date(2002, 1 - 1, 1)
+		    	});
+		  });
+		  </script>
 	</div>
 </body>
 </html>
