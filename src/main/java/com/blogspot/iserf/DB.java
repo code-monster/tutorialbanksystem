@@ -32,7 +32,7 @@ public class DB {
 
 
 	public void init() {
-        url = "jdbc:mysql://" + host + "/" + nameDb;
+        url = "jdbc:mysql://" + host + "/" + nameDb+"?useUnicode=true&characterEncoding=utf-8";
         
 		try {
 			Class.forName("com.mysql.jdbc.Driver");

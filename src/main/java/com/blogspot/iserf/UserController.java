@@ -1,5 +1,6 @@
 package com.blogspot.iserf;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,12 +11,20 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -84,7 +93,20 @@ public class UserController {
 		return new ModelAndView("user-profile", "user", user);
 	}
 
-
+//	 public void doFilter(ServletRequest request, ServletResponse response,
+//	            FilterChain chain) throws IOException, ServletException {
+//	        response.setCharacterEncoding("UTF_8");
+//	        request.setCharacterEncoding("UTF_8");
+//	        chain.doFilter(request, response);
+//	 }
+	
+	 
+//	 public ResponseEntity<String> preview(HttpServletResponse response) {
+//		 HttpHeaders h = new HttpHeaders();
+//		 h.add("Content-type", "text/html;charset=UTF-8");
+//		 return new ResponseEntity<String>("Привет мир",h ,HttpStatus.OK);
+//		 }
+	
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
@@ -103,6 +125,8 @@ public class UserController {
 			preparedStatement.setString(1, user.getFirstname());
 			preparedStatement.setString(2, user.getLastname());
 			preparedStatement.setString(3, user.getAddress());
+			
+			System.out.println(user.getFirstname());
 			
 			DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 			Date date = formatter.parse(user.getDob());
