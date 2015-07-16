@@ -42,7 +42,7 @@ public class HomeController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView main(Model model) {
+	public ModelAndView main(Model model, @ModelAttribute("message") Message message) {
 
 		
     	ClassPathXmlApplicationContext contextBean = new ClassPathXmlApplicationContext("app-beans.xml");
@@ -86,7 +86,7 @@ public class HomeController {
 		}
 	    
 		model.addAttribute("pageTitle", "Home page");
-
+		model.addAttribute("message", message);
 		return new ModelAndView("home", "clients", citizenData);
 	}
 	

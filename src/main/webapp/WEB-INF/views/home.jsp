@@ -25,6 +25,13 @@
 			</menu>
 		</nav>
 		<main>
+	 <c:if test="${message.getType() == 'update'}">
+     <div class='update-data'>${message.getText()}</div>
+	 </c:if>
+	 
+	 <c:if test="${message.getType() == 'error'}">
+     <div class='error-data'>${message.getText()}</div>
+	 </c:if>
 		<h2>Citizens:</h2>
 		<table id="citizen_table" class="citizen" border="1">
 			<thead>

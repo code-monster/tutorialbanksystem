@@ -170,7 +170,8 @@ public class UserController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/delete-user", method = RequestMethod.GET)
-	public ModelAndView deleteUser(Locale locale, Model model) {
+	public ModelAndView deleteUser(Locale locale, Model model,
+			RedirectAttributes redirectAttributes) {
 
 		
     	ClassPathXmlApplicationContext contextBean = new ClassPathXmlApplicationContext("app-beans.xml");
@@ -192,7 +193,10 @@ public class UserController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		Message message = new Message();
+		message.setType("update");
+		message.setText("User is deleted");
+		redirectAttributes.addFlashAttribute("message", message);
 		return new ModelAndView("redirect:/");
 	}
 	
