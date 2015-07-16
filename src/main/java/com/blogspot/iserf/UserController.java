@@ -1,30 +1,17 @@
 package com.blogspot.iserf;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -51,8 +38,17 @@ public class UserController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/user-profile", method = RequestMethod.GET)
-	public ModelAndView editUser(Locale locale, Model model) {
+	public ModelAndView editUser(Locale locale, Model model,
+			 @ModelAttribute("tmpUser") User tmpUser,
+			 @ModelAttribute("message") Message message) {
 
+		
+		    if (tmpUser.getUserId()>0){
+			  model.addAttribute("message", message);
+			  model.addAttribute("pageTitle", "Edit User");
+			  return new ModelAndView("user-profile", "user", tmpUser);	  
+		 }
+		
 		if (context.getParameter("user_id") == "") {
 			return new ModelAndView("edit-user", "user_id", context.getParameter("user_id"));
 		}
@@ -90,6 +86,7 @@ public class UserController {
 			e.printStackTrace();
 		}
 
+		model.addAttribute("message", message);
 		model.addAttribute("pageTitle", "Edit User");
 		return new ModelAndView("user-profile", "user", user);
 	}
@@ -100,7 +97,23 @@ public class UserController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/change-user", method = RequestMethod.POST)
-	public ModelAndView changeUser(@ModelAttribute("user") User user, Model model) throws Exception {
+	public ModelAndView changeUser(@ModelAttribute("user") User user, Model model,
+			RedirectAttributes redirectAttributes) throws Exception {
+		Message message;
+		String validReturn = Validator.checkUser(user);
+		
+		if(validReturn.equals("OK")==false){
+			
+		message = new Message();
+		message.setType("error");
+		message.setText(validReturn);
+
+		redirectAttributes.addFlashAttribute("message", message);
+		redirectAttributes.addFlashAttribute("tmpUser", user);
+		
+		
+		return new ModelAndView("redirect:user-profile?user_id=" + user.getUserId());
+		}
 
     	ClassPathXmlApplicationContext contextBean = new ClassPathXmlApplicationContext("app-beans.xml");
     	DB connect = (DB)contextBean.getBean("DB");
@@ -132,8 +145,10 @@ public class UserController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		model.addAttribute("pageMessage", "update");
+		message = new Message();
+		message.setType("update");
+		message.setText("Data is update");
+		redirectAttributes.addFlashAttribute("message", message);
 		return new ModelAndView("redirect:user-profile?user_id=" + user.getUserId());
 
 	}
@@ -143,17 +158,10 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
 	public ModelAndView addUser(Locale locale, Model model,
-			 @ModelAttribute("tmpUser") User tmpUser,
+			 @ModelAttribute("tmpUser") User user,
 			 @ModelAttribute("message") Message message) {
 
-	  User user;
-	    if (tmpUser != null){
-		  user = tmpUser;
-		  model.addAttribute("message", message);
-		  
-	   }else{
-		user = new User();
-	   }
+		model.addAttribute("message", message);  
 		model.addAttribute("pageTitle", "Add new client");
 		return new ModelAndView("add-user", "user", user);
 	}
@@ -245,7 +253,6 @@ public class UserController {
 			e.printStackTrace();
 		}
 
-		model.addAttribute("pageMessage", "update");
 		return new ModelAndView("redirect:user-profile?user_id=" + newUserId);
 
 	}

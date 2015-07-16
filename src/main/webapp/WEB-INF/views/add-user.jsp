@@ -25,7 +25,7 @@
 		</nav>
 		<main> 
 		
-     <c:if test="${not empty message}">
+     <c:if test="${message.getType() == 'error'}">
      <div class='error-data'>${message.getText()}</div>
 	 </c:if>
 		

@@ -22,15 +22,15 @@
 				<jsp:include page="includes/menu.jsp"></jsp:include>
 			</menu>
 		</nav>
-		<main> <%
- 	if (request.getParameter("pageMessage") != null) {
- 		if (request.getParameter("pageMessage").equals("update")) {
- 			out.println("<div class='update-data'>Data is update</div>");
- 		} else if (request.getParameter("pageMessage").equals("error")) {
- 			out.println("<div class='update-data'>Data is update</div>");
- 		}
- 	}
- %>
+		<main>
+		
+     <c:if test="${message.getType() == 'update'}">
+     <div class='update-data'>${message.getText()}</div>
+	 </c:if>
+	 
+	 <c:if test="${message.getType() == 'error'}">
+     <div class='error-data'>${message.getText()}</div>
+	 </c:if>
 		<h2>Edit User</h2>
 		<form:form class="login-form" method="POST" commandName="user"
 			action="change-user">
