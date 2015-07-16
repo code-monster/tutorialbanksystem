@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
@@ -93,19 +94,7 @@ public class UserController {
 		return new ModelAndView("user-profile", "user", user);
 	}
 
-//	 public void doFilter(ServletRequest request, ServletResponse response,
-//	            FilterChain chain) throws IOException, ServletException {
-//	        response.setCharacterEncoding("UTF_8");
-//	        request.setCharacterEncoding("UTF_8");
-//	        chain.doFilter(request, response);
-//	 }
-	
-	 
-//	 public ResponseEntity<String> preview(HttpServletResponse response) {
-//		 HttpHeaders h = new HttpHeaders();
-//		 h.add("Content-type", "text/html;charset=UTF-8");
-//		 return new ResponseEntity<String>("Привет мир",h ,HttpStatus.OK);
-//		 }
+
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -153,10 +142,18 @@ public class UserController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
-	public ModelAndView addUser(Locale locale, Model model) {
+	public ModelAndView addUser(Locale locale, Model model,
+			 @ModelAttribute("tmpUser") User tmpUser,
+			 @ModelAttribute("message") Message message) {
 
-		User user = new User();
-
+	  User user;
+	    if (tmpUser != null){
+		  user = tmpUser;
+		  model.addAttribute("message", message);
+		  
+	   }else{
+		user = new User();
+	   }
 		model.addAttribute("pageTitle", "Add new client");
 		return new ModelAndView("add-user", "user", user);
 	}
@@ -195,8 +192,25 @@ public class UserController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/save-new-user", method = RequestMethod.POST)
-	public ModelAndView saveNewUser(@ModelAttribute("user") User user, Model model) throws Exception {
+	public ModelAndView saveNewUser(@ModelAttribute("user") User user, Model model,
+			RedirectAttributes redirectAttributes) throws Exception {
 
+		String validReturn = Validator.checkUser(user);
+		
+		if(validReturn.equals("OK")==false){
+			
+		Message message = new Message();
+		message.setType("error");
+		message.setText(validReturn);
+
+		redirectAttributes.addFlashAttribute("message", message);
+		redirectAttributes.addFlashAttribute("tmpUser", user);
+		
+		
+		return new ModelAndView("redirect:add");
+		}
+		
+		
     	ClassPathXmlApplicationContext contextBean = new ClassPathXmlApplicationContext("app-beans.xml");
     	DB connect = (DB)contextBean.getBean("DB");
 		PreparedStatement preparedStatement = null;
