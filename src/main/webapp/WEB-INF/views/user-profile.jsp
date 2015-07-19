@@ -58,6 +58,25 @@
 
 		</form:form> 
 		<p><a href="<c:url value="/delete-user?user_id="/>${user.getUserId()}">Delete user</a></p>
+		
+		<h2>Accounts:</h2>
+		<table id="citizen_table" class="citizen" border="1">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Balance</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+					<tr>
+						<td>${account.getAccountId()}</td>
+						<td>${account.getBalance()}</td>
+						<td>
+						</td>
+					</tr>
+			</tbody>
+		</table>
 		</main>
 		<footer>
 			<jsp:include page="includes/footer.jsp"></jsp:include>

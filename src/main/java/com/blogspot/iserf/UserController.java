@@ -57,14 +57,22 @@ public class UserController {
     	DB connect = (DB)contextBean.getBean("DB");
 
 		PreparedStatement preparedStatement = null;
-		String selectSQL = "SELECT *  FROM `citizen` WHERE id = ?";
+		
+		String selectSQL = "SELECT citizen.*, client_accounts.id_account, client_accounts.balance "
+				+ "FROM citizen "
+				+ "LEFT JOIN client_accounts "
+				+ "ON citizen.id=client_accounts.id_client "
+				+ "WHERE id = ? ";
+		
 
 		User user = new User();
+		Account account  = new Account();
 		try {
 
 			Connection connection = connect.getMysqlConnections();
 			preparedStatement = (PreparedStatement) connection.prepareStatement(selectSQL);
 			preparedStatement.setInt(1, new Integer(context.getParameter("user_id")));
+			System.out.println(preparedStatement);
 			ResultSet rs = preparedStatement.executeQuery();
 
 			while (rs.next()) {
@@ -74,6 +82,11 @@ public class UserController {
 				user.setLastname(rs.getString("lastname"));
 				user.setAddress(rs.getString("address"));
 				user.setDob(rs.getDate("dob").toString());
+				
+				if(rs.getInt("id_account")>0){
+				account.setAccountId(rs.getInt("id_account"));
+				account.setBalance(rs.getDouble("balance"));
+				}
 			}
 
 			// Clean-up environment
@@ -88,6 +101,7 @@ public class UserController {
 
 		model.addAttribute("message", message);
 		model.addAttribute("pageTitle", "Edit User");
+		model.addAttribute("account", account);
 		return new ModelAndView("user-profile", "user", user);
 	}
 
