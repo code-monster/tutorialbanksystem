@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
@@ -66,7 +67,7 @@ public class UserController {
 		
 
 		User user = new User();
-		Account account  = new Account();
+		ArrayList<Account> accountList = new ArrayList<Account>();
 		try {
 
 			Connection connection = connect.getMysqlConnections();
@@ -84,8 +85,10 @@ public class UserController {
 				user.setDob(rs.getDate("dob").toString());
 				
 				if(rs.getInt("id_account")>0){
+				Account account  = new Account();
 				account.setAccountId(rs.getInt("id_account"));
 				account.setBalance(rs.getDouble("balance"));
+				accountList.add(account);
 				}
 			}
 
@@ -101,7 +104,7 @@ public class UserController {
 
 		model.addAttribute("message", message);
 		model.addAttribute("pageTitle", "Edit User");
-		model.addAttribute("account", account);
+		model.addAttribute("accountList", accountList);
 		return new ModelAndView("user-profile", "user", user);
 	}
 
