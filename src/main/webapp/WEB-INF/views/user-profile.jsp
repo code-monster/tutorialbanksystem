@@ -21,7 +21,7 @@ function deleteUser(){
 	}	
 }
 function deleteAccount(accountId){
-	if (confirm('Are you sure you want delete user account?')) {
+	if (confirm('Are you sure you want delete user account with id ='+accountId+'?')) {
 		window.location.href = '<c:url value="/delete-account?account_id="/>'+accountId+"&user_id=${user.getUserId()}";
 	}	
 }
@@ -104,7 +104,7 @@ function deleteAccount(accountId){
 		</table>
 		</c:otherwise>
 		</c:choose>
-<%-- 		<p><a href="<c:url value="/delete-user?user_id="/>${user.getUserId()}">Add new account</a></p> --%>
+		<p><a href="<c:url value="/add-account?user_id="/>${user.getUserId()}">Add new account</a></p> 
 		</main>
 		<footer>
 			<jsp:include page="includes/footer.jsp"></jsp:include>

@@ -183,6 +183,7 @@ public class UserController {
 		return new ModelAndView("add-user", "user", user);
 	}
 	
+
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
@@ -218,39 +219,7 @@ public class UserController {
 	}
 	
 	
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
-	@RequestMapping(value = "/delete-account", method = RequestMethod.GET)
-	public ModelAndView deleteAccount(Locale locale, Model model,
-			RedirectAttributes redirectAttributes) {
 
-		
-    	ClassPathXmlApplicationContext contextBean = new ClassPathXmlApplicationContext("app-beans.xml");
-    	DB connect = (DB)contextBean.getBean("DB");
-		PreparedStatement preparedStatement = null;
-		
-		String deleteSQL = "DELETE FROM  `client_accounts` WHERE `id_account`=?";	
-
-		try {
-
-			Connection connection = connect.getMysqlConnections();
-			preparedStatement = (PreparedStatement) connection.prepareStatement(deleteSQL);
-			preparedStatement.setInt(1, new Integer(context.getParameter("account_id")));
-			preparedStatement.executeUpdate();
-
-			preparedStatement.close();
-			connection.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		Message message = new Message();
-		message.setType("update");
-		message.setText("Account is deleted");
-		redirectAttributes.addFlashAttribute("message", message);
-		return new ModelAndView("redirect:user-profile?user_id="+context.getParameter("user_id"));
-	}
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
