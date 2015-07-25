@@ -20,6 +20,11 @@ function deleteUser(){
 		window.location.href = '<c:url value="/delete-user?user_id="/>${user.getUserId()}';
 	}	
 }
+function deleteAccount(accountId){
+	if (confirm('Are you sure you want delete user account?')) {
+		window.location.href = '<c:url value="/delete-account?account_id="/>'+accountId+"&user_id=${user.getUserId()}";
+	}	
+}
 </script>
 </head>
 <body>
@@ -82,6 +87,7 @@ function deleteUser(){
 					<th>ID</th>
 					<th>Balance</th>
 					<th>Action</th>
+					<th>Delete</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -91,6 +97,7 @@ function deleteUser(){
 						<td>${accountItem.getBalance()}</td>
 						<td><a
 							href="<c:url value="/transactions?account_id="/>${accountItem.getAccountId()}">show transactions</a></td>
+						<td><a class="btn-delete" href="javascript:deleteAccount(${accountItem.getAccountId()})">X</a></td>
 					</tr>
 				</c:forEach>
 			</tbody>
