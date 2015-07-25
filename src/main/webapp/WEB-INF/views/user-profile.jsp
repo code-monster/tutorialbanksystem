@@ -14,6 +14,13 @@
 <script type="text/javascript"
 	src="<c:url  value="/resources/js/jquery.tablesorter.min.js" />"></script>
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script type="text/javascript">
+function deleteUser(){
+	if (confirm('Are you sure you want delete user and his account?')) {
+		window.location.href = '<c:url value="/delete-user?user_id="/>${user.getUserId()}';
+	}	
+}
+</script>
 </head>
 <body>
 	<div class="main">
@@ -61,8 +68,7 @@
 			<input type="submit" value="Submit">
 
 		</form:form> 
-		<p><a href="<c:url value="/delete-user?user_id="/>${user.getUserId()}">Delete user</a></p>
-		
+		<p><a href="javascript:deleteUser()">Delete user</a></p>
 		
 		<h2>Accounts: </h2>
 			<c:choose>
@@ -91,6 +97,7 @@
 		</table>
 		</c:otherwise>
 		</c:choose>
+<%-- 		<p><a href="<c:url value="/delete-user?user_id="/>${user.getUserId()}">Add new account</a></p> --%>
 		</main>
 		<footer>
 			<jsp:include page="includes/footer.jsp"></jsp:include>
