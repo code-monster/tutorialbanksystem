@@ -32,7 +32,7 @@
 		<h2>Add User</h2>
 		<form:form class="login-form" method="POST" commandName="user"
 			action="save-new-user">
-			<table id="edit_user_table" class="citizen" border="1">
+			<table id="edit_user_table" class="user" border="1">
 				<thead>
 					<tr>
 						<th>Firstname</th>

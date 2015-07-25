@@ -180,7 +180,7 @@ table th.headerSortDown {
  font-weight: bold;
 }
 
-.main  table.citizen_table >tbody> tr:hover {background: yellow}
+.main  table.user_table >tbody> tr:hover {background: yellow}
 
 /* end Table */
 

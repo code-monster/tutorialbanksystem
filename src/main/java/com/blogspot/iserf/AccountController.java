@@ -49,7 +49,7 @@ public class AccountController {
     	DB connect = (DB)contextBean.getBean("DB");
 		PreparedStatement preparedStatement = null;
 		
-		String insertSQL = "INSERT INTO `client_accounts` (`id_client`, `balance`)"
+		String insertSQL = "INSERT INTO `users_accounts` (`user_id`, `balance`)"
 				+ "VALUES (?,?)";	
 		int newAccountId = 0;
         ResultSet rs = null;
@@ -98,7 +98,7 @@ public class AccountController {
     	DB connect = (DB)contextBean.getBean("DB");
 		PreparedStatement preparedStatement = null;
 		
-		String deleteSQL = "DELETE FROM  `client_accounts` WHERE `id_account`=?";	
+		String deleteSQL = "DELETE FROM  `users_accounts` WHERE `account_id`=?";	
 
 		try {
 
@@ -115,7 +115,7 @@ public class AccountController {
 		}
 		Message message = new Message();
 		message.setType("update");
-		message.setText("Account is deleted");
+		message.setText("Account with id ="+context.getParameter("account_id")+" is deleted");
 		redirectAttributes.addFlashAttribute("message", message);
 		return new ModelAndView("redirect:user-profile?user_id="+context.getParameter("user_id"));
 	}

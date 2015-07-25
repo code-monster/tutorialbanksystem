@@ -50,7 +50,7 @@ function deleteAccount(accountId){
 		<h2>Edit User</h2>
 		<form:form class="login-form" method="POST" commandName="user"
 			action="change-user">
-			<table id="edit_user_table" class="citizen" border="1">
+			<table id="edit_user_table" class="user" border="1">
 				<thead>
 					<tr>
 						<th>ID</th>

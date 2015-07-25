@@ -32,8 +32,8 @@
 	 <c:if test="${message.getType() == 'error'}">
      <div class='error-data'>${message.getText()}</div>
 	 </c:if>
-		<h2>Citizens:</h2>
-		<table id="citizen_table" class="citizen" border="1">
+		<h2>Users:</h2>
+		<table id="user_table" class="user" border="1">
 			<thead>
 				<tr>
 					<th>ID</th>
@@ -45,29 +45,29 @@
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach items="${clients}" var="clientItem">
+				<c:forEach items="${users}" var="userItem">
 					<tr>
-						<td>${clientItem.getUserId()}</td>
-						<td>${clientItem.getFirstname()}</td>
-						<td>${clientItem.getLastname()}</td>
-						<td>${clientItem.getAddress()}</td>
-						<td>${clientItem.getDob()}</td>
+						<td>${userItem.getUserId()}</td>
+						<td>${userItem.getFirstname()}</td>
+						<td>${userItem.getLastname()}</td>
+						<td>${userItem.getAddress()}</td>
+						<td>${userItem.getDob()}</td>
 						<td><a
-							href="<c:url value="/user-profile?user_id="/>${clientItem.getUserId()}">edit</a>
+							href="<c:url value="/user-profile?user_id="/>${userItem.getUserId()}">edit</a>
 						</td>
 					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
-		<p class="total">total:${clients.size()}</p>
-		<p><a href="<c:url value="/add"/>">Add new client</a></p>
+		<p class="total">total:${users.size()}</p>
+		<p><a href="<c:url value="/add"/>">Add new user</a></p>
 		</main>
 		<footer>
 			<jsp:include page="includes/footer.jsp"></jsp:include>
 		</footer>
 		<script type="text/javascript">
 			jQuery(document).ready(function() {
-				jQuery("#citizen_table").tablesorter();
+				jQuery("#user_table").tablesorter();
 			});
 		</script>
 	</div>

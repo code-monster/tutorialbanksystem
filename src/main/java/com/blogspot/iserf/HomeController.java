@@ -48,7 +48,7 @@ public class HomeController {
     	ClassPathXmlApplicationContext contextBean = new ClassPathXmlApplicationContext("app-beans.xml");
     	DB connect = (DB)contextBean.getBean("DB");
 
-		ArrayList<User> citizenData = new ArrayList<User>();
+		ArrayList<User> userList = new ArrayList<User>();
 
 	    try {
 	    	
@@ -58,7 +58,7 @@ public class HomeController {
         // Execute SQL query
         stmt = (Statement) connection.createStatement();
         String sql;
-        sql = "SELECT * FROM citizen";
+        sql = "SELECT * FROM `users`";
         ResultSet rs = stmt.executeQuery(sql);
 
         // Extract data from result set
@@ -72,7 +72,7 @@ public class HomeController {
     		user.setAddress(rs.getString("address"));
     		user.setDob(rs.getDate("dob").toString());
     		       
-        	citizenData.add(user);
+    		userList.add(user);
         }
 
         // Clean-up environment
@@ -87,7 +87,7 @@ public class HomeController {
 	    
 		model.addAttribute("pageTitle", "Home page");
 		model.addAttribute("message", message);
-		return new ModelAndView("home", "clients", citizenData);
+		return new ModelAndView("home", "users", userList);
 	}
 	
 

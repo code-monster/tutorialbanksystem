@@ -59,10 +59,10 @@ public class UserController {
 
 		PreparedStatement preparedStatement = null;
 		
-		String selectSQL = "SELECT citizen.*, client_accounts.id_account, client_accounts.balance "
-				+ "FROM citizen "
-				+ "LEFT JOIN client_accounts "
-				+ "ON citizen.id=client_accounts.id_client "
+		String selectSQL = "SELECT users.*, users_accounts.account_id, users_accounts.balance "
+				+ "FROM users "
+				+ "LEFT JOIN users_accounts "
+				+ "ON users.id=users_accounts.user_id "
 				+ "WHERE id = ? ";
 		
 
@@ -84,9 +84,9 @@ public class UserController {
 				user.setAddress(rs.getString("address"));
 				user.setDob(rs.getDate("dob").toString());
 				
-				if(rs.getInt("id_account")>0){
+				if(rs.getInt("account_id")>0){
 				Account account  = new Account();
-				account.setAccountId(rs.getInt("id_account"));
+				account.setAccountId(rs.getInt("account_id"));
 				account.setBalance(rs.getDouble("balance"));
 				accountList.add(account);
 				}
@@ -135,7 +135,7 @@ public class UserController {
     	ClassPathXmlApplicationContext contextBean = new ClassPathXmlApplicationContext("app-beans.xml");
     	DB connect = (DB)contextBean.getBean("DB");
 		PreparedStatement preparedStatement = null;
-		String updateSQL = "UPDATE `citizen` SET `firstname` =?, `lastname` = ?, `address` = ?, `dob` = ? WHERE `id`=?";
+		String updateSQL = "UPDATE `users` SET `firstname` =?, `lastname` = ?, `address` = ?, `dob` = ? WHERE `id`=?";
 
 		try {
 
@@ -179,7 +179,7 @@ public class UserController {
 			 @ModelAttribute("message") Message message) {
 
 		model.addAttribute("message", message);  
-		model.addAttribute("pageTitle", "Add new client");
+		model.addAttribute("pageTitle", "Add new user");
 		return new ModelAndView("add-user", "user", user);
 	}
 	
@@ -196,7 +196,7 @@ public class UserController {
     	DB connect = (DB)contextBean.getBean("DB");
 		PreparedStatement preparedStatement = null;
 		
-		String deleteSQL = "DELETE FROM  `citizen` WHERE `id`=?";	
+		String deleteSQL = "DELETE FROM  `users` WHERE `id`=?";	
 
 		try {
 
@@ -247,7 +247,7 @@ public class UserController {
     	DB connect = (DB)contextBean.getBean("DB");
 		PreparedStatement preparedStatement = null;
 		
-		String insertSQL = "INSERT INTO `citizen` (`firstname`, `lastname`, `address`, `dob`)"
+		String insertSQL = "INSERT INTO `users` (`firstname`, `lastname`, `address`, `dob`)"
 				+ "VALUES (?,?,?,?)";	
 		int newUserId = 0;
         ResultSet rs = null;
