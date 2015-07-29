@@ -3,8 +3,8 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: localhost
--- Время создания: Июл 26 2015 г., 02:05
--- Версия сервера: 5.5.43-0ubuntu0.14.04.1
+-- Время создания: Июл 30 2015 г., 01:50
+-- Версия сервера: 5.5.44-0ubuntu0.14.04.1
 -- Версия PHP: 5.5.9-1ubuntu4.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- База данных: `java_bank`
+-- База данных: `jbank`
 --
 
 -- --------------------------------------------------------
@@ -31,17 +31,11 @@ CREATE TABLE IF NOT EXISTS `transactions` (
   `account_id` int(11) DEFAULT NULL,
   `account_current_operation_id` int(11) DEFAULT NULL,
   `money` decimal(10,0) DEFAULT NULL,
-  `date` datetime DEFAULT NULL,
+  `date` date DEFAULT NULL,
   `self_operations` tinyint(1) DEFAULT NULL,
-  UNIQUE KEY `id_transactions` (`transactions_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
-
---
--- Дамп данных таблицы `transactions`
---
-
-INSERT INTO `transactions` (`transactions_id`, `account_id`, `account_current_operation_id`, `money`, `date`, `self_operations`) VALUES
-(1, 1, 1, 200, '2015-06-20 01:00:00', 0);
+  PRIMARY KEY (`transactions_id`),
+  KEY `FK_transactions` (`account_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 -- --------------------------------------------------------
 
@@ -51,21 +45,12 @@ INSERT INTO `transactions` (`transactions_id`, `account_id`, `account_current_op
 
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `firstname` char(50) NOT NULL,
-  `lastname` char(50) NOT NULL,
-  `address` char(100) NOT NULL,
+  `firstname` char(50) DEFAULT NULL,
+  `lastname` char(50) DEFAULT NULL,
+  `address` char(100) DEFAULT NULL,
   `dob` date DEFAULT NULL,
-  UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21 ;
-
---
--- Дамп данных таблицы `users`
---
-
-INSERT INTO `users` (`id`, `firstname`, `lastname`, `address`, `dob`) VALUES
-(18, 'миша', '54rere', 'ппп 66', '1983-01-04'),
-(19, '6576', '765878', '8768', '9999-09-17'),
-(20, '545', '56546', '676', '2000-12-09');
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
@@ -77,36 +62,25 @@ CREATE TABLE IF NOT EXISTS `users_accounts` (
   `account_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL,
   `balance` decimal(10,0) DEFAULT NULL,
-  UNIQUE KEY `id_account` (`account_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=42 ;
+  PRIMARY KEY (`account_id`),
+  KEY `FK_users_accounts` (`user_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
 
 --
--- Дамп данных таблицы `users_accounts`
+-- Ограничения внешнего ключа сохраненных таблиц
 --
 
-INSERT INTO `users_accounts` (`account_id`, `user_id`, `balance`) VALUES
-(1, 1, 1000),
-(9, 17, 0),
-(11, 17, 0),
-(14, 16, 0),
-(15, 16, 0),
-(16, 16, 0),
-(17, 16, 0),
-(18, 16, 0),
-(19, 16, 0),
-(20, 16, 0),
-(21, 16, 0),
-(22, 16, 0),
-(25, 16, 0),
-(26, 18, 0),
-(27, 18, 0),
-(32, 18, 0),
-(34, 19, 0),
-(35, 19, 0),
-(38, 20, 0),
-(39, 20, 0),
-(40, 20, 0),
-(41, 20, 0);
+--
+-- Ограничения внешнего ключа таблицы `transactions`
+--
+ALTER TABLE `transactions`
+  ADD CONSTRAINT `FK_transactions` FOREIGN KEY (`account_id`) REFERENCES `users_accounts` (`account_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `users_accounts`
+--
+ALTER TABLE `users_accounts`
+  ADD CONSTRAINT `FK_users_accounts` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
