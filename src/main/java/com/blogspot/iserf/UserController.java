@@ -47,6 +47,7 @@ public class UserController {
 		    if (tmpUser.getUserId()>0){
 			  model.addAttribute("message", message);
 			  model.addAttribute("pageTitle", "Edit User");
+			  model.addAttribute("accountList", getUserAccounts(tmpUser.getUserId()));
 			  return new ModelAndView("user-profile", "user", tmpUser);	  
 		 }
 		
@@ -108,6 +109,50 @@ public class UserController {
 		return new ModelAndView("user-profile", "user", user);
 	}
 
+	private ArrayList<Account> getUserAccounts(int userId){
+		
+		ClassPathXmlApplicationContext contextBean = new ClassPathXmlApplicationContext("app-beans.xml");
+    	DB connect = (DB)contextBean.getBean("DB");
+
+		PreparedStatement preparedStatement = null;
+		
+		String selectSQL = "SELECT users.*, users_accounts.account_id, users_accounts.balance "
+				+ "FROM users "
+				+ "LEFT JOIN users_accounts "
+				+ "ON users.id=users_accounts.user_id "
+				+ "WHERE id = ? ";
+		
+		ArrayList<Account> accountList = new ArrayList<Account>();
+		try {
+
+			Connection connection = connect.getMysqlConnections();
+			preparedStatement = (PreparedStatement) connection.prepareStatement(selectSQL);
+			preparedStatement.setInt(1, userId);
+			ResultSet rs = preparedStatement.executeQuery();
+
+			while (rs.next()) {
+		
+				if(rs.getInt("account_id")>0){
+				Account account  = new Account();
+				account.setAccountId(rs.getInt("account_id"));
+				account.setBalance(rs.getDouble("balance"));
+				accountList.add(account);
+				}
+			}
+
+			// Clean-up environment
+			rs.close();
+			preparedStatement.close();
+			connection.close();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+				
+		
+		return accountList;
+	}
 
 	
 	/**
