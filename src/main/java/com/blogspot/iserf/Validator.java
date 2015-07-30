@@ -18,11 +18,7 @@ public class Validator {
 		} else if (user.getAddress().length() < 2) {
 			return "Field Address should have more than 1 letters";
 			
-		} else if (user.getDob().length() != 10) {				
-			
-			return "Field  date of birth is not valid";
-			
-		} 
+		}
 
 	     try {
 	            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
