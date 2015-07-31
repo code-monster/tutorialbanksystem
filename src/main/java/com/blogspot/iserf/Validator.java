@@ -9,13 +9,13 @@ public class Validator {
 
 	public static String checkUser(User user) {
 		
-		if (user.getFirstname().length() < 2) {
+		if (user.getFirstname().length() < 1) {
 			return "Field Firstname should have more than 1 letters";
 
-		} else if (user.getLastname().length() < 2) {
+		} else if (user.getLastname().length() < 1) {
 			return "Field Lastname should have more than 1 letters";
 			
-		} else if (user.getAddress().length() < 2) {
+		} else if (user.getAddress().length() < 1) {
 			return "Field Address should have more than 1 letters";
 			
 		}
@@ -25,7 +25,7 @@ public class Validator {
 	            Date result =  df.parse(user.getDob());
 	        } catch (ParseException pe) {
 	        	
-	        	return pe.getMessage();
+	        	return "Field  date of birth is not valid";
 	        }
 		
 		
