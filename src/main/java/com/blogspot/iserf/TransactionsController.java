@@ -1,5 +1,6 @@
 package com.blogspot.iserf;
 
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -81,7 +82,11 @@ public class TransactionsController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		Breadcrumbs breadcrumbs  = new Breadcrumbs();
+		breadcrumbs.add(new Link("home", "http://localhost:8080/iserf/"));
+		breadcrumbs.add(new Link("user-profile", "http://localhost:8080/iserf/"));
+		
+		model.addAttribute("breadcrumbs", breadcrumbs);
 		model.addAttribute("pageTitle", "View  transactions  in account id "+ context.getParameter("account_id"));
 		return new ModelAndView("account-detail", "transactionList", transactionList);
 	}

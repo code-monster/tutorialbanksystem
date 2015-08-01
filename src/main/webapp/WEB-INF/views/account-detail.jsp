@@ -26,6 +26,11 @@
 				<jsp:include page="includes/menu.jsp"></jsp:include>
 			</menu>
 		</nav>
+
+		<div>
+				<jsp:include page="includes/breadcrumbs.jsp"></jsp:include>
+		</div>
+
 		<main>
 		<c:choose>
      <c:when test="${message.getType() == 'update'}">
