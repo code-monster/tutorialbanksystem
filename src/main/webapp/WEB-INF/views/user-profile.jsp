@@ -96,7 +96,7 @@ function deleteAccount(accountId){
 						<td>${accountItem.getAccountId()}</td>
 						<td>${accountItem.getBalance()}</td>
 						<td><a
-							href="<c:url value="/transactions?account_id="/>${accountItem.getAccountId()}">show transactions</a></td>
+							href="<c:url value="/account-detail?account_id="/>${accountItem.getAccountId()}">show transactions</a></td>
 						<td><a class="btn-delete" href="javascript:deleteAccount(${accountItem.getAccountId()})">X</a></td>
 					</tr>
 				</c:forEach>
