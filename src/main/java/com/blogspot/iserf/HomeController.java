@@ -96,6 +96,10 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "/contact", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
+		
+		Breadcrumbs  breadcrumbs  = new Breadcrumbs(context);	
+		breadcrumbs.add("contact");
+		model.addAttribute("breadcrumbs", breadcrumbs);
 		model.addAttribute("pageTitle", "Contact page");
 		return "contact";
 	}

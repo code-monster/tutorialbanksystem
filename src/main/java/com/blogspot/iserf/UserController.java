@@ -103,6 +103,10 @@ public class UserController {
 			e.printStackTrace();
 		}
 
+		Breadcrumbs  breadcrumbs  = new Breadcrumbs(context);	
+		breadcrumbs.add("user-profile");
+		model.addAttribute("breadcrumbs", breadcrumbs);
+		
 		model.addAttribute("message", message);
 		model.addAttribute("pageTitle", "Edit User");
 		model.addAttribute("accountList", accountList);
@@ -223,6 +227,10 @@ public class UserController {
 			 @ModelAttribute("tmpUser") User user,
 			 @ModelAttribute("message") Message message) {
 
+		Breadcrumbs  breadcrumbs  = new Breadcrumbs(context);	
+		breadcrumbs.add("add user");
+		model.addAttribute("breadcrumbs", breadcrumbs);
+		
 		model.addAttribute("message", message);  
 		model.addAttribute("pageTitle", "Add new user");
 		return new ModelAndView("add-user", "user", user);

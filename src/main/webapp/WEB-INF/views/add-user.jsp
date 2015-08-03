@@ -18,11 +18,7 @@
 		<header>
 			<jsp:include page="includes/header.jsp"></jsp:include>
 		</header>
-		<nav>
-			<menu>
-				<jsp:include page="includes/menu.jsp"></jsp:include>
-			</menu>
-		</nav>
+
 		<main> 
 		
      <c:if test="${message.getType() == 'error'}">

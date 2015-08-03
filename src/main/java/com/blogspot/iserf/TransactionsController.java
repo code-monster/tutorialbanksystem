@@ -40,7 +40,7 @@ public class TransactionsController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/account-detail", method = RequestMethod.GET)
-	public ModelAndView editUser(Locale locale, Model model) 
+	public ModelAndView editUser(HttpServletRequest request, Model model) 
 	{
 
     	ClassPathXmlApplicationContext contextBean = new ClassPathXmlApplicationContext("app-beans.xml");
@@ -82,13 +82,55 @@ public class TransactionsController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Breadcrumbs breadcrumbs  = new Breadcrumbs();
-		breadcrumbs.add(new Link("home", "http://localhost:8080/iserf/"));
-		breadcrumbs.add(new Link("user-profile", "http://localhost:8080/iserf/"));
+		Breadcrumbs  breadcrumbs  = new Breadcrumbs(request);
+		
+		breadcrumbs.add("user-profile", "/user-profile?user_id="+getUserIdByAccountId(new Integer(context.getParameter("account_id"))));
+		breadcrumbs.add("account-detail");
 		
 		model.addAttribute("breadcrumbs", breadcrumbs);
 		model.addAttribute("pageTitle", "View  transactions  in account id "+ context.getParameter("account_id"));
 		return new ModelAndView("account-detail", "transactionList", transactionList);
+	}
+	
+
+	private int getUserIdByAccountId(int accountId){
+		
+		ClassPathXmlApplicationContext contextBean = new ClassPathXmlApplicationContext("app-beans.xml");
+    	DB connect = (DB)contextBean.getBean("DB");
+
+		PreparedStatement preparedStatement = null;
+		
+		String selectSQL = "SELECT user_id "
+				+ "FROM `users_accounts` "
+				+ "WHERE `account_id` = ? "
+				+ "LIMIT 1";
+		
+
+		Transaction transaction;
+        int userId = 0;
+		try {
+
+			Connection connection = connect.getMysqlConnections();
+			preparedStatement = (PreparedStatement) connection.prepareStatement(selectSQL);
+			preparedStatement.setInt(1, new Integer(context.getParameter("account_id")));
+			System.out.println(preparedStatement);
+			ResultSet rs = preparedStatement.executeQuery();
+
+			while (rs.next()) {
+				userId = rs.getInt("user_id");
+			}
+
+			// Clean-up environment
+			rs.close();
+			preparedStatement.close();
+			connection.close();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return userId;
 	}
 
 

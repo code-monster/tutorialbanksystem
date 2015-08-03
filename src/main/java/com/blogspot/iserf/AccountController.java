@@ -41,7 +41,7 @@ public class AccountController {
 	 */
 	@RequestMapping(value = "/add-account", method = RequestMethod.GET)
 	public ModelAndView addAccount(Locale locale, Model model,
-			RedirectAttributes redirectAttributes) {
+			RedirectAttributes redirectAttributes, HttpServletRequest request) {
 
 
 		
@@ -77,7 +77,7 @@ public class AccountController {
 		Message message = new Message();
 		message.setType("update");
 		message.setText("New Account with id =" + newAccountId+ " was created");
-
+		
 		redirectAttributes.addFlashAttribute("message", message);
 		
 		return new ModelAndView("redirect:user-profile?user_id="+context.getParameter("user_id"));

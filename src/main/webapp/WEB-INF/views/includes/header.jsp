@@ -14,3 +14,13 @@
 	<div class="cleared"></div>	
 </div>
 
+		<nav>
+			<menu>
+				<jsp:include page="menu.jsp"></jsp:include>
+			</menu>
+		</nav>
+		
+		<div class="breadcrumbs">
+				<jsp:include page="breadcrumbs.jsp"></jsp:include>
+		</div>
+
