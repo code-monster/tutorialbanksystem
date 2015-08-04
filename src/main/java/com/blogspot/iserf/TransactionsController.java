@@ -82,6 +82,11 @@ public class TransactionsController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		Money money = new Money(new Integer(context.getParameter("account_id")));
+		model.addAttribute("money", money);
+		
+		
 		Breadcrumbs  breadcrumbs  = new Breadcrumbs(request);
 		
 		breadcrumbs.add("user-profile", "/user-profile?user_id="+getUserIdByAccountId(new Integer(context.getParameter("account_id"))));
@@ -131,6 +136,42 @@ public class TransactionsController {
 		}
 		
 		return userId;
+	}
+	
+	
+	/**
+	 * Simply selects the home view to render by returning its name.
+	 */
+	@RequestMapping(value = "/add-money", method = RequestMethod.POST)
+	public ModelAndView addMoney(@ModelAttribute("money") Money money, Model model,
+			RedirectAttributes redirectAttributes) throws Exception {
+
+
+		ClassPathXmlApplicationContext contextBean = new ClassPathXmlApplicationContext("app-beans.xml");
+    	DB connect = (DB)contextBean.getBean("DB");
+		PreparedStatement preparedStatement = null;
+		String updateSQL = "UPDATE `users_accounts` SET `balance` = `balance` + ?  WHERE `account_id`=?";
+
+		
+	//	UPDATE Orders SET Quantity = Quantity + 1 WHERE ...
+		try {
+
+			Connection connection = connect.getMysqlConnections();
+			preparedStatement = (PreparedStatement) connection.prepareStatement(updateSQL);
+			preparedStatement.setDouble(1, money.getPut());
+			preparedStatement.setInt(2, money.getAccountId());
+
+			preparedStatement.executeUpdate();
+
+			preparedStatement.close();
+			connection.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return new ModelAndView("redirect:account-detail?account_id=" + money.getAccountId());
+
 	}
 
 
