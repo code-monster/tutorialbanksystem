@@ -43,17 +43,26 @@ public class UserController {
 			 @ModelAttribute("tmpUser") User tmpUser,
 			 @ModelAttribute("message") Message message) {
 
+
+        if (context.getParameterMap().containsKey("user_id") == false  || Validator.isInteger(context.getParameter("user_id"))==false ) {
+         
+    		Message errorMessage = new Message("error", "Error in user_id param!");
+    		model.addAttribute("message", errorMessage);
+    		model.addAttribute("pageTitle", "Error page");	
+    		return new ModelAndView("error");
+        }
+        
 		
-		    if (tmpUser.getUserId()>0){
+		
+		
+		if (tmpUser.getUserId()>0){
 			  model.addAttribute("message", message);
 			  model.addAttribute("pageTitle", "Edit User");
 			  model.addAttribute("accountList", getUserAccounts(tmpUser.getUserId()));
 			  return new ModelAndView("user-profile", "user", tmpUser);	  
 		 }
 		
-		if (context.getParameter("user_id") == "") {
-			return new ModelAndView("edit-user", "user_id", context.getParameter("user_id"));
-		}
+
 
     	ClassPathXmlApplicationContext contextBean = new ClassPathXmlApplicationContext("app-beans.xml");
     	DB connect = (DB)contextBean.getBean("DB");
@@ -101,6 +110,14 @@ public class UserController {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		
+		if(user.getUserId()==0){
+    		Message errorMessage = new Message("error", "User with id "+ context.getParameter("user_id") +" is not found!");
+    		model.addAttribute("message", errorMessage);
+    		model.addAttribute("pageTitle", "Error page");	
+    		return new ModelAndView("error");
+			
 		}
 
 		Breadcrumbs  breadcrumbs  = new Breadcrumbs(context);	
@@ -170,9 +187,7 @@ public class UserController {
 		
 		if(validReturn.equals("OK")==false){
 			
-		message = new Message();
-		message.setType("error");
-		message.setText(validReturn);
+		message = new Message("error", validReturn);
 
 		redirectAttributes.addFlashAttribute("message", message);
 		redirectAttributes.addFlashAttribute("tmpUser", user);
@@ -211,9 +226,7 @@ public class UserController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		message = new Message();
-		message.setType("update");
-		message.setText("Data is update");
+		message = new Message("update", "Data is update");
 		redirectAttributes.addFlashAttribute("message", message);
 		return new ModelAndView("redirect:user-profile?user_id=" + user.getUserId());
 
@@ -264,9 +277,7 @@ public class UserController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Message message = new Message();
-		message.setType("update");
-		message.setText("User is deleted");
+		Message message = new Message("update", "User is deleted");
 		redirectAttributes.addFlashAttribute("message", message);
 		return new ModelAndView("redirect:/");
 	}
@@ -284,9 +295,7 @@ public class UserController {
 		
 		if(validReturn.equals("OK")==false){
 			
-		Message message = new Message();
-		message.setType("error");
-		message.setText(validReturn);
+		Message message = new Message("error", validReturn);
 
 		redirectAttributes.addFlashAttribute("message", message);
 		redirectAttributes.addFlashAttribute("tmpUser", user);

@@ -5,6 +5,15 @@ public class Message {
 	private String type;
     private String text;
 	
+	public Message() {
+	}
+    
+	public Message(String type, String text) {
+		this.type = type;
+		this.text = text;
+	}
+    
+    
 	public String getType() {
 		return type;
 	}

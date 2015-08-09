@@ -43,6 +43,26 @@ public class TransactionsController {
 	public ModelAndView editUser(HttpServletRequest request, Model model) 
 	{
 
+		
+		
+        if (context.getParameterMap().containsKey("account_id") == false  
+        		|| Validator.isInteger(context.getParameter("account_id"))==false) {
+            
+    		Message errorMessage = new Message("error", "Error in account_id param!");
+    		model.addAttribute("message", errorMessage);
+    		model.addAttribute("pageTitle", "Error page");	
+    		return new ModelAndView("error");
+        }
+        
+        int userId = getUserIdByAccountId(new Integer(context.getParameter("account_id")));
+		if(userId == 0){
+    		Message errorMessage = new Message("error", "Error: account id is not connected for a user!");
+    		model.addAttribute("message", errorMessage);
+    		model.addAttribute("pageTitle", "Error page");	
+    		return new ModelAndView("error");	
+			
+		}
+		
     	ClassPathXmlApplicationContext contextBean = new ClassPathXmlApplicationContext("app-beans.xml");
     	DB connect = (DB)contextBean.getBean("DB");
 
@@ -81,7 +101,7 @@ public class TransactionsController {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}	
 		
 		Money money = new Money(new Integer(context.getParameter("account_id")));
 		model.addAttribute("money", money);
@@ -89,7 +109,7 @@ public class TransactionsController {
 		
 		Breadcrumbs  breadcrumbs  = new Breadcrumbs(request);
 		
-		breadcrumbs.add("user-profile", "/user-profile?user_id="+getUserIdByAccountId(new Integer(context.getParameter("account_id"))));
+		breadcrumbs.add("user-profile", "/user-profile?user_id="+userId);
 		breadcrumbs.add("account-detail");
 		
 		model.addAttribute("breadcrumbs", breadcrumbs);

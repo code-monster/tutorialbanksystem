@@ -74,10 +74,7 @@ public class AccountController {
 			e.printStackTrace();
 		}
 		
-		Message message = new Message();
-		message.setType("update");
-		message.setText("New Account with id =" + newAccountId+ " was created");
-		
+		Message message = new Message("update", "New Account with id =" + newAccountId+ " was created");	
 		redirectAttributes.addFlashAttribute("message", message);
 		
 		return new ModelAndView("redirect:user-profile?user_id="+context.getParameter("user_id"));
@@ -113,9 +110,7 @@ public class AccountController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Message message = new Message();
-		message.setType("update");
-		message.setText("Account with id ="+context.getParameter("account_id")+" is deleted");
+		Message message = new Message("update", "Account with id ="+context.getParameter("account_id")+" is deleted");
 		redirectAttributes.addFlashAttribute("message", message);
 		return new ModelAndView("redirect:user-profile?user_id="+context.getParameter("user_id"));
 	}
