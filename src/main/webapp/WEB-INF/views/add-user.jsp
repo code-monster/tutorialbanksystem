@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
 	language="java"%>
 <!DOCTYPE html>
@@ -25,16 +26,16 @@
      <div class='error-data'>${message.getText()}</div>
 	 </c:if>
 		
-		<h2>Add User</h2>
+		<h2><spring:message    code="label.page_add_new_user" /></h2>
 		<form:form class="login-form" method="POST" commandName="user"
 			action="save-new-user">
 			<table id="edit_user_table" class="user" border="1">
 				<thead>
-					<tr>
-						<th>Firstname</th>
-						<th>Lastname</th>
-						<th>Address</th>
-						<th>Date of birthday</th>
+					<tr>			
+					<th><spring:message    code="label.data_firstname" /></th>
+					<th><spring:message    code="label.data_lastname" /></th>
+					<th><spring:message    code="label.data_address" /></th>
+					<th><spring:message    code="label.data_dob" /></th>
 					</tr>
 				</thead>
 				<tbody>

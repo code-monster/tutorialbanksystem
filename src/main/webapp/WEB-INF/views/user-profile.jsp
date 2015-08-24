@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
 	language="java"%>
 <!DOCTYPE html>
@@ -43,17 +44,17 @@ function deleteAccount(accountId){
      <div class='error-data'>${message.getText()}</div>
 	 </c:when>
 	 </c:choose>
-		<h2>Edit User</h2>
+		<h2><spring:message    code="label.page_user_profile" /></h2>
 		<form:form class="login-form" method="POST" commandName="user"
 			action="change-user">
 			<table id="edit_user_table" class="user" border="1">
 				<thead>
 					<tr>
 						<th>ID</th>
-						<th>Firstname</th>
-						<th>Lastname</th>
-						<th>Address</th>
-						<th>Date of birthday</th>
+						<th><spring:message    code="label.data_firstname" /></th>
+						<th><spring:message    code="label.data_lastname" /></th>
+						<th><spring:message    code="label.data_address" /></th>
+						<th><spring:message    code="label.data_dob" /></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -69,9 +70,8 @@ function deleteAccount(accountId){
 			<input type="submit" value="Submit">
 
 		</form:form> 
-		<p><a href="javascript:deleteUser()">Delete user</a></p>
-		
-		<h2>Accounts: </h2>
+		<p><a href="javascript:deleteUser()"><spring:message    code="label.action_delete_user" /></a></p>
+		<h2><spring:message    code="label.data_acounts" />: </h2>
 			<c:choose>
 		<c:when test="${accountList.size()==0}">
         <div class='account-alert'>User don't have any accounts</div>
@@ -81,9 +81,9 @@ function deleteAccount(accountId){
 			<thead>
 				<tr>
 					<th>ID</th>
-					<th>Balance</th>
-					<th>Action</th>
-					<th>Delete</th>
+					<th><spring:message    code="label.data_balance" /></th>
+					<th><spring:message    code="label.data_action" /></th>
+					<th><spring:message    code="label.data_delete" /></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -100,7 +100,7 @@ function deleteAccount(accountId){
 		</table>
 		</c:otherwise>
 		</c:choose>
-		<p><a href="<c:url value="/add-account?user_id="/>${user.getUserId()}">Add new account</a></p> 
+		<p><a href="<c:url value="/add-account?user_id="/>${user.getUserId()}"><spring:message    code="label.action_add_new_account" /></a></p> 
 		</main>
 		<footer>
 			<jsp:include page="includes/footer.jsp"></jsp:include>

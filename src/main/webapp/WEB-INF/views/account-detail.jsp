@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
 	language="java"%>
 <!DOCTYPE html>
@@ -32,7 +33,7 @@
      <div class='error-data'>${message.getText()}</div>
 	 </c:when>
 	 </c:choose>
-		<h2>Account detail</h2>
+		<h2><spring:message    code="label.page_account_detail" /></h2>
 
 			<c:choose>
 		<c:when test="${transactionList.size()==0}">
@@ -43,9 +44,9 @@
 			<thead>
 				<tr>
 					<th>ID</th>
-					<th>Money</th>
-					<th>Operation info</th>
-					<th>Date</th>
+					<th><spring:message    code="label.data_money" /></th>
+					<th><spring:message    code="label.data_operation_info" /></th>
+					<th><spring:message    code="label.data_date" /></th>
 				</tr>
 			</thead>
 			<tbody>
