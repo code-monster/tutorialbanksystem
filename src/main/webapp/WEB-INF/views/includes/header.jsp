@@ -1,9 +1,15 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
 	language="java"%>
 <div class="header">
     <div class="header-contant">
+    <div>
+    <a href="?locale=en">en</a> 
+    | 
+    <a href="?locale=ru">ru</a>
+    </div>
       <div class="h-title">Bank app</div>
 	 <div class="img-container">
 	      <a href="<c:url value="/"/>">
@@ -23,4 +29,4 @@
 		<div class="breadcrumbs">
 				<jsp:include page="breadcrumbs.jsp"></jsp:include>
 		</div>
-
+		

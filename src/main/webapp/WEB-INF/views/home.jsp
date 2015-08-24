@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
 	language="java"%>
 <!DOCTYPE html>
@@ -33,11 +34,11 @@
 			<thead>
 				<tr>
 					<th>ID</th>
-					<th>Firstname</th>
-					<th>Lastname</th>
-					<th>Address</th>
-					<th>Date of birthday</th>
-					<th>Action</th>
+					<th><spring:message    code="label.data_firstname" /></th>
+					<th><spring:message    code="label.data_lastname" /></th>
+					<th><spring:message    code="label.data_address" /></th>
+					<th><spring:message    code="label.data_dob" /></th>
+					<th><spring:message    code="label.data_action" /></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -56,7 +57,7 @@
 			</tbody>
 		</table>
 		<p class="total">total:${users.size()}</p>
-		<p><a href="<c:url value="/add"/>">Add new user</a></p>
+		<p><a href="<c:url value="/add"/>"><spring:message    code="label.action_add_new_user" /></a></p>
 		</main>
 		<footer>
 			<jsp:include page="includes/footer.jsp"></jsp:include>
