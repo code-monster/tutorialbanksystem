@@ -17,12 +17,12 @@
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script type="text/javascript">
 function deleteUser(){
-	if (confirm('Are you sure you want delete user and his account?')) {
+	if (confirm('<spring:message    code="label.alert_delete_user" />')) {
 		window.location.href = '<c:url value="/delete-user?user_id="/>${user.getUserId()}';
 	}	
 }
 function deleteAccount(accountId){
-	if (confirm('Are you sure you want delete user account with id ='+accountId+'?')) {
+	if (confirm('<spring:message    code="label.alert_delete_account" /> ='+accountId+'?')) {
 		window.location.href = '<c:url value="/delete-account?account_id="/>'+accountId+"&user_id=${user.getUserId()}";
 	}	
 }
