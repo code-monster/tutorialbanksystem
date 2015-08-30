@@ -1,4 +1,4 @@
-package com.blogspot.iserf;
+package com.blogspot.iserf.utility;
 
 import java.text.DateFormat;
 import java.text.ParseException;
