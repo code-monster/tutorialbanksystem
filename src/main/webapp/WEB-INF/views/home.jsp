@@ -3,23 +3,9 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
 	language="java"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>${pageTitle}</title>
-<link href="<c:url  value="/resources/css/style.css" />"
-	rel="stylesheet" />
-<script type="text/javascript"
-	src="<c:url  value="/resources/js/jquery-2.1.4.min.js" />"></script>
-<script type="text/javascript"
-	src="<c:url  value="/resources/js/jquery.tablesorter.min.js" />"></script>
-</head>
-<body>
-	<div class="main">
-		<header>
-			<jsp:include page="includes/header.jsp"></jsp:include>
-		</header>
+
+<jsp:include page="includes/header.jsp"></jsp:include>
+
 
 		<main>
 	 <c:if test="${message.getType() == 'update'}">

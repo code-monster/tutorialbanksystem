@@ -3,24 +3,9 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
 	language="java"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>${pageTitle}</title>
-<link href="<c:url  value="/resources/css/style.css" />"
-	rel="stylesheet" />
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-<script src="//code.jquery.com/jquery-1.10.2.js"></script>
-<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-</head>
-<body>
-	<div class="main">
-		<header>
-			<jsp:include page="includes/header.jsp"></jsp:include>
-		</header>
+<jsp:include page="includes/header.jsp"></jsp:include>
 
-		<main> 
+	<main> 
 		
      <c:if test="${message.getType() == 'error'}">
      <div class='error-data'>${message.getText()}</div>
