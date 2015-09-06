@@ -166,32 +166,46 @@ public class TransactionsController {
 	public ModelAndView addMoney(@ModelAttribute("money") Money money, Model model,
 			RedirectAttributes redirectAttributes) throws Exception {
 
-
-		ClassPathXmlApplicationContext contextBean = new ClassPathXmlApplicationContext("app-beans.xml");
+		
+    	ClassPathXmlApplicationContext contextBean = new ClassPathXmlApplicationContext("app-beans.xml");
     	DB connect = (DB)contextBean.getBean("DB");
 		PreparedStatement preparedStatement = null;
-		String updateSQL = "UPDATE `users_accounts` SET `balance` = `balance` + ?  WHERE `account_id`=?";
-
 		
-	//	UPDATE Orders SET Quantity = Quantity + 1 WHERE ...
+		String insertSQL = "INSERT INTO `transactions` (`account_id`, `operation`, `date`, `money`)"
+				+ "VALUES (?,?,?,?)";	
+		int newTransactiontId = 0;
+        ResultSet rs = null;
 		try {
 
 			Connection connection = connect.getMysqlConnections();
-			preparedStatement = (PreparedStatement) connection.prepareStatement(updateSQL);
-			preparedStatement.setDouble(1, money.getPut());
-			preparedStatement.setInt(2, money.getAccountId());
-
+			preparedStatement = (PreparedStatement) connection.prepareStatement(insertSQL, Statement.RETURN_GENERATED_KEYS);
+			
+			preparedStatement.setInt(1, money.getAccountId());
+			preparedStatement.setString(2, "add or get money manually");
+			
+			Date date = new Date();
+			java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+			preparedStatement.setDate(3, sqlDate);
+					
+			preparedStatement.setDouble(4, money.getIncrease());
+	
 			preparedStatement.executeUpdate();
-
+			rs = preparedStatement.getGeneratedKeys();
+			if(rs != null && rs.next()){
+			newTransactiontId = rs.getInt(1);
+			}
 			preparedStatement.close();
 			connection.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		return new ModelAndView("redirect:account-detail?account_id=" + money.getAccountId());
-
+		
+		Message message = new Message("update", "New Transactiont with id =" + newTransactiontId+ " was created");	
+		redirectAttributes.addFlashAttribute("message", message);
+		
+		return new ModelAndView("redirect:/account-detail?account_id="+money.getAccountId());
+			
 	}
 
 

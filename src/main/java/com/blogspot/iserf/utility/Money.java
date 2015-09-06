@@ -2,8 +2,8 @@ package com.blogspot.iserf.utility;
 
 public class Money {
 	
-	private double put;
-	private double get;
+	private double increase;
+	private double reduce;
 	private int accountId;
 	
 	public Money(int accountId){
@@ -14,20 +14,20 @@ public class Money {
 
 	}
 	
-	public double getPut() {
-		return put;
+	public double getIncrease() {
+		return increase;
 	}
 
-	public void setPut(double put) {
-		this.put = put;
+	public void setIncrease(double increase) {
+		this.increase = increase;
 	}
 
-	public double getGet() {
-		return get;
+	public double getReduce() {
+		return reduce;
 	}
 
-	public void setGet(double get) {
-		this.get = get;
+	public void setReduce(double reduce) {
+		this.reduce = reduce;
 	}
 
 	public int getAccountId() {

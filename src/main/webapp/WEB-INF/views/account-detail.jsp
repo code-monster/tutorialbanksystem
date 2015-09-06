@@ -47,7 +47,7 @@
 		<h2>Add money</h2>
 		<form:form class="login-form" method="POST" commandName="money"
 			action="add-money">
-			<form:input path="put" />
+			<form:input path="increase" />
 			<form:hidden path="accountId" />
 			<input type="submit" value="Submit">
 		</form:form> 
