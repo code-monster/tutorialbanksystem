@@ -141,7 +141,10 @@ public class UserController {
 
 		PreparedStatement preparedStatement = null;
 		
-		String selectSQL = "SELECT users.*, users_accounts.account_id  "
+		String selectSQL = "SELECT users.*, users_accounts.account_id, "
+				+ "(SELECT SUM( money ) "
+				+ "FROM transactions "
+				+ "WHERE account_id = users_accounts.account_id) AS balance "
 				+ "FROM users "
 				+ "LEFT JOIN users_accounts "
 				+ "ON users.id=users_accounts.user_id "
@@ -160,6 +163,7 @@ public class UserController {
 				if(rs.getInt("account_id")>0){
 				Account account  = new Account();
 				account.setAccountId(rs.getInt("account_id"));
+				account.setBalance(rs.getDouble("balance"));
 				accountList.add(account);
 				}
 			}
