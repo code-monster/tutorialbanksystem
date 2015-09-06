@@ -70,7 +70,10 @@ public class UserController {
 
 		PreparedStatement preparedStatement = null;
 		
-		String selectSQL = "SELECT users.*, users_accounts.account_id  "
+		String selectSQL = "SELECT users.*, users_accounts.account_id, "
+				+ "(SELECT SUM( money ) "
+				+ "FROM transactions "
+				+ "WHERE account_id = users_accounts.account_id) AS balance "
 				+ "FROM users "
 				+ "LEFT JOIN users_accounts "
 				+ "ON users.id=users_accounts.user_id "
@@ -98,7 +101,7 @@ public class UserController {
 				if(rs.getInt("account_id")>0){
 				Account account  = new Account();
 				account.setAccountId(rs.getInt("account_id"));
-				account.setBalance(0);
+				account.setBalance(rs.getDouble("balance"));
 				accountList.add(account);
 				}
 			}
@@ -208,7 +211,8 @@ public class UserController {
 			preparedStatement.setString(1, user.getFirstname());
 			preparedStatement.setString(2, user.getLastname());
 			preparedStatement.setString(3, user.getAddress());
-		
+			
+			System.out.println(user.getFirstname());
 			
 			DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 			Date date = formatter.parse(user.getDob());
