@@ -5,7 +5,7 @@
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 
-     <bean id="DB" class="com.blogspot.iserf.DB" scope="prototype">
+     <bean id="DB" class="com.blogspot.iserf.utility.DB" scope="prototype">
           <constructor-arg  index="0" name="host"  value="localhost" />
           <constructor-arg  index="1" name="user"  value="root" />
           <constructor-arg  index="2" name="password"  value="password" />
