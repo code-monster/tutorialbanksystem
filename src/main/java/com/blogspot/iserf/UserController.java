@@ -70,7 +70,7 @@ public class UserController {
 
 		PreparedStatement preparedStatement = null;
 		
-		String selectSQL = "SELECT users.*, users_accounts.account_id, users_accounts.balance "
+		String selectSQL = "SELECT users.*, users_accounts.account_id  "
 				+ "FROM users "
 				+ "LEFT JOIN users_accounts "
 				+ "ON users.id=users_accounts.user_id "
@@ -98,7 +98,7 @@ public class UserController {
 				if(rs.getInt("account_id")>0){
 				Account account  = new Account();
 				account.setAccountId(rs.getInt("account_id"));
-				account.setBalance(rs.getDouble("balance"));
+				account.setBalance(0);
 				accountList.add(account);
 				}
 			}
@@ -138,7 +138,7 @@ public class UserController {
 
 		PreparedStatement preparedStatement = null;
 		
-		String selectSQL = "SELECT users.*, users_accounts.account_id, users_accounts.balance "
+		String selectSQL = "SELECT users.*, users_accounts.account_id  "
 				+ "FROM users "
 				+ "LEFT JOIN users_accounts "
 				+ "ON users.id=users_accounts.user_id "
@@ -157,7 +157,6 @@ public class UserController {
 				if(rs.getInt("account_id")>0){
 				Account account  = new Account();
 				account.setAccountId(rs.getInt("account_id"));
-				account.setBalance(rs.getDouble("balance"));
 				accountList.add(account);
 				}
 			}

@@ -45,8 +45,8 @@ public class AccountController {
     	DB connect = (DB)contextBean.getBean("DB");
 		PreparedStatement preparedStatement = null;
 		
-		String insertSQL = "INSERT INTO `users_accounts` (`user_id`, `balance`)"
-				+ "VALUES (?,?)";	
+		String insertSQL = "INSERT INTO `users_accounts` (`user_id`)"
+				+ "VALUES (?)";	
 		int newAccountId = 0;
         ResultSet rs = null;
 		try {
@@ -54,9 +54,7 @@ public class AccountController {
 			Connection connection = connect.getMysqlConnections();
 			preparedStatement = (PreparedStatement) connection.prepareStatement(insertSQL,Statement.RETURN_GENERATED_KEYS);
 			preparedStatement.setInt(1, new Integer(context.getParameter("user_id")));
-			preparedStatement.setInt(2, 0);
 
-		
 			
 			preparedStatement.executeUpdate();
 			rs = preparedStatement.getGeneratedKeys();

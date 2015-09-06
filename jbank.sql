@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: localhost
--- Время создания: Авг 01 2015 г., 15:55
+-- Время создания: Сен 06 2015 г., 05:34
 -- Версия сервера: 5.5.44-0ubuntu0.14.04.1
 -- Версия PHP: 5.5.9-1ubuntu4.11
 
@@ -29,9 +29,9 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `transactions` (
   `transactions_id` int(11) NOT NULL AUTO_INCREMENT,
   `account_id` int(11) DEFAULT NULL,
-  `money` decimal(10,0) DEFAULT NULL,
   `operation` text,
   `date` date DEFAULT NULL,
+  `money` double NOT NULL,
   PRIMARY KEY (`transactions_id`),
   KEY `FK_transactions` (`account_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
@@ -40,13 +40,9 @@ CREATE TABLE IF NOT EXISTS `transactions` (
 -- Дамп данных таблицы `transactions`
 --
 
-INSERT INTO `transactions` (`transactions_id`, `account_id`, `money`, `operation`, `date`) VALUES
-(1, 13, 4535, 'add money in bank ', '2015-08-18'),
-(2, 13, 5, 'add money in bank ', '2015-08-18'),
-(3, 14, -50, 'buy products ', '2015-08-18'),
-(4, 13, -500, 'buy computer ', '2015-01-12'),
-(5, 13, -50, 'buy products for lanch', '2015-08-18'),
-(6, 14, -5648, 'presents for father', '2015-01-12');
+INSERT INTO `transactions` (`transactions_id`, `account_id`, `operation`, `date`, `money`) VALUES
+(3, 14, 'buy products ', '2015-08-18', 55),
+(6, 14, 'presents for father', '2015-01-12', 0);
 
 -- --------------------------------------------------------
 
@@ -61,15 +57,17 @@ CREATE TABLE IF NOT EXISTS `users` (
   `address` char(100) DEFAULT NULL,
   `dob` date DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 --
 -- Дамп данных таблицы `users`
 --
 
 INSERT INTO `users` (`id`, `firstname`, `lastname`, `address`, `dob`) VALUES
-(3, '456', '67687', '64567', '1992-12-07'),
-(4, 'misha', 'fdfdf', 'dfdfdf', '1969-06-07');
+(4, 'misha', 'fdfdf', 'dfdfdf', '1969-03-11'),
+(5, 'иван', 'иванов', 'полськая 3', '1984-06-13'),
+(7, 'fine', 'ok', 'ok 67', '2001-11-12'),
+(8, '899', '9879', '98790', '2002-01-01');
 
 -- --------------------------------------------------------
 
@@ -80,18 +78,30 @@ INSERT INTO `users` (`id`, `firstname`, `lastname`, `address`, `dob`) VALUES
 CREATE TABLE IF NOT EXISTS `users_accounts` (
   `account_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL,
-  `balance` decimal(10,0) DEFAULT NULL,
   PRIMARY KEY (`account_id`),
   KEY `FK_users_accounts` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=33 ;
 
 --
 -- Дамп данных таблицы `users_accounts`
 --
 
-INSERT INTO `users_accounts` (`account_id`, `user_id`, `balance`) VALUES
-(13, 3, 0),
-(14, 4, 0);
+INSERT INTO `users_accounts` (`account_id`, `user_id`) VALUES
+(14, 4),
+(23, 4),
+(24, 4),
+(27, 4),
+(28, 4),
+(29, 4),
+(18, 5),
+(19, 5),
+(20, 5),
+(21, 5),
+(30, 5),
+(31, 5),
+(32, 5),
+(25, 7),
+(26, 7);
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
