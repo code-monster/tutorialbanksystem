@@ -43,17 +43,17 @@
 				</c:forEach>
 			</tbody>
 		</table>
-		
+		</c:otherwise>
+		</c:choose>
+		<div class="transaction-control">
 		<h2>Add money</h2>
 		<form:form class="login-form" method="POST" commandName="money"
 			action="add-money">
 			<form:input path="increase" />
 			<form:hidden path="accountId" />
 			<input type="submit" value="Submit">
-		</form:form> 
-		
-		</c:otherwise>
-		</c:choose>
+		</form:form>
+		</div>
 		</main>
 		<footer>
 			<jsp:include page="includes/footer.jsp"></jsp:include>

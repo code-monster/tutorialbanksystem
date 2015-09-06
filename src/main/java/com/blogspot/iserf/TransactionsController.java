@@ -138,7 +138,6 @@ public class TransactionsController {
 			Connection connection = connect.getMysqlConnections();
 			preparedStatement = (PreparedStatement) connection.prepareStatement(selectSQL);
 			preparedStatement.setInt(1, new Integer(context.getParameter("account_id")));
-			System.out.println(preparedStatement);
 			ResultSet rs = preparedStatement.executeQuery();
 
 			while (rs.next()) {
