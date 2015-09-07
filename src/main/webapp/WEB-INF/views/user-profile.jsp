@@ -54,7 +54,8 @@
 				<tr>
 					<th>ID</th>
 					<th><spring:message    code="label.data_balance" /></th>
-					<th><spring:message    code="label.data_action" /></th>
+					<th>number Of Transaction</th>
+					<th><spring:message    code="label.data_action" /></th>					
 					<th><spring:message    code="label.data_delete" /></th>
 				</tr>
 			</thead>
@@ -63,8 +64,9 @@
 					<tr>
 						<td>${accountItem.getAccountId()}</td>
 						<td>${accountItem.getBalance()}</td>
+						<td>${accountItem.getNumberOfTransaction()}</td>
 						<td><a
-							href="<c:url value="/account-detail?account_id="/>${accountItem.getAccountId()}">show transactions</a></td>
+							href="<c:url value="/account-detail?account_id="/>${accountItem.getAccountId()}">manage transactions</a></td>
 						<td><a class="btn-delete" href="javascript:deleteAccount(${accountItem.getAccountId()})">X</a></td>
 					</tr>
 				</c:forEach>

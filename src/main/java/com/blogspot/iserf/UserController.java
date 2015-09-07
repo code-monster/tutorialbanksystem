@@ -73,7 +73,10 @@ public class UserController {
 		String selectSQL = "SELECT users.*, users_accounts.account_id, "
 				+ "(SELECT SUM( money ) "
 				+ "FROM transactions "
-				+ "WHERE account_id = users_accounts.account_id) AS balance "
+				+ "WHERE account_id = users_accounts.account_id) AS balance, "
+				+ "(SELECT COUNT( * ) "
+				+ "FROM transactions "
+				+ "WHERE account_id = users_accounts.account_id) AS number_of_transaction "
 				+ "FROM users "
 				+ "LEFT JOIN users_accounts "
 				+ "ON users.id=users_accounts.user_id "
@@ -102,6 +105,7 @@ public class UserController {
 				Account account  = new Account();
 				account.setAccountId(rs.getInt("account_id"));
 				account.setBalance(rs.getDouble("balance"));
+				account.setNumberOfTransaction(rs.getInt("number_of_transaction"));
 				accountList.add(account);
 				}
 			}
@@ -144,7 +148,10 @@ public class UserController {
 		String selectSQL = "SELECT users.*, users_accounts.account_id, "
 				+ "(SELECT SUM( money ) "
 				+ "FROM transactions "
-				+ "WHERE account_id = users_accounts.account_id) AS balance "
+				+ "WHERE account_id = users_accounts.account_id) AS balance, "
+				+ "(SELECT COUNT( * ) "
+				+ "FROM transactions "
+				+ "WHERE account_id = users_accounts.account_id) AS number_of_transaction "
 				+ "FROM users "
 				+ "LEFT JOIN users_accounts "
 				+ "ON users.id=users_accounts.user_id "
@@ -164,6 +171,7 @@ public class UserController {
 				Account account  = new Account();
 				account.setAccountId(rs.getInt("account_id"));
 				account.setBalance(rs.getDouble("balance"));
+				account.setNumberOfTransaction(rs.getInt("number_of_transaction"));
 				accountList.add(account);
 				}
 			}
