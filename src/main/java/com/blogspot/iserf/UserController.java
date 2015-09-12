@@ -35,6 +35,8 @@ public class UserController {
 
 	@Autowired
 	private HttpServletRequest context;
+	
+	private double totalMoney;
 
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -60,6 +62,7 @@ public class UserController {
 			  model.addAttribute("message", message);
 			  model.addAttribute("pageTitle", "Edit User");
 			  model.addAttribute("accountList", getUserAccounts(tmpUser.getUserId()));
+			  model.addAttribute("totalMoney", totalMoney);
 			  return new ModelAndView("user-profile", "user", tmpUser);	  
 		 }
 		
@@ -67,6 +70,7 @@ public class UserController {
 
     	ClassPathXmlApplicationContext contextBean = new ClassPathXmlApplicationContext("app-beans.xml");
     	DB connect = (DB)contextBean.getBean("DB");
+    	double totalMoney =  0;
 
 		PreparedStatement preparedStatement = null;
 		
@@ -107,7 +111,9 @@ public class UserController {
 				account.setBalance(rs.getDouble("balance"));
 				account.setNumberOfTransaction(rs.getInt("number_of_transaction"));
 				accountList.add(account);
+				totalMoney +=  rs.getDouble("balance");
 				}
+				user.setTotalMoney(totalMoney);
 			}
 
 			// Clean-up environment
@@ -131,7 +137,7 @@ public class UserController {
 		Breadcrumbs  breadcrumbs  = new Breadcrumbs(context);	
 		breadcrumbs.add("user-profile");
 		model.addAttribute("breadcrumbs", breadcrumbs);
-		
+		model.addAttribute("totalMoney", totalMoney);
 		model.addAttribute("message", message);
 		model.addAttribute("pageTitle", "Edit User");
 		model.addAttribute("accountList", accountList);
@@ -142,6 +148,7 @@ public class UserController {
 		
 		ClassPathXmlApplicationContext contextBean = new ClassPathXmlApplicationContext("app-beans.xml");
     	DB connect = (DB)contextBean.getBean("DB");
+    	totalMoney =  0;
 
 		PreparedStatement preparedStatement = null;
 		
@@ -173,6 +180,7 @@ public class UserController {
 				account.setBalance(rs.getDouble("balance"));
 				account.setNumberOfTransaction(rs.getInt("number_of_transaction"));
 				accountList.add(account);
+				totalMoney +=  rs.getDouble("balance");
 				}
 			}
 

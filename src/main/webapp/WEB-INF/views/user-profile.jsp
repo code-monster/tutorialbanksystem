@@ -72,6 +72,7 @@
 				</c:forEach>
 			</tbody>
 		</table>
+		<p class="total-money">Total money: ${user.getTotalMoney()}</p>
 		</c:otherwise>
 		</c:choose>
 		<p><a href="<c:url value="/add-account?user_id="/>${user.getUserId()}"><spring:message    code="label.action_add_new_account" /></a></p> 

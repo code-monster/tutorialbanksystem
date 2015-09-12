@@ -6,8 +6,15 @@ public class User {
 	private String address;
 	private String dob;
 	private int userId;
+	private double totalMoney;
 	
 
+	public double getTotalMoney() {
+		return totalMoney;
+	}
+	public void setTotalMoney(double totalMoney) {
+		this.totalMoney = totalMoney;
+	}
 	public String getFirstname() {
 		return firstname;
 	}

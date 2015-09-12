@@ -224,6 +224,10 @@ input[type="submit"] {
     margin: 10px 0 10px 0;
 }
 
+p.total-money{
+	text-align: right;
+}
+
 .cleared {
     border: medium none;
     clear: both;
