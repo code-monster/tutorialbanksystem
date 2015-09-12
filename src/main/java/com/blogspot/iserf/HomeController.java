@@ -59,6 +59,16 @@ public class HomeController {
         stmt = (Statement) connection.createStatement();
         String sql;
         sql = "SELECT * FROM `users`";
+        
+        
+        sql = "SELECT users.*, SUM(transactions.money) AS total "
+        	   + "FROM jbank.users "
+        	   + "LEFT JOIN  jbank.users_accounts "
+        	   + "ON (users_accounts.user_id = users.id) "
+        	   + "LEFT JOIN jbank.transactions "
+        	   + "ON (transactions.account_id = users_accounts.account_id) "
+        	   + "GROUP BY users.firstname;";
+        
         ResultSet rs = stmt.executeQuery(sql);
 
         // Extract data from result set
@@ -71,6 +81,7 @@ public class HomeController {
     		user.setLastname(rs.getString("lastname"));
     		user.setAddress(rs.getString("address"));
     		user.setDob(rs.getDate("dob").toString());
+    		user.setTotalMoney(rs.getDouble("total"));
     		       
     		userList.add(user);
         }
@@ -89,61 +100,6 @@ public class HomeController {
 		model.addAttribute("message", message);
 		return new ModelAndView("home", "users", userList);
 	}
-	
-	
-	private double getUserTotalMoney(int userId){
-		
-		ClassPathXmlApplicationContext contextBean = new ClassPathXmlApplicationContext("app-beans.xml");
-    	DB connect = (DB)contextBean.getBean("DB");
-        double	totalMoney =  0;
-
-		PreparedStatement preparedStatement = null;
-		
-		String selectSQL = "SELECT users.*, users_accounts.account_id, "
-				+ "(SELECT SUM( money ) "
-				+ "FROM transactions "
-				+ "WHERE account_id = users_accounts.account_id) AS balance, "
-				+ "(SELECT COUNT( * ) "
-				+ "FROM transactions "
-				+ "WHERE account_id = users_accounts.account_id) AS number_of_transaction "
-				+ "FROM users "
-				+ "LEFT JOIN users_accounts "
-				+ "ON users.id=users_accounts.user_id "
-				+ "WHERE id = ? ";
-		
-		ArrayList<Account> accountList = new ArrayList<Account>();
-		try {
-
-			Connection connection = connect.getMysqlConnections();
-			preparedStatement = (PreparedStatement) connection.prepareStatement(selectSQL);
-			preparedStatement.setInt(1, userId);
-			ResultSet rs = preparedStatement.executeQuery();
-
-			while (rs.next()) {
-		
-				if(rs.getInt("account_id")>0){
-				Account account  = new Account();
-				account.setAccountId(rs.getInt("account_id"));
-				account.setBalance(rs.getDouble("balance"));
-				account.setNumberOfTransaction(rs.getInt("number_of_transaction"));
-				accountList.add(account);
-				}
-			}
-
-			// Clean-up environment
-			rs.close();
-			preparedStatement.close();
-			connection.close();
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-				
-		
-		return totalMoney;
-	}
-
 	
 
 	/**

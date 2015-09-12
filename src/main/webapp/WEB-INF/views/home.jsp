@@ -24,6 +24,7 @@
 					<th><spring:message    code="label.data_lastname" /></th>
 					<th><spring:message    code="label.data_address" /></th>
 					<th><spring:message    code="label.data_dob" /></th>
+					<th>money</th>
 					<th><spring:message    code="label.data_action" /></th>
 				</tr>
 			</thead>
@@ -35,6 +36,7 @@
 						<td>${userItem.getLastname()}</td>
 						<td>${userItem.getAddress()}</td>
 						<td>${userItem.getDob()}</td>
+						<td>${userItem.getTotalMoney()}</td>
 						<td><a
 							href="<c:url value="/user-profile?user_id="/>${userItem.getUserId()}">edit</a>
 						</td>
