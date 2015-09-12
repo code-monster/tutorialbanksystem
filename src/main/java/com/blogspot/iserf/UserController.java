@@ -54,15 +54,13 @@ public class UserController {
     		model.addAttribute("pageTitle", "Error page");	
     		return new ModelAndView("error");
         }
-        
-		
-		
+
 		
 		if (tmpUser.getUserId()>0){
 			  model.addAttribute("message", message);
 			  model.addAttribute("pageTitle", "Edit User");
 			  model.addAttribute("accountList", getUserAccounts(tmpUser.getUserId()));
-			  model.addAttribute("totalMoney", totalMoney);
+			  tmpUser.setTotalMoney(totalMoney);
 			  return new ModelAndView("user-profile", "user", tmpUser);	  
 		 }
 		
@@ -70,7 +68,7 @@ public class UserController {
 
     	ClassPathXmlApplicationContext contextBean = new ClassPathXmlApplicationContext("app-beans.xml");
     	DB connect = (DB)contextBean.getBean("DB");
-    	double totalMoney =  0;
+    	double totalMoneyLocal =  0;
 
 		PreparedStatement preparedStatement = null;
 		
@@ -111,9 +109,9 @@ public class UserController {
 				account.setBalance(rs.getDouble("balance"));
 				account.setNumberOfTransaction(rs.getInt("number_of_transaction"));
 				accountList.add(account);
-				totalMoney +=  rs.getDouble("balance");
+				totalMoneyLocal +=  rs.getDouble("balance");
 				}
-				user.setTotalMoney(totalMoney);
+		
 			}
 
 			// Clean-up environment
@@ -134,10 +132,10 @@ public class UserController {
 			
 		}
 
+		user.setTotalMoney(totalMoneyLocal);
 		Breadcrumbs  breadcrumbs  = new Breadcrumbs(context);	
 		breadcrumbs.add("user-profile");
 		model.addAttribute("breadcrumbs", breadcrumbs);
-		model.addAttribute("totalMoney", totalMoney);
 		model.addAttribute("message", message);
 		model.addAttribute("pageTitle", "Edit User");
 		model.addAttribute("accountList", accountList);
