@@ -180,7 +180,7 @@ public class TransactionsController {
 			preparedStatement = (PreparedStatement) connection.prepareStatement(insertSQL, Statement.RETURN_GENERATED_KEYS);
 			
 			preparedStatement.setInt(1, transaction.getAccountId());
-			preparedStatement.setString(2, "add or get money manually");
+			preparedStatement.setString(2, transaction.getOperation());
 			
 			Date date = new Date();
 			java.sql.Date sqlDate = new java.sql.Date(date.getTime());

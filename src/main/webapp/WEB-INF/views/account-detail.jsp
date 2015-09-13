@@ -46,10 +46,23 @@
 		</c:otherwise>
 		</c:choose>
 		<div class="transaction-control">
-		<h2>Add money 2</h2>
+		<h2>Add money </h2>
 		<form:form class="login-form" method="POST" commandName="transaction"
 			action="add-transaction">
-			<form:input path="money" />
+		<table   border="1">
+			<thead>
+				<tr>
+					<th>money</th>
+					<th>comment</th>
+				</tr>
+			</thead>
+				<tbody>
+				<tr>
+					<td><form:input path="money" /></td>
+					<td><form:input path="operation" /></td>
+				</tr>
+				</tbody>
+			</table>
 			<form:hidden path="accountId" />
 			<input type="submit" value="Submit">
 		</form:form>
