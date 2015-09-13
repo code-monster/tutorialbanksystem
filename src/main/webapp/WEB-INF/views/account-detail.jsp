@@ -46,10 +46,10 @@
 		</c:otherwise>
 		</c:choose>
 		<div class="transaction-control">
-		<h2>Add money</h2>
-		<form:form class="login-form" method="POST" commandName="money"
-			action="add-money">
-			<form:input path="increase" />
+		<h2>Add money 2</h2>
+		<form:form class="login-form" method="POST" commandName="transaction"
+			action="add-transaction">
+			<form:input path="money" />
 			<form:hidden path="accountId" />
 			<input type="submit" value="Submit">
 		</form:form>

@@ -8,6 +8,14 @@ public class Transaction {
 	private String operation;
 	private String date;
 	
+	public Transaction(int accountId){
+		this.accountId = accountId;
+	}
+	
+	public Transaction(){
+
+	}
+	
 	public int getTransactionId() {
 		return transactionId;
 	}

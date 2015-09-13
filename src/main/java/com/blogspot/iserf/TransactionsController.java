@@ -103,8 +103,8 @@ public class TransactionsController {
 			e.printStackTrace();
 		}	
 		
-		Money money = new Money(new Integer(context.getParameter("account_id")));
-		model.addAttribute("money", money);
+		Transaction newTransaction = new Transaction(new Integer(context.getParameter("account_id")));
+		model.addAttribute("transaction", newTransaction);
 		
 		
 		Breadcrumbs  breadcrumbs  = new Breadcrumbs(request);
@@ -161,8 +161,8 @@ public class TransactionsController {
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
-	@RequestMapping(value = "/add-money", method = RequestMethod.POST)
-	public ModelAndView addMoney(@ModelAttribute("money") Money money, Model model,
+	@RequestMapping(value = "/add-transaction", method = RequestMethod.POST)
+	public ModelAndView addTransaction(@ModelAttribute("transaction") Transaction transaction, Model model,
 			RedirectAttributes redirectAttributes) throws Exception {
 
 		
@@ -179,14 +179,14 @@ public class TransactionsController {
 			Connection connection = connect.getMysqlConnections();
 			preparedStatement = (PreparedStatement) connection.prepareStatement(insertSQL, Statement.RETURN_GENERATED_KEYS);
 			
-			preparedStatement.setInt(1, money.getAccountId());
+			preparedStatement.setInt(1, transaction.getAccountId());
 			preparedStatement.setString(2, "add or get money manually");
 			
 			Date date = new Date();
 			java.sql.Date sqlDate = new java.sql.Date(date.getTime());
 			preparedStatement.setDate(3, sqlDate);
 					
-			preparedStatement.setDouble(4, money.getIncrease());
+			preparedStatement.setDouble(4, transaction.getMoney());
 	
 			preparedStatement.executeUpdate();
 			rs = preparedStatement.getGeneratedKeys();
@@ -203,7 +203,7 @@ public class TransactionsController {
 		Message message = new Message("update", "New Transactiont with id =" + newTransactiontId+ " was created");	
 		redirectAttributes.addFlashAttribute("message", message);
 		
-		return new ModelAndView("redirect:/account-detail?account_id="+money.getAccountId());
+		return new ModelAndView("redirect:/account-detail?account_id="+transaction.getAccountId());
 			
 	}
 
