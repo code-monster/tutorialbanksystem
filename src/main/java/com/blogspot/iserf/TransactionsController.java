@@ -10,12 +10,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
+/*import javax.validation.Valid;*/
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,6 +27,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
+
+
 import com.blogspot.iserf.utility.*;
 /**
  * Handles requests for the application home page.
@@ -42,8 +47,6 @@ public class TransactionsController {
 	@RequestMapping(value = "/account-detail", method = RequestMethod.GET)
 	public ModelAndView editUser(HttpServletRequest request, Model model) 
 	{
-
-		
 		
         if (context.getParameterMap().containsKey("account_id") == false  
         		|| Validator.isInteger(context.getParameter("account_id"))==false) {
@@ -161,10 +164,53 @@ public class TransactionsController {
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
+	@RequestMapping(value = "/add-transaction-spend", method = RequestMethod.POST)
+	public ModelAndView addTransactionSpend(@ModelAttribute("transaction") Transaction transaction, Model model,
+			RedirectAttributes redirectAttributes) throws Exception {
+
+	/*	String validReturn = Validator.checkUser(user);
+		
+		if(validReturn.equals("OK")==false){
+			
+		message = new Message("error", validReturn);
+
+		redirectAttributes.addFlashAttribute("message", message);
+		redirectAttributes.addFlashAttribute("tmpUser", user);
+		
+		
+		return new ModelAndView("redirect:user-profile?user_id=" + user.getUserId());
+		}
+		*/
+		
+		int newTransactiontId = createTransaction(transaction);
+		
+		Message message = new Message("update", "New Transactiont with id =" + newTransactiontId+ " was created");	
+		redirectAttributes.addFlashAttribute("message", message);
+		
+		return new ModelAndView("redirect:/account-detail?account_id="+transaction.getAccountId());
+			
+	}
+	
+	
+	/**
+	 * Simply selects the home view to render by returning its name.
+	 */
 	@RequestMapping(value = "/add-transaction", method = RequestMethod.POST)
 	public ModelAndView addTransaction(@ModelAttribute("transaction") Transaction transaction, Model model,
 			RedirectAttributes redirectAttributes) throws Exception {
 
+		
+		int newTransactiontId = createTransaction(transaction);
+		
+		Message message = new Message("update", "New Transactiont with id =" + newTransactiontId+ " was created");	
+		redirectAttributes.addFlashAttribute("message", message);
+		
+		return new ModelAndView("redirect:/account-detail?account_id="+transaction.getAccountId());
+			
+	}
+	
+	
+	private int createTransaction( Transaction transaction){
 		
     	ClassPathXmlApplicationContext contextBean = new ClassPathXmlApplicationContext("app-beans.xml");
     	DB connect = (DB)contextBean.getBean("DB");
@@ -200,12 +246,23 @@ public class TransactionsController {
 			e.printStackTrace();
 		}
 		
-		Message message = new Message("update", "New Transactiont with id =" + newTransactiontId+ " was created");	
-		redirectAttributes.addFlashAttribute("message", message);
 		
-		return new ModelAndView("redirect:/account-detail?account_id="+transaction.getAccountId());
-			
+		return	newTransactiontId;
 	}
+	
+	
+/*    @RequestMapping(value="/", method=RequestMethod.GET)
+    public String showForm(Person person) {
+        return "form";
+    }
+
+    @RequestMapping(value="/", method=RequestMethod.POST)
+    public String checkPersonInfo(@Valid Person person, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "form";
+        }
+        return "redirect:/results";
+    }*/
 
 
 }

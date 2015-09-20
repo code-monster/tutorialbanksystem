@@ -67,6 +67,7 @@ public class AccountController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		contextBean.close();
 		
 		Message message = new Message("update", "New Account with id =" + newAccountId+ " was created");	
 		redirectAttributes.addFlashAttribute("message", message);
