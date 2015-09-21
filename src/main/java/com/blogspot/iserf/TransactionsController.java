@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
-/*import javax.validation.Valid;*/
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -251,18 +251,5 @@ public class TransactionsController {
 	}
 	
 	
-/*    @RequestMapping(value="/", method=RequestMethod.GET)
-    public String showForm(Person person) {
-        return "form";
-    }
-
-    @RequestMapping(value="/", method=RequestMethod.POST)
-    public String checkPersonInfo(@Valid Person person, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "form";
-        }
-        return "redirect:/results";
-    }*/
-
 
 }
