@@ -1,4 +1,4 @@
-package com.blogspot.iserf;
+package com.blogspot.iserf.controllers;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.blogspot.iserf.model.Message;
 import com.blogspot.iserf.utility.*;
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;

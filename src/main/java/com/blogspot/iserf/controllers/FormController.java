@@ -1,4 +1,4 @@
-package com.blogspot.iserf;
+package com.blogspot.iserf.controllers;
 
 import java.net.URL;
 import java.sql.Connection;
@@ -28,8 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
-
-
+import com.blogspot.iserf.model.Person;
 import com.blogspot.iserf.utility.*;
 /**
  * Handles requests for the application home page.

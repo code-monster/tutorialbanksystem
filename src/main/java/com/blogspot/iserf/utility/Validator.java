@@ -5,6 +5,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.blogspot.iserf.model.User;
+
 public class Validator {
 
 	public static String checkUser(User user) {

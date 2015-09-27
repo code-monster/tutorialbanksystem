@@ -1,4 +1,4 @@
-package com.blogspot.iserf.utility;
+package com.blogspot.iserf.model;
 
 import java.util.ArrayList;
 

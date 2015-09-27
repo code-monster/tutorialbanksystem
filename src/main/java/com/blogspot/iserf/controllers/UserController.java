@@ -1,4 +1,4 @@
-package com.blogspot.iserf;
+package com.blogspot.iserf.controllers;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -23,6 +23,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
+import com.blogspot.iserf.model.Account;
+import com.blogspot.iserf.model.Breadcrumbs;
+import com.blogspot.iserf.model.Message;
+import com.blogspot.iserf.model.User;
 import com.blogspot.iserf.utility.*;
 
 /**

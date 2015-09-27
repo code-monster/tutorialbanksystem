@@ -1,4 +1,4 @@
-package com.blogspot.iserf.utility;
+package com.blogspot.iserf.model;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
