@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.blogspot.iserf.model.Breadcrumbs;
+import com.blogspot.iserf.model.HomePage;
 import com.blogspot.iserf.model.Message;
 import com.blogspot.iserf.model.User;
 import com.blogspot.iserf.utility.*;
@@ -48,58 +49,9 @@ public class HomeController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView main(Model model, @ModelAttribute("message") Message message) {
 
-		
-    	ClassPathXmlApplicationContext contextBean = new ClassPathXmlApplicationContext("app-beans.xml");
-    	DB connect = (DB)contextBean.getBean("DB");
 
-		ArrayList<User> userList = new ArrayList<User>();
+		ArrayList<User> userList = HomePage.getUserList();
 
-	    try {
-	    	
-		Statement stmt = null;
-		Connection connection    = connect.getMysqlConnections();
-		
-        // Execute SQL query
-        stmt = (Statement) connection.createStatement();
-        String sql;
-        sql = "SELECT * FROM `users`";
-        
-        
-        sql = "SELECT users.*, SUM(transactions.money) AS total "
-        	   + "FROM jbank.users "
-        	   + "LEFT JOIN  jbank.users_accounts "
-        	   + "ON (users_accounts.user_id = users.id) "
-        	   + "LEFT JOIN jbank.transactions "
-        	   + "ON (transactions.account_id = users_accounts.account_id) "
-        	   + "GROUP BY users.firstname;";
-        
-        ResultSet rs = stmt.executeQuery(sql);
-
-        // Extract data from result set
-        while(rs.next()){
-        	
-    		User user = new User();
-    		
-    		user.setUserId(rs.getInt("id"));
-    		user.setFirstname(rs.getString("firstname"));
-    		user.setLastname(rs.getString("lastname"));
-    		user.setAddress(rs.getString("address"));
-    		user.setDob(rs.getDate("dob").toString());
-    		user.setTotalMoney(rs.getDouble("total"));
-    		       
-    		userList.add(user);
-        }
-
-        // Clean-up environment
-        rs.close();
-        stmt.close();
-    
-			connection.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	    
 		model.addAttribute("pageTitle", "Home page");
 		model.addAttribute("message", message);
 		return new ModelAndView("home", "users", userList);
@@ -110,7 +62,7 @@ public class HomeController {
 	 * contact page
 	 */
 	@RequestMapping(value = "/contact", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
+	public String contact(Locale locale, Model model) {
 		
 		Breadcrumbs  breadcrumbs  = new Breadcrumbs(context);	
 		breadcrumbs.add("contact");

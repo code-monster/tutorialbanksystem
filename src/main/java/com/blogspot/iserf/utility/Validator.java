@@ -61,37 +61,4 @@ public class Validator {
 		return true;
 	}
 	
-	/*
-	public static String checkTransactionAdd (Transaction transaction) {
-		
-		transaction.getMoney()
-		
-		
-		
-		if (transaction.getMoney() < 1) {
-			return "Field Firstname should have more than 1 letters";
-
-		} else if (user.getLastname().length() < 1) {
-			return "Field Lastname should have more than 1 letters";
-			
-		} else if (user.getAddress().length() < 1) {
-			return "Field Address should have more than 1 letters";
-			
-		}
-
-	     try {
-	            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-	            Date result =  df.parse(user.getDob());
-	        } catch (ParseException pe) {
-	        	
-	        	return "Field  date of birth is not valid";
-	        }
-		
-		
-
-		return "OK";
-
-	}
-	*/
-
 }

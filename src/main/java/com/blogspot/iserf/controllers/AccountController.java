@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.blogspot.iserf.model.Account;
 import com.blogspot.iserf.model.Message;
 import com.blogspot.iserf.utility.*;
 import com.mysql.jdbc.PreparedStatement;
@@ -39,43 +40,14 @@ public class AccountController {
 	@RequestMapping(value = "/add-account", method = RequestMethod.GET)
 	public ModelAndView addAccount(Locale locale, Model model,
 			RedirectAttributes redirectAttributes, HttpServletRequest request) {
-
-
 		
-    	ClassPathXmlApplicationContext contextBean = new ClassPathXmlApplicationContext("app-beans.xml");
-    	DB connect = (DB)contextBean.getBean("DB");
-		PreparedStatement preparedStatement = null;
-		
-		String insertSQL = "INSERT INTO `users_accounts` (`user_id`)"
-				+ "VALUES (?)";	
-		int newAccountId = 0;
-        ResultSet rs = null;
-		try {
-
-			Connection connection = connect.getMysqlConnections();
-			preparedStatement = (PreparedStatement) connection.prepareStatement(insertSQL,Statement.RETURN_GENERATED_KEYS);
-			preparedStatement.setInt(1, new Integer(context.getParameter("user_id")));
-
-			
-			preparedStatement.executeUpdate();
-			rs = preparedStatement.getGeneratedKeys();
-			if(rs != null && rs.next()){
-			newAccountId = rs.getInt(1);
-			}
-			preparedStatement.close();
-			connection.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		contextBean.close();
+		int newAccountId = Account.addAccountToDb(new Integer(context.getParameter("user_id")));
 		
 		Message message = new Message("update", "New Account with id =" + newAccountId+ " was created");	
 		redirectAttributes.addFlashAttribute("message", message);
 		
 		return new ModelAndView("redirect:user-profile?user_id="+context.getParameter("user_id"));
 	}
-
 
 
 	
@@ -86,26 +58,8 @@ public class AccountController {
 	public ModelAndView deleteAccount(Locale locale, Model model,
 			RedirectAttributes redirectAttributes) {
 
+		Account.deleteAccount(new Integer(context.getParameter("account_id")));
 		
-    	ClassPathXmlApplicationContext contextBean = new ClassPathXmlApplicationContext("app-beans.xml");
-    	DB connect = (DB)contextBean.getBean("DB");
-		PreparedStatement preparedStatement = null;
-		
-		String deleteSQL = "DELETE FROM  `users_accounts` WHERE `account_id`=?";	
-
-		try {
-
-			Connection connection = connect.getMysqlConnections();
-			preparedStatement = (PreparedStatement) connection.prepareStatement(deleteSQL);
-			preparedStatement.setInt(1, new Integer(context.getParameter("account_id")));
-			preparedStatement.executeUpdate();
-
-			preparedStatement.close();
-			connection.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		Message message = new Message("update", "Account with id ="+context.getParameter("account_id")+" is deleted");
 		redirectAttributes.addFlashAttribute("message", message);
 		return new ModelAndView("redirect:user-profile?user_id="+context.getParameter("user_id"));
