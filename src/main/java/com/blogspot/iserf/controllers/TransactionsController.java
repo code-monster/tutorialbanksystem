@@ -31,6 +31,8 @@ import com.blogspot.iserf.model.Account;
 import com.blogspot.iserf.model.Breadcrumbs;
 import com.blogspot.iserf.model.Message;
 import com.blogspot.iserf.model.Transaction;
+import com.blogspot.iserf.model.DB.AccountDb;
+import com.blogspot.iserf.model.DB.TransactionDb;
 import com.blogspot.iserf.utility.*;
 /**
  * Handles requests for the application home page.
@@ -59,7 +61,7 @@ public class TransactionsController {
     		return new ModelAndView("error");
         }
         
-        int userId = Account.getUserIdByAccountId(new Integer(context.getParameter("account_id")));
+        int userId = AccountDb.getUserIdByAccountId(new Integer(context.getParameter("account_id")));
 		if(userId == 0){
     		Message errorMessage = new Message("error", "Error: account id is not connected for a user!");
     		model.addAttribute("message", errorMessage);
@@ -69,7 +71,7 @@ public class TransactionsController {
 		}
 		
 
-		ArrayList<Transaction> transactionList = Transaction.getTransactionList(new Integer(context.getParameter("account_id")));
+		ArrayList<Transaction> transactionList = TransactionDb.getTransactionList(new Integer(context.getParameter("account_id")));
 		
 		
 		Transaction newTransaction = new Transaction(new Integer(context.getParameter("account_id")));
@@ -95,7 +97,7 @@ public class TransactionsController {
 	public ModelAndView addTransactionSpend(@ModelAttribute("transaction") Transaction transaction, Model model,
 			RedirectAttributes redirectAttributes) throws Exception {
 
-		int newTransactiontId = Transaction.createTransaction(transaction);
+		int newTransactiontId = TransactionDb.createTransaction(transaction);
 		
 		Message message = new Message("update", "New Transactiont with id =" + newTransactiontId+ " was created");	
 		redirectAttributes.addFlashAttribute("message", message);
@@ -113,7 +115,7 @@ public class TransactionsController {
 			RedirectAttributes redirectAttributes) throws Exception {
 
 		
-		int newTransactiontId = Transaction.createTransaction(transaction);
+		int newTransactiontId = TransactionDb.createTransaction(transaction);
 		
 		Message message = new Message("update", "New Transactiont with id =" + newTransactiontId+ " was created");	
 		redirectAttributes.addFlashAttribute("message", message);

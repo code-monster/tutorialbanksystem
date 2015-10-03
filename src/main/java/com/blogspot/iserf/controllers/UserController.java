@@ -28,6 +28,7 @@ import com.blogspot.iserf.model.AccountList;
 import com.blogspot.iserf.model.Breadcrumbs;
 import com.blogspot.iserf.model.Message;
 import com.blogspot.iserf.model.User;
+import com.blogspot.iserf.model.DB.UserDb;
 import com.blogspot.iserf.utility.*;
 
 /**
@@ -64,14 +65,14 @@ public class UserController {
 		if (tmpUser.getUserId()>0){
 			  model.addAttribute("message", message);
 			  model.addAttribute("pageTitle", "Edit User");
-			  AccountList<Account> tmpUserAccounts = (AccountList<Account>) User.getUser(tmpUser.getUserId()).getAccountList();
+			  AccountList<Account> tmpUserAccounts = (AccountList<Account>) UserDb.getUser(tmpUser.getUserId()).getAccountList();
 			  model.addAttribute("accountList", tmpUserAccounts);
 			  tmpUser.setTotalMoney(tmpUserAccounts.getTotalMoney());
 			  return new ModelAndView("user-profile", "user", tmpUser);	  
 		 }
 		
 		
-		User user  = User.getUser(new Integer(context.getParameter("user_id")));
+		User user  = UserDb.getUser(new Integer(context.getParameter("user_id")));
 		AccountList<Account> accountList = user.getAccountList();
 		
 		if(user.getUserId()==0){
@@ -114,7 +115,7 @@ public class UserController {
 		return new ModelAndView("redirect:user-profile?user_id=" + user.getUserId());
 		}
 
-		User.changeUser(user);
+		UserDb.changeUser(user);
 
 		message = new Message("update", "Data is update");
 		redirectAttributes.addFlashAttribute("message", message);
@@ -149,7 +150,7 @@ public class UserController {
 	public ModelAndView deleteUser(Locale locale, Model model,
 			RedirectAttributes redirectAttributes) throws NumberFormatException, Exception {
 
-		User.deleteUser(new Integer(context.getParameter("user_id")));
+		UserDb.deleteUser(new Integer(context.getParameter("user_id")));
 		
 		Message message = new Message("update", "User is deleted");
 		redirectAttributes.addFlashAttribute("message", message);
@@ -178,7 +179,7 @@ public class UserController {
 		return new ModelAndView("redirect:add");
 		}
 		
-		int newUserId = User.addNewUserToDb(user);        
+		int newUserId = UserDb.addNewUserToDb(user);        
 
 		return new ModelAndView("redirect:user-profile?user_id=" + newUserId);
 

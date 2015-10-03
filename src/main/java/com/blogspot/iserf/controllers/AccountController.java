@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.blogspot.iserf.model.Account;
 import com.blogspot.iserf.model.Message;
+import com.blogspot.iserf.model.DB.AccountDb;
 import com.blogspot.iserf.utility.*;
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
@@ -41,7 +42,7 @@ public class AccountController {
 	public ModelAndView addAccount(Locale locale, Model model,
 			RedirectAttributes redirectAttributes, HttpServletRequest request) {
 		
-		int newAccountId = Account.addAccountToDb(new Integer(context.getParameter("user_id")));
+		int newAccountId = AccountDb.addAccountToDb(new Integer(context.getParameter("user_id")));
 		
 		Message message = new Message("update", "New Account with id =" + newAccountId+ " was created");	
 		redirectAttributes.addFlashAttribute("message", message);
@@ -58,7 +59,7 @@ public class AccountController {
 	public ModelAndView deleteAccount(Locale locale, Model model,
 			RedirectAttributes redirectAttributes) {
 
-		Account.deleteAccount(new Integer(context.getParameter("account_id")));
+		AccountDb.deleteAccount(new Integer(context.getParameter("account_id")));
 		
 		Message message = new Message("update", "Account with id ="+context.getParameter("account_id")+" is deleted");
 		redirectAttributes.addFlashAttribute("message", message);
