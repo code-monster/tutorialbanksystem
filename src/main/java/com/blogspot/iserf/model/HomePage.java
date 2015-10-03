@@ -40,10 +40,10 @@ public class HomePage {
         
         
         sql = "SELECT users.*, SUM(transactions.money) AS total "
-        	   + "FROM jbank.users "
-        	   + "LEFT JOIN  jbank.users_accounts "
+        	   + "FROM users "
+        	   + "LEFT JOIN  users_accounts "
         	   + "ON (users_accounts.user_id = users.id) "
-        	   + "LEFT JOIN jbank.transactions "
+        	   + "LEFT JOIN transactions "
         	   + "ON (transactions.account_id = users_accounts.account_id) "
         	   + "GROUP BY users.firstname;";
         
