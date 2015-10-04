@@ -24,8 +24,8 @@ public class Transaction {
     @NotNull
     @Min(1)
 	private double money;
-    
-    @Size(min=2, max=30)
+
+	@Size(min = 3, max=30, message = "Please enter at least 3 characters")
 	private String operation;
 	private String date;
 	

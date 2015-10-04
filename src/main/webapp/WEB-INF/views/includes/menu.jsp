@@ -7,6 +7,5 @@
 			<ul>
 				<li><a href="<c:url value="/"/>"><spring:message    code="label.page_home" /></a></li>
 				<li><a href="<c:url value="/contact"/>"><spring:message    code="label.page_contact" /></a></li>
-				<li><a href="<c:url value="/form"/>">test form</a></li>
 			</ul>
 

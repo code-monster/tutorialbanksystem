@@ -52,7 +52,7 @@
 		<h2>Add money</h2>
 		<form:form  method="POST" commandName="transaction"
 			action="add-transaction">
-			<table border="1">
+			<table border="1" class="add-transaction">
 				<thead>
 					<tr>
 						<th>money</th>
@@ -61,8 +61,8 @@
 				</thead>
 				<tbody>
 					<tr>
-						<td><form:errors path="money" cssClass="error"/><form:input path="money" /></td>
-						<td><form:errors path="operation" cssClass="error"/><form:input path="operation" /></td>
+						<td><form:errors path="money" cssClass="error-data"/><form:input path="money" /></td>
+						<td><form:errors path="operation" cssClass="error-data"/><form:input path="operation" /></td>
 					</tr>
 				</tbody>
 			</table>
