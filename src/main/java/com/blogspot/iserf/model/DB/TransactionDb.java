@@ -28,18 +28,33 @@ public class TransactionDb {
 		int newTransactiontId = 0;
         ResultSet rs = null;
 		try {
+			double money;
+			String comment;
+			if(transaction.isAdd()){
+
+				money = transaction.getMoney();
+				comment  = "Add money: " + transaction.getOperation();
+			}else{
+				//spend
+				money = -transaction.getMoney();
+				comment  = "Spend money: " + transaction.getOperation();
+			}
+
+
 
 			Connection connection = connect.getMysqlConnections();
 			preparedStatement = (PreparedStatement) connection.prepareStatement(insertSQL, Statement.RETURN_GENERATED_KEYS);
 			
 			preparedStatement.setInt(1, transaction.getAccountId());
-			preparedStatement.setString(2, transaction.getOperation());
+			preparedStatement.setString(2, comment);
 			
 			Date date = new Date();
 			java.sql.Date sqlDate = new java.sql.Date(date.getTime());
 			preparedStatement.setDate(3, sqlDate);
-					
-			preparedStatement.setDouble(4, transaction.getMoney());
+			preparedStatement.setDouble(4, money);
+
+
+
 	
 			preparedStatement.executeUpdate();
 			rs = preparedStatement.getGeneratedKeys();

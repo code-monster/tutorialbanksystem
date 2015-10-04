@@ -61,6 +61,13 @@ public class TransactionsController {
 
 		ArrayList<Transaction> transactionList = TransactionDb.getTransactionList(new Integer(context.getParameter("account_id")));
 
+
+
+		if(!model.containsAttribute("transactionSpendMoney")) {
+			Transaction newTransactionSpendMoney = new Transaction(new Integer(context.getParameter("account_id")), false);
+			model.addAttribute("transactionSpendMoney", newTransactionSpendMoney);
+		}
+
 		if(!model.containsAttribute("transactionAddMoney")) {
 			Transaction newTransactionAddMoney = new Transaction(new Integer(context.getParameter("account_id")), true);
 			model.addAttribute("transactionAddMoney", newTransactionAddMoney);
@@ -84,8 +91,8 @@ public class TransactionsController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	
-	@RequestMapping(value = "/add-transaction", method = RequestMethod.POST)
-	public ModelAndView addTransaction(@ModelAttribute("transactionAddMoney")  @Valid Transaction transactionAddMoney, BindingResult bindingResult, Model model,
+	@RequestMapping(value = "/add-transaction-add-money", method = RequestMethod.POST)
+	public ModelAndView addTransactionAddMoney(@ModelAttribute("transactionAddMoney")  @Valid Transaction transactionAddMoney, BindingResult bindingResult, Model model,
 			RedirectAttributes redirectAttributes) throws Exception {
 
         if (bindingResult.hasErrors()) {
@@ -93,7 +100,7 @@ public class TransactionsController {
         	redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.transactionAddMoney", bindingResult);
         	redirectAttributes.addFlashAttribute("transactionAddMoney", transactionAddMoney);
         	
-    		return new ModelAndView("redirect:/account-detail?account_id="+transactionAddMoney.getAccountId());
+    		return new ModelAndView("redirect:/account-detail?account_id="+transactionAddMoney.getAccountId()+"#add-money");
     		
         }
 		
@@ -106,7 +113,31 @@ public class TransactionsController {
 		return new ModelAndView("redirect:/account-detail?account_id="+transactionAddMoney.getAccountId());
 			
 	}
-	
+
+
+
+	@RequestMapping(value = "/add-transaction-spend-money", method = RequestMethod.POST)
+	public ModelAndView addTransactionSpendMoney(@ModelAttribute("transactionSpendMoney")  @Valid Transaction transactionSpendMoney, BindingResult bindingResult, Model model,
+									   RedirectAttributes redirectAttributes) throws Exception {
+
+		if (bindingResult.hasErrors()) {
+
+			redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.transactionSpendMoney", bindingResult);
+			redirectAttributes.addFlashAttribute("transactionSpendMoney", transactionSpendMoney);
+
+			return new ModelAndView("redirect:/account-detail?account_id="+transactionSpendMoney.getAccountId()+"#spend-money");
+
+		}
+
+
+		int newTransactiontId = TransactionDb.createTransaction(transactionSpendMoney);
+
+		Message message = new Message("update", "New Transactiont with id =" + newTransactiontId+ " was created");
+		redirectAttributes.addFlashAttribute("message", message);
+
+		return new ModelAndView("redirect:/account-detail?account_id="+transactionSpendMoney.getAccountId());
+
+	}
 
 
 
