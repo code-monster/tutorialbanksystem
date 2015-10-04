@@ -61,8 +61,8 @@
 				</thead>
 				<tbody>
 					<tr>
-						<td><form:input path="money" /></td>
-						<td><form:input path="operation" /></td>
+						<td><form:errors path="money" cssClass="error"/><form:input path="money" /></td>
+						<td><form:errors path="operation" cssClass="error"/><form:input path="operation" /></td>
 					</tr>
 				</tbody>
 			</table>
@@ -70,47 +70,7 @@
 			<input type="submit" value="Submit">
 		</form:form>
 	</div>
-	<div class="transaction-control-add">
-		<h2>Spend money</h2>
-		<form:form  method="POST" commandName="transaction"
-			action="add-transaction-spend">
-			<table border="1">
-				<thead>
-					<tr>
-						<th>money</th>
-						<th>comment</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td><form:input path="money" /></td>
-						<td><form:input path="operation" /></td>
-					</tr>
-					
-				</tbody>
-			</table>
-			<form:hidden path="accountId" />
-			<input type="submit" value="Submit">
-		</form:form>
-		
-<%-- 		    <form action="#" th:action="@{/impliment}" th:object="${person}" method="post">
-            <table>
-                <tr>
-                    <td>Name:</td>
-                    <td><input type="text" th:field="*{name}" /></td>
-                    <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</td>
-                </tr>
-                <tr>
-                    <td>Age:</td>
-                    <td><input type="text" th:field="*{age}" /></td>
-                    <td th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Name Error</td>
-                </tr>
-                <tr>
-                    <td><button type="submit">Submit</button></td>
-                </tr>
-            </table>
-        </form> --%>
-	</div>
+
 </div>
 </main>
 <footer>

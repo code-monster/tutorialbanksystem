@@ -22,6 +22,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -30,6 +32,7 @@ import com.mysql.jdbc.Statement;
 import com.blogspot.iserf.model.Account;
 import com.blogspot.iserf.model.Breadcrumbs;
 import com.blogspot.iserf.model.Message;
+import com.blogspot.iserf.model.Person;
 import com.blogspot.iserf.model.Transaction;
 import com.blogspot.iserf.model.DB.AccountDb;
 import com.blogspot.iserf.model.DB.TransactionDb;
@@ -51,6 +54,10 @@ public class TransactionsController {
 	@RequestMapping(value = "/account-detail", method = RequestMethod.GET)
 	public ModelAndView editUser(HttpServletRequest request, Model model) 
 	{
+		
+	//	https://gerrydevstory.com/2013/07/11/preserving-validation-error-messages-on-spring-mvc-form-post-redirect-get/
+			
+	//		http://stackoverflow.com/questions/2543797/spring-redirect-after-post-even-with-validation-errors
 		
         if (context.getParameterMap().containsKey("account_id") == false  
         		|| Validator.isInteger(context.getParameter("account_id"))==false) {
@@ -83,6 +90,11 @@ public class TransactionsController {
 		breadcrumbs.add("user-profile", "/user-profile?user_id="+userId);
 		breadcrumbs.add("account-detail");
 		
+	//	   if (!model.containsAttribute("transaction")) {
+		//        model.addAttribute("transaction", new Register());
+		//    }
+		
+		
 		model.addAttribute("breadcrumbs", breadcrumbs);
 		model.addAttribute("pageTitle", "View  transactions  in account id "+ context.getParameter("account_id"));
 		return new ModelAndView("account-detail", "transactionList", transactionList);
@@ -110,21 +122,67 @@ public class TransactionsController {
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
+	
 	@RequestMapping(value = "/add-transaction", method = RequestMethod.POST)
-	public ModelAndView addTransaction(@ModelAttribute("transaction") Transaction transaction, Model model,
+	public ModelAndView addTransaction(@ModelAttribute("transaction")  @Valid Transaction transaction, BindingResult bindingResult, Model model,
 			RedirectAttributes redirectAttributes) throws Exception {
 
+        if (bindingResult.hasErrors()) {
+        	
+        	redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.transaction", bindingResult);
+        	redirectAttributes.addFlashAttribute("transaction", transaction);
+        	
+    		return new ModelAndView("redirect:/account-detail?account_id="+transaction.getAccountId());
+    		
+        }
+		
 		
 		int newTransactiontId = TransactionDb.createTransaction(transaction);
 		
 		Message message = new Message("update", "New Transactiont with id =" + newTransactiontId+ " was created");	
 		redirectAttributes.addFlashAttribute("message", message);
 		
-		return new ModelAndView("redirect:/account-detail?account_id="+transaction.getAccountId());
+		return new ModelAndView("redirect:/");
 			
 	}
 	
 	
+	
+    /*
+    @RequestMapping(value="/add-transaction", method=RequestMethod.POST)
+    public String addTransaction(@Valid Transaction transaction, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "account-detail?account_id=51";
+     //       return new ModelAndView("redirect:/account-detail?account_id="+transaction.getAccountId());
+        }
+	    int newTransactiontId = TransactionDb.createTransaction(transaction);
+		
+	//	Message message = new Message("update", "New Transactiont with id =" + newTransactiontId+ " was created");	
+	//	redirectAttributes.addFlashAttribute("message", message);
+		
+	//	return new ModelAndView("redirect:/account-detail?account_id="+transaction.getAccountId());
+    }
+    */
+	
+    /*
+    @RequestMapping(value="/account-detail", method=RequestMethod.POST)
+    public String checkPersonInfo(@Valid Transaction transaction, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+      //     return "account-detail";
+       //     return "redirect:/account-detail?account_id=51";
+         
+           
+           attr.addFlashAttribute("org.springframework.validation.BindingResult.register", binding);
+           attr.addFlashAttribute("register", register);
+           return "redirect:/register/create";
+           
+           
+        }
+        return "redirect:/home";
+    }
+    
+	*/
+
 
 
 }

@@ -6,6 +6,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.blogspot.iserf.utility.DB;
@@ -16,7 +20,12 @@ public class Transaction {
 
 	private int transactionId;
 	private int accountId;
+  
+    @NotNull
+    @Min(1)
 	private double money;
+    
+    @Size(min=2, max=30)
 	private String operation;
 	private String date;
 	
