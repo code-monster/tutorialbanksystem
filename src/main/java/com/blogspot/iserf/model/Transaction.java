@@ -20,6 +20,7 @@ public class Transaction {
 
 	private int transactionId;
 	private int accountId;
+	private boolean add;
   
     @NotNull
     @Min(1)
@@ -29,8 +30,9 @@ public class Transaction {
 	private String operation;
 	private String date;
 	
-	public Transaction(int accountId){
+	public Transaction(int accountId, boolean add){
 		this.accountId = accountId;
+		this.add = add;
 	}
 	
 	public Transaction(){
@@ -68,4 +70,11 @@ public class Transaction {
 		this.date = date;
 	}
 
+	public boolean isAdd() {
+		return add;
+	}
+
+	public void setAdd(boolean add) {
+		this.add = add;
+	}
 }

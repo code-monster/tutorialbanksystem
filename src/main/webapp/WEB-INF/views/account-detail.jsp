@@ -66,7 +66,7 @@
 		</ul>
 		<div id="add-money">
 			<div class="transaction-control-add">
-				<form:form  method="POST" commandName="transaction"
+				<form:form  method="POST" commandName="transactionAddMoney"
 							action="add-transaction">
 					<table border="1" class="add-transaction">
 						<thead>
@@ -88,27 +88,7 @@
 			</div>
 		</div>
 		<div id="spend-money">
-				<div class="transaction-control-add">
-					<form:form  method="POST" commandName="transaction"
-								action="add-transaction">
-						<table border="1" class="add-transaction">
-							<thead>
-							<tr>
-								<th>money</th>
-								<th>comment</th>
-							</tr>
-							</thead>
-							<tbody>
-							<tr>
-								<td><form:errors path="money" cssClass="error-data"/><form:input path="money" /></td>
-								<td><form:errors path="operation" cssClass="error-data"/><form:input path="operation" /></td>
-							</tr>
-							</tbody>
-						</table>
-						<form:hidden path="accountId" />
-						<input type="submit" value="Submit">
-					</form:form>
-				</div>
+
 		</div>
 		<div id="send-money">
 

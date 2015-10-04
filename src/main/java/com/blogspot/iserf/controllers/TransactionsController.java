@@ -61,9 +61,9 @@ public class TransactionsController {
 
 		ArrayList<Transaction> transactionList = TransactionDb.getTransactionList(new Integer(context.getParameter("account_id")));
 
-		if(!model.containsAttribute("transaction")) {
-			Transaction newTransaction = new Transaction(new Integer(context.getParameter("account_id")));
-			model.addAttribute("transaction", newTransaction);
+		if(!model.containsAttribute("transactionAddMoney")) {
+			Transaction newTransactionAddMoney = new Transaction(new Integer(context.getParameter("account_id")), true);
+			model.addAttribute("transactionAddMoney", newTransactionAddMoney);
 		}
 		
 		Breadcrumbs  breadcrumbs  = new Breadcrumbs(request);
@@ -85,25 +85,25 @@ public class TransactionsController {
 	 */
 	
 	@RequestMapping(value = "/add-transaction", method = RequestMethod.POST)
-	public ModelAndView addTransaction(@ModelAttribute("transaction")  @Valid Transaction transaction, BindingResult bindingResult, Model model,
+	public ModelAndView addTransaction(@ModelAttribute("transactionAddMoney")  @Valid Transaction transactionAddMoney, BindingResult bindingResult, Model model,
 			RedirectAttributes redirectAttributes) throws Exception {
 
         if (bindingResult.hasErrors()) {
         	
-        	redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.transaction", bindingResult);
-        	redirectAttributes.addFlashAttribute("transaction", transaction);
+        	redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.transactionAddMoney", bindingResult);
+        	redirectAttributes.addFlashAttribute("transactionAddMoney", transactionAddMoney);
         	
-    		return new ModelAndView("redirect:/account-detail?account_id="+transaction.getAccountId());
+    		return new ModelAndView("redirect:/account-detail?account_id="+transactionAddMoney.getAccountId());
     		
         }
 		
 		
-		int newTransactiontId = TransactionDb.createTransaction(transaction);
+		int newTransactiontId = TransactionDb.createTransaction(transactionAddMoney);
 		
 		Message message = new Message("update", "New Transactiont with id =" + newTransactiontId+ " was created");	
 		redirectAttributes.addFlashAttribute("message", message);
 
-		return new ModelAndView("redirect:/account-detail?account_id="+transaction.getAccountId());
+		return new ModelAndView("redirect:/account-detail?account_id="+transactionAddMoney.getAccountId());
 			
 	}
 	
