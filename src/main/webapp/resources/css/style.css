@@ -138,10 +138,6 @@ main{
 /*  Table
 -----------------------------------------------------------------------------*/
 
-table{
-width: 100%;
-}
-
 
 table th.header { 
 	padding: 5px;
@@ -176,11 +172,16 @@ table th.headerSortDown {
  padding-left: 5px;
 }
 
-.main   table  {
+.main   table {
 
  background-color: rgba(255, 255, 255, 0.4);
- width: 100%!important;
+
 }
+
+.main   table.sort-table {
+    width: 100%!important;
+}
+
 
 .main table  tr:nth-child(2n)  {
 
@@ -235,6 +236,10 @@ p.total-money{
 table.add-transaction  span.error-data{
     display: block;
 
+}
+
+.transaction-control {
+    margin-top: 20px;
 }
 
 

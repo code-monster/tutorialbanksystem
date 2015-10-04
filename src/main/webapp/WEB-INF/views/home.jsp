@@ -16,7 +16,7 @@
      <div class='error-data'>${message.getText()}</div>
 	 </c:if>
 		<h2>Users:</h2>
-		<table id="user_table" class="user" border="1">
+		<table id="user_table" class="user sort-table" border="1">
 			<thead>
 				<tr>
 					<th>ID</th>
