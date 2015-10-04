@@ -4,4 +4,7 @@ application.log*
 /.project
 /target
 /src/main/resources/database-config.xml
+/.idea
+/BankSystem.iml
+
 
