@@ -4,6 +4,7 @@ import com.blogspot.iserf.model.Breadcrumbs;
 import com.blogspot.iserf.model.DB.AccountDb;
 import com.blogspot.iserf.model.DB.TransactionDb;
 import com.blogspot.iserf.model.Message;
+import com.blogspot.iserf.model.SendMoney;
 import com.blogspot.iserf.model.Transaction;
 import com.blogspot.iserf.utility.Validator;
 import org.slf4j.Logger;
@@ -70,6 +71,11 @@ public class TransactionsController {
 		if(!model.containsAttribute("transactionAddMoney")) {
 			Transaction newTransactionAddMoney = new Transaction(new Integer(context.getParameter("account_id")), true);
 			model.addAttribute("transactionAddMoney", newTransactionAddMoney);
+		}
+
+		if(!model.containsAttribute("transactionSendMoney")) {
+			SendMoney newTransactionSendMoney = new SendMoney(new Integer(context.getParameter("account_id")));
+			model.addAttribute("transactionSendMoney", newTransactionSendMoney);
 		}
 		
 		Breadcrumbs  breadcrumbs  = new Breadcrumbs(request);
@@ -139,5 +145,33 @@ public class TransactionsController {
 	}
 
 
+
+    @RequestMapping(value = "/add-transaction-send-money", method = RequestMethod.POST)
+    public ModelAndView addTransactionSendMoney(@ModelAttribute("transactionSendMoney")  @Valid SendMoney transactionSendMoney, BindingResult bindingResult, Model model,
+                                                 RedirectAttributes redirectAttributes) throws Exception {
+
+        if (bindingResult.hasErrors()) {
+
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.transactionSendMoney", bindingResult);
+            redirectAttributes.addFlashAttribute("transactionSendMoney", transactionSendMoney);
+
+            return new ModelAndView("redirect:/account-detail?account_id="+transactionSendMoney.getAccountId()+"#send-money");
+
+        }
+
+
+        String sendMessage = TransactionDb.createSendTransaction(transactionSendMoney);
+
+		String messageStatus  = "error";
+		if(sendMessage.equals("ok")){
+			messageStatus  = "update";
+		}
+
+        Message message = new Message(messageStatus, "Transactiont message =" + sendMessage);
+        redirectAttributes.addFlashAttribute("message", message);
+
+        return new ModelAndView("redirect:/account-detail?account_id="+transactionSendMoney.getAccountId());
+
+    }
 
 }

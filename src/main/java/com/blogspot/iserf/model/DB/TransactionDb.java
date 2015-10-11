@@ -1,5 +1,6 @@
 package com.blogspot.iserf.model.DB;
 
+import com.blogspot.iserf.model.SendMoney;
 import com.blogspot.iserf.model.Transaction;
 import com.blogspot.iserf.utility.DB;
 import com.mysql.jdbc.PreparedStatement;
@@ -69,6 +70,60 @@ public class TransactionDb {
 		
 		
 		return	newTransactiontId;
+	}
+
+	public static String createSendTransaction( SendMoney transaction){
+
+		if(transaction.getSendToAccountId() == transaction.getAccountId()) {
+			return	"error - you cannot send money to this account Id = " + transaction.getSendToAccountId() ;
+		}
+
+
+		// send money to another account
+		if(createTransaction(new Transaction(transaction))>0) {
+
+
+			ClassPathXmlApplicationContext contextBean = new ClassPathXmlApplicationContext("app-beans.xml");
+			DB connect = (DB) contextBean.getBean("DB");
+			PreparedStatement preparedStatement = null;
+
+			String insertSQL = "INSERT INTO `transactions` (`account_id`, `operation`, `date`, `money`)"
+					+ "VALUES (?,?,?,?)";
+			int newTransactiontId = 0;
+			ResultSet rs = null;
+			try {
+
+				double money = -transaction.getMoney();
+				String comment = "Send money to account Id= " + transaction.getSendToAccountId() + " Comment: " + transaction.getOperation();
+
+				Connection connection = connect.getMysqlConnections();
+				preparedStatement = (PreparedStatement) connection.prepareStatement(insertSQL, Statement.RETURN_GENERATED_KEYS);
+
+				preparedStatement.setInt(1, transaction.getAccountId());
+				preparedStatement.setString(2, comment);
+
+				Date date = new Date();
+				java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+				preparedStatement.setDate(3, sqlDate);
+				preparedStatement.setDouble(4, money);
+
+
+				preparedStatement.executeUpdate();
+				rs = preparedStatement.getGeneratedKeys();
+				if (rs != null && rs.next()) {
+					newTransactiontId = rs.getInt(1);
+				}
+				preparedStatement.close();
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			return	"ok";
+		}
+			return	"error";
+
 	}
 	
 	

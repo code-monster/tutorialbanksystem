@@ -6,17 +6,17 @@ import javax.validation.constraints.Size;
 
 public class Transaction {
 
-	private int transactionId;
-	private int accountId;
-	private boolean add;
+	protected int transactionId;
+	protected int accountId;
+	protected boolean add;
   
     @NotNull
     @Min(1)
-	private double money;
+	protected double money;
 
 	@Size(min = 3, max=30, message = "Please enter at least 3 characters")
-	private String operation;
-	private String date;
+	protected String operation;
+	protected String date;
 	
 	public Transaction(int accountId, boolean add){
 		this.accountId = accountId;
@@ -24,6 +24,15 @@ public class Transaction {
 	}
 	
 	public Transaction(){
+
+	}
+
+	public Transaction(SendMoney sendMoney) {
+		accountId = sendMoney.getSendToAccountId();
+		add  = true;
+		money = sendMoney.getMoney();
+		operation = "received money from account Id = " + sendMoney.getAccountId();
+		date = sendMoney.getDate();
 
 	}
 	
