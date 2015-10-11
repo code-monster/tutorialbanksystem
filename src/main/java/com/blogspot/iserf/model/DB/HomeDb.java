@@ -2,7 +2,6 @@ package com.blogspot.iserf.model.DB;
 
 import com.blogspot.iserf.model.User;
 import com.blogspot.iserf.utility.DB;
-import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 

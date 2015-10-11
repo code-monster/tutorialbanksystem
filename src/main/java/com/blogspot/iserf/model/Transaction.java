@@ -1,20 +1,8 @@
 package com.blogspot.iserf.model;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
-
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import com.blogspot.iserf.utility.DB;
-import com.mysql.jdbc.PreparedStatement;
-import com.mysql.jdbc.Statement;
 
 public class Transaction {
 

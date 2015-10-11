@@ -1,11 +1,11 @@
 package com.blogspot.iserf.utility;
 
+import com.blogspot.iserf.model.User;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import com.blogspot.iserf.model.User;
 
 public class Validator {
 

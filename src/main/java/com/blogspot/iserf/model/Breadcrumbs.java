@@ -1,8 +1,7 @@
 package com.blogspot.iserf.model;
 
-import java.util.ArrayList;
-
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 
 public class Breadcrumbs extends ArrayList<Link> {
 

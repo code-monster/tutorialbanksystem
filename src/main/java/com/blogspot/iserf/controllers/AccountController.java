@@ -1,14 +1,10 @@
 package com.blogspot.iserf.controllers;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Locale;
-import javax.servlet.http.HttpServletRequest;
+import com.blogspot.iserf.model.DB.AccountDb;
+import com.blogspot.iserf.model.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,12 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.blogspot.iserf.model.Account;
-import com.blogspot.iserf.model.Message;
-import com.blogspot.iserf.model.DB.AccountDb;
-import com.blogspot.iserf.utility.*;
-import com.mysql.jdbc.PreparedStatement;
-import com.mysql.jdbc.Statement;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Locale;
 
 /**
  * Handles requests for the application home page.

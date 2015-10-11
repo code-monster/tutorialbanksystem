@@ -1,20 +1,19 @@
 package com.blogspot.iserf.model.DB;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
 import com.blogspot.iserf.model.Account;
 import com.blogspot.iserf.model.AccountList;
 import com.blogspot.iserf.model.User;
 import com.blogspot.iserf.utility.DB;
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class UserDb {
 

@@ -1,24 +1,5 @@
 package com.blogspot.iserf.model;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import com.blogspot.iserf.utility.DB;
-import com.blogspot.iserf.utility.Validator;
-import com.mysql.jdbc.PreparedStatement;
-import com.mysql.jdbc.Statement;
-
 public class User {
 	private String firstname;
 	private String lastname;

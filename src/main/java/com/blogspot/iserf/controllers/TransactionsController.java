@@ -1,9 +1,11 @@
 package com.blogspot.iserf.controllers;
 
-import java.util.ArrayList;
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
+import com.blogspot.iserf.model.Breadcrumbs;
+import com.blogspot.iserf.model.DB.AccountDb;
+import com.blogspot.iserf.model.DB.TransactionDb;
+import com.blogspot.iserf.model.Message;
+import com.blogspot.iserf.model.Transaction;
+import com.blogspot.iserf.utility.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +18,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.blogspot.iserf.model.Breadcrumbs;
-import com.blogspot.iserf.model.Message;
-import com.blogspot.iserf.model.Transaction;
-import com.blogspot.iserf.model.DB.AccountDb;
-import com.blogspot.iserf.model.DB.TransactionDb;
-import com.blogspot.iserf.utility.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.util.ArrayList;
 /**
  * Handles requests for the application home page.
  */

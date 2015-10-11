@@ -1,12 +1,10 @@
 package com.blogspot.iserf.controllers;
 
 
-import java.util.ArrayList;
-import java.util.Locale;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.blogspot.iserf.model.Breadcrumbs;
 import com.blogspot.iserf.model.DB.HomeDb;
+import com.blogspot.iserf.model.Message;
+import com.blogspot.iserf.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.blogspot.iserf.model.Breadcrumbs;
-import com.blogspot.iserf.model.Message;
-import com.blogspot.iserf.model.User;
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Locale;
 
 
 /**
