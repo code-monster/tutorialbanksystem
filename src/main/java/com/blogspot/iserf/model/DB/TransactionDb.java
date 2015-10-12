@@ -173,4 +173,52 @@ public class TransactionDb {
 		return	transactionList;
 	}
 
+	public static ArrayList<Transaction> getAllTransactionList() {
+
+		ClassPathXmlApplicationContext contextBean = new ClassPathXmlApplicationContext("app-beans.xml");
+		DB connect = (DB) contextBean.getBean("DB");
+
+		ArrayList<Transaction> transactionList = new ArrayList<Transaction>();
+
+		try {
+
+			Statement stmt = null;
+			Connection connection = connect.getMysqlConnections();
+
+			// Execute SQL query
+			stmt = (Statement) connection.createStatement();
+			String sql;
+			sql = "SELECT * FROM `transactions`";
+
+
+
+			ResultSet rs = stmt.executeQuery(sql);
+
+			// Extract data from result set
+			while (rs.next()) {
+
+				Transaction transaction = new Transaction();
+
+				transaction.setTransactionId(rs.getInt("transactions_id"));
+				transaction.setAccountId(rs.getInt("account_id"));
+				transaction.setOperation(rs.getString("operation"));
+				transaction.setDate(rs.getDate("date").toString());
+				transaction.setMoney(rs.getDouble("money"));
+
+				transactionList.add(transaction);
+			}
+
+			// Clean-up environment
+			rs.close();
+			stmt.close();
+
+			connection.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return transactionList;
+	}
+
 }

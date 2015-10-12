@@ -8,11 +8,15 @@
 
 <style>
 	.ui-tabs-vertical { width: 100%; }
-	.ui-tabs-vertical .ui-tabs-nav { padding: .2em .1em .2em .2em; float: left; width: 30%; }
+	.ui-tabs-vertical .ui-tabs-nav { padding: .2em .1em .2em .2em; float: left; width: 20%; }
 	.ui-tabs-vertical .ui-tabs-nav li { clear: left; width: 100%; border-bottom-width: 1px !important; border-right-width: 0 !important; margin: 0 -1px .2em 0; }
 	.ui-tabs-vertical .ui-tabs-nav li a { display:block; }
 	.ui-tabs-vertical .ui-tabs-nav li.ui-tabs-active { padding-bottom: 0; padding-right: .1em; border-right-width: 1px; }
-	.ui-tabs-vertical .ui-tabs-panel { padding: 1em; float: right; width: 60%;}
+	.ui-tabs-vertical .ui-tabs-panel { padding: 1em; float: right; width: 72%;}
+
+	.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
+		font-size: 0.8em;
+	}
 </style>
 
 <main> <c:choose>
