@@ -3,6 +3,7 @@ package com.blogspot.iserf.model.DB;
 import com.blogspot.iserf.model.SendMoney;
 import com.blogspot.iserf.model.Transaction;
 import com.blogspot.iserf.model.TransactionDisplay;
+import com.blogspot.iserf.model.User;
 import com.blogspot.iserf.utility.DB;
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
@@ -171,7 +172,7 @@ public class TransactionDb {
 		return	transactionList;
 	}
 
-	public static ArrayList<TransactionDisplay> getAllTransactionList() {
+	public static ArrayList<TransactionDisplay> getTransactionDisplayList(int userId) {
 
 		ClassPathXmlApplicationContext contextBean = new ClassPathXmlApplicationContext("app-beans.xml");
 		DB connect = (DB) contextBean.getBean("DB");
@@ -180,15 +181,13 @@ public class TransactionDb {
 
 		try {
 
-			Statement stmt = null;
 			Connection connection = connect.getMysqlConnections();
 
 			// Execute SQL query
-			stmt = (Statement) connection.createStatement();
 			String sql;
 			sql =   " SELECT " +
 					" transactions.*" +
-					", users.id" +
+					", users.id as user_id " +
 					", users.firstname" +
 					", users.lastname" +
 					" FROM" +
@@ -199,7 +198,18 @@ public class TransactionDb {
 					" ON (users_accounts.user_id = users.id)";
 
 
-			ResultSet rs = stmt.executeQuery(sql);
+			PreparedStatement preparedStatement;
+
+			if (userId>0){
+				sql+= " WHERE users.id = ?";
+				preparedStatement = (PreparedStatement) connection.prepareStatement(sql);
+				preparedStatement.setInt(1, userId);
+			}else{
+				preparedStatement = (PreparedStatement) connection.prepareStatement(sql);
+			}
+
+
+			ResultSet rs = preparedStatement.executeQuery();
 
 			// Extract data from result set
 			while (rs.next()) {
@@ -211,14 +221,15 @@ public class TransactionDb {
 				transaction.setOperation(rs.getString("operation"));
 				transaction.setDate(rs.getDate("date").toString());
 				transaction.setMoney(rs.getDouble("money"));
-				transaction.setAccountOwner(rs.getString("firstname") + " " + rs.getString("lastname"));
+				transaction.setAccountOwnerFirstname(rs.getString("firstname"));
+				transaction.setAccountOwnerLastname(rs.getString("lastname"));
+				transaction.setUserId(rs.getInt("user_id"));
 
 				transactionList.add(transaction);
 			}
 
 			// Clean-up environment
 			rs.close();
-			stmt.close();
 
 			connection.close();
 		} catch (SQLException e) {
@@ -227,6 +238,25 @@ public class TransactionDb {
 		}
 
 		return transactionList;
+	}
+
+	public static ArrayList<User> getUserListByTransactionList(ArrayList<TransactionDisplay> transactionDisplayArrayList) {
+
+		ArrayList<User> userList = new ArrayList<User>();
+		for(int i=0; i<transactionDisplayArrayList.size(); i++){
+			TransactionDisplay transactionDisplay = transactionDisplayArrayList.get(i);
+
+			User user = new User();
+
+			user.setUserId(transactionDisplay.getUserId());
+			user.setFirstname(transactionDisplay.getAccountOwnerFirstname());
+			user.setLastname(transactionDisplay.getAccountOwnerLastname());
+
+			userList.add(user);
+
+		}
+
+		return  userList;
 	}
 
 }

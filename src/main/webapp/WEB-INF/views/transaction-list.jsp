@@ -15,6 +15,20 @@
 	<c:if test="${message.getType() == 'error'}">
 		<div class='error-data'>${message.getText()}</div>
 	</c:if>
+	<h2>Filter by</h2>
+
+		<select class="auto-sender">
+           <c:forEach items="${userList}" var="userItem">
+			   <option value="${userItem.getUserId()}"
+			   <c:if test="${userItem.getUserId() == param.showUserTransaction}">
+				   selected
+			   </c:if>
+			   >${userItem.getFirstname()} ${userItem.getLastname()}</option>
+		   </c:forEach>
+		</select>
+
+
+
 	<h2>Transactions:</h2>
 	<table class=" sort-table" border="1">
 		<thead>
@@ -32,7 +46,7 @@
 			<tr>
 				<td>${transaction.getTransactionId()}</td>
 				<td>${transaction.getAccountId()}</td>
-				<td>${transaction.getAccountOwner()}</td>
+				<td>${transaction.getAccountOwnerFirstname()} ${transaction.getAccountOwnerLastname()}</td>
 				<td>${transaction.getOperation()}</td>
 				<td>${transaction.getDate()}</td>
 				<td>${transaction.getMoney()}</td>

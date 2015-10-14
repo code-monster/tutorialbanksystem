@@ -28,7 +28,7 @@ public class AccountController {
 
 
 	/**
-	 * Simply selects the home view to render by returning its name.
+	 * create new account connected with user
 	 */
 	@RequestMapping(value = "/add-account", method = RequestMethod.GET)
 	public ModelAndView addAccount(Locale locale, Model model,

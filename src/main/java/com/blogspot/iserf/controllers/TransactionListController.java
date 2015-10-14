@@ -3,6 +3,7 @@ package com.blogspot.iserf.controllers;
 import com.blogspot.iserf.model.*;
 import com.blogspot.iserf.model.DB.AccountDb;
 import com.blogspot.iserf.model.DB.TransactionDb;
+import com.blogspot.iserf.model.DB.UserDb;
 import com.blogspot.iserf.utility.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,8 +40,23 @@ public class TransactionListController {
 	{
 
 
+		model.addAttribute("userList", UserDb.getUserList());
 
-		ArrayList<TransactionDisplay> transactionList = TransactionDb.getAllTransactionList();
+		if (context.getParameterMap().containsKey("showUserTransaction") == false
+				|| Validator.isInteger(context.getParameter("showUserTransaction"))==false
+				|| context.getParameter("showUserTransaction")=="0") {
+
+
+			ArrayList<TransactionDisplay> transactionList = TransactionDb.getTransactionDisplayList(0);
+
+			model.addAttribute("pageTitle", "Transactions list");
+			model.addAttribute("message", message);
+			return new ModelAndView("transaction-list", "transactionList", transactionList);
+
+		}
+
+
+		ArrayList<TransactionDisplay> transactionList = TransactionDb.getTransactionDisplayList(new Integer(context.getParameter("showUserTransaction")));
 
 		model.addAttribute("pageTitle", "Transactions list");
 		model.addAttribute("message", message);

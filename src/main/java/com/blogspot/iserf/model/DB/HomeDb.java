@@ -31,8 +31,6 @@ public class HomeDb {
             // Execute SQL query
             stmt = (Statement) connection.createStatement();
             String sql;
-            sql = "SELECT * FROM `users`";
-
 
             sql = "SELECT users.*, SUM(transactions.money) AS total "
                     + "FROM users "

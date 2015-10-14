@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class UserDb {
@@ -189,6 +190,63 @@ public class UserDb {
 		user.setAccountList(accountList);
 		
 		return user;
+	}
+
+	public static ArrayList<User> getUserList() {
+
+		ClassPathXmlApplicationContext contextBean = new ClassPathXmlApplicationContext("app-beans.xml");
+		DB connect = (DB) contextBean.getBean("DB");
+
+		ArrayList<User> userList = new ArrayList<User>();
+
+		try {
+
+			Statement stmt = null;
+			Connection connection = connect.getMysqlConnections();
+
+			// Execute SQL query
+			stmt = (Statement) connection.createStatement();
+			String sql;
+			sql = "SELECT * FROM `users`";
+
+
+			ResultSet rs = stmt.executeQuery(sql);
+
+
+			User user = new User();
+
+			user.setUserId(0);
+			user.setFirstname("All users");
+			user.setLastname(" ");
+
+			userList.add(user);
+
+
+			// Extract data from result set
+			while (rs.next()) {
+
+				user = new User();
+
+				user.setUserId(rs.getInt("id"));
+				user.setFirstname(rs.getString("firstname"));
+				user.setLastname(rs.getString("lastname"));
+				user.setAddress(rs.getString("address"));
+				user.setDob(rs.getDate("dob").toString());
+
+				userList.add(user);
+			}
+
+			// Clean-up environment
+			rs.close();
+			stmt.close();
+
+			connection.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return userList;
 	}
 	
 

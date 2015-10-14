@@ -6,8 +6,26 @@ import javax.validation.constraints.Size;
 
 public class TransactionDisplay extends  Transaction{
 
-	protected String accountOwner;
+	protected String accountOwnerFirstname;
+	protected String accountOwnerLastname;
 	protected int userId;
+
+	public String getAccountOwnerFirstname() {
+		return accountOwnerFirstname;
+	}
+
+	public void setAccountOwnerFirstname(String accountOwnerFirstname) {
+		this.accountOwnerFirstname = accountOwnerFirstname;
+	}
+
+
+	public String getAccountOwnerLastname() {
+		return accountOwnerLastname;
+	}
+
+	public void setAccountOwnerLastname(String accountOwnerLastname) {
+		this.accountOwnerLastname = accountOwnerLastname;
+	}
 
 
 	public int getUserId() {
@@ -18,13 +36,6 @@ public class TransactionDisplay extends  Transaction{
 		this.userId = userId;
 	}
 
-	public String getAccountOwner() {
-		return accountOwner;
-	}
-
-	public void setAccountOwner(String name) {
-		this.accountOwner = name;
-	}
 
 
 
