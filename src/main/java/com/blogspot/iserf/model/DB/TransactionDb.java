@@ -25,7 +25,7 @@ public class TransactionDb {
 		
 		String insertSQL = "INSERT INTO `transactions` (`account_id`, `operation`, `date`, `money`)"
 				+ "VALUES (?,?,?,?)";	
-		int newTransactiontId = 0;
+		int newTransactionId = 0;
         ResultSet rs = null;
 		try {
 			double money;
@@ -41,7 +41,6 @@ public class TransactionDb {
 			}
 
 
-
 			Connection connection = connect.getMysqlConnections();
 			preparedStatement = (PreparedStatement) connection.prepareStatement(insertSQL, Statement.RETURN_GENERATED_KEYS);
 			
@@ -53,13 +52,11 @@ public class TransactionDb {
 			preparedStatement.setDate(3, sqlDate);
 			preparedStatement.setDouble(4, money);
 
-
-
 	
 			preparedStatement.executeUpdate();
 			rs = preparedStatement.getGeneratedKeys();
 			if(rs != null && rs.next()){
-			newTransactiontId = rs.getInt(1);
+			newTransactionId = rs.getInt(1);
 			}
 			preparedStatement.close();
 			connection.close();
@@ -69,13 +66,13 @@ public class TransactionDb {
 		}
 		
 		
-		return	newTransactiontId;
+		return	newTransactionId;
 	}
 
 	public static String createSendTransaction( SendMoney transaction){
 
 		if(transaction.getSendToAccountId() == transaction.getAccountId()) {
-			return	"error - you cannot send money to this account Id = " + transaction.getSendToAccountId() ;
+			return	"error, you cannot send money to this account Id = " + transaction.getSendToAccountId() ;
 		}
 
 
@@ -122,7 +119,7 @@ public class TransactionDb {
 
 			return	"ok";
 		}
-			return	"error";
+			return	"error, recipient account (Id "+ + transaction.getSendToAccountId()+") is not found";
 
 	}
 	
