@@ -21,6 +21,7 @@
 		<tr>
 			<th>ID</th>
 			<th>Account ID</th>
+			<th>Account owner</th>
 			<th>Operation</th>
 			<th>Date</th>
 			<th>Money</th>
@@ -31,6 +32,7 @@
 			<tr>
 				<td>${transaction.getTransactionId()}</td>
 				<td>${transaction.getAccountId()}</td>
+				<td>${transaction.getAccountOwner()}</td>
 				<td>${transaction.getOperation()}</td>
 				<td>${transaction.getDate()}</td>
 				<td>${transaction.getMoney()}</td>

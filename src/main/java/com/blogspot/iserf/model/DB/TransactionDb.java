@@ -2,6 +2,7 @@ package com.blogspot.iserf.model.DB;
 
 import com.blogspot.iserf.model.SendMoney;
 import com.blogspot.iserf.model.Transaction;
+import com.blogspot.iserf.model.TransactionDisplay;
 import com.blogspot.iserf.utility.DB;
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
@@ -86,7 +87,7 @@ public class TransactionDb {
 
 			String insertSQL = "INSERT INTO `transactions` (`account_id`, `operation`, `date`, `money`)"
 					+ "VALUES (?,?,?,?)";
-			int newTransactiontId = 0;
+			int newTransactionId = 0;
 			ResultSet rs = null;
 			try {
 
@@ -108,7 +109,7 @@ public class TransactionDb {
 				preparedStatement.executeUpdate();
 				rs = preparedStatement.getGeneratedKeys();
 				if (rs != null && rs.next()) {
-					newTransactiontId = rs.getInt(1);
+					newTransactionId = rs.getInt(1);
 				}
 				preparedStatement.close();
 				connection.close();
@@ -170,12 +171,12 @@ public class TransactionDb {
 		return	transactionList;
 	}
 
-	public static ArrayList<Transaction> getAllTransactionList() {
+	public static ArrayList<TransactionDisplay> getAllTransactionList() {
 
 		ClassPathXmlApplicationContext contextBean = new ClassPathXmlApplicationContext("app-beans.xml");
 		DB connect = (DB) contextBean.getBean("DB");
 
-		ArrayList<Transaction> transactionList = new ArrayList<Transaction>();
+		ArrayList<TransactionDisplay> transactionList = new ArrayList<TransactionDisplay>();
 
 		try {
 
@@ -185,8 +186,17 @@ public class TransactionDb {
 			// Execute SQL query
 			stmt = (Statement) connection.createStatement();
 			String sql;
-			sql = "SELECT * FROM `transactions`";
-
+			sql =   " SELECT " +
+					" transactions.*" +
+					", users.id" +
+					", users.firstname" +
+					", users.lastname" +
+					" FROM" +
+					" transactions" +
+					" INNER JOIN users_accounts" +
+					" ON (transactions.account_id = users_accounts.account_id)" +
+					" INNER JOIN users" +
+					" ON (users_accounts.user_id = users.id)";
 
 
 			ResultSet rs = stmt.executeQuery(sql);
@@ -194,13 +204,14 @@ public class TransactionDb {
 			// Extract data from result set
 			while (rs.next()) {
 
-				Transaction transaction = new Transaction();
+				TransactionDisplay transaction = new TransactionDisplay();
 
 				transaction.setTransactionId(rs.getInt("transactions_id"));
 				transaction.setAccountId(rs.getInt("account_id"));
 				transaction.setOperation(rs.getString("operation"));
 				transaction.setDate(rs.getDate("date").toString());
 				transaction.setMoney(rs.getDouble("money"));
+				transaction.setAccountOwner(rs.getString("firstname") + " " + rs.getString("lastname"));
 
 				transactionList.add(transaction);
 			}
