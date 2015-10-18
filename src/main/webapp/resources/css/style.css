@@ -256,3 +256,8 @@ table.add-transaction  span.error-data{
 div.filter {
     margin-right: 20px;
 }
+
+a.btn-clear-date-filter {
+    display: none;
+    color: red;
+}

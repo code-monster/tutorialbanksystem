@@ -51,8 +51,10 @@
 								if(startDate=="" || endDate == ""){
 									startDate = '2015-10-08';
 									endDate = '2015-10-20';
-								}
+								}else{
 
+									$(".btn-clear-date-filter").show();
+								}
 
 
 								$('input[name="daterange"]').daterangepicker(
@@ -65,13 +67,16 @@
 										}
 								);
 
-										$('input[name="daterange"]').on('apply.daterangepicker', function(ev, picker) {
+								$('input[name="daterange"]').on('apply.daterangepicker', function(ev, picker) {
 
 									document.location.search = $.query.set("startDateRange", picker.startDate.format('YYYY-MM-DD')).set("endDateRange", picker.endDate.format('YYYY-MM-DD')).toString();
-										});
+								});
 
 							});
+
+
 				    </script>
+					<a class="btn-clear-date-filter" href="javascript:document.location.search =  $.query.remove('startDateRange').remove('endDateRange')">clear date filter</a>
 			</div>
 			</td>
 		</tr>
