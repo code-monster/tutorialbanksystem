@@ -45,9 +45,9 @@ function deleteAccount(accountId){
 			<div class="header">
     <div class="header-contant">
     <div>
-    <a href="javascript:bankSystemApp.insertParam('locale','en');">en</a> 
+    <a href="javascript:document.location.search =  $.query.set('locale','en');">en</a>
     | 
-    <a href="javascript:bankSystemApp.insertParam('locale','ru');">ru</a>   
+    <a href="javascript:document.location.search =  $.query.set('locale','ru');">ru</a>
     </div>
       <div class="h-title">Bank app</div>
 	 <div class="img-container">
