@@ -102,8 +102,7 @@ public class UserDb {
 			preparedStatement.setString(1, user.getFirstname());
 			preparedStatement.setString(2, user.getLastname());
 			preparedStatement.setString(3, user.getAddress());
-			
-			System.out.println(user.getFirstname());
+
 			
 			DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 			Date date = formatter.parse(user.getDob());

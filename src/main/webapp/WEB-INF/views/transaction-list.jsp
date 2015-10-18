@@ -17,15 +17,65 @@
 	</c:if>
 	<h2>Filter by</h2>
 
-		<select class="auto-sender">
-           <c:forEach items="${userList}" var="userItem">
-			   <option value="${userItem.getUserId()}"
-			   <c:if test="${userItem.getUserId() == param.showUserTransaction}">
-				   selected
-			   </c:if>
-			   >${userItem.getFirstname()} ${userItem.getLastname()}</option>
-		   </c:forEach>
-		</select>
+	<table>
+		<tr>
+			<td>
+				<div class="filter">
+				<h4>user:</h4>
+				<select class="auto-sender">
+					<c:forEach items="${userList}" var="userItem">
+						<option value="${userItem.getUserId()}"
+								<c:if test="${userItem.getUserId() == param.showUserTransaction}">
+									selected
+								</c:if>
+								>${userItem.getFirstname()} ${userItem.getLastname()}</option>
+					</c:forEach>
+				</select>
+			</div></td>
+			<td>
+				<div class="filter">
+				<h4>Date range:</h4>
+				<script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+
+				<!-- Include Date Range Picker -->
+				<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+				<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+
+				<input type="text" name="daterange"  />
+					<script type="text/javascript">
+							$(function() {
+
+								var startDate = '${param.startDateRange}';
+								var endDate = '${param.endDateRange}';
+
+								if(startDate=="" || endDate == ""){
+									startDate = '2015-10-08';
+									endDate = '2015-10-20';
+								}
+
+
+
+								$('input[name="daterange"]').daterangepicker(
+										{
+											locale: {
+												format: 'YYYY-MM-DD'
+											},
+											startDate: startDate,
+											endDate: endDate
+										}
+								);
+
+										$('input[name="daterange"]').on('apply.daterangepicker', function(ev, picker) {
+
+									document.location.search = $.query.set("startDateRange", picker.startDate.format('YYYY-MM-DD')).set("endDateRange", picker.endDate.format('YYYY-MM-DD')).toString();
+										});
+
+							});
+				    </script>
+			</div>
+			</td>
+		</tr>
+	</table>
 
 
 

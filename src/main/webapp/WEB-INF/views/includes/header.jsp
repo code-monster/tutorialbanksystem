@@ -10,7 +10,9 @@
 <title>${pageTitle}</title>
 <link href="<c:url  value="/resources/css/style.css" />"
 	rel="stylesheet" />
+
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap/latest/css/bootstrap.css" />
 <script type="text/javascript"
 	src="<c:url  value="/resources/js/jquery-2.1.4.min.js" />"></script>
 <script type="text/javascript"
@@ -18,6 +20,9 @@
 	
 <script type="text/javascript"
 	src="<c:url  value="/resources/js/script.js" />"></script>
+
+<script type="text/javascript"
+			src="<c:url  value="/resources/js/jquery.query-object.js" />"></script>
 	
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script type="text/javascript">

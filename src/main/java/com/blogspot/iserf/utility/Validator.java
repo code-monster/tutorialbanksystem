@@ -29,14 +29,24 @@ public class Validator {
 	        	
 	        	return "Field  date of birth is not valid";
 	        }
-		
-		
 
 		return "OK";
 
 	}
-	
-	
+
+	public static boolean isDate(String date) {
+
+		try {
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			Date result =  df.parse(date);
+		} catch (ParseException pe) {
+			return false;
+		}
+
+		return true;
+	}
+
+
 	public static boolean isInteger(String str) {
 		if (str == null) {
 			return false;

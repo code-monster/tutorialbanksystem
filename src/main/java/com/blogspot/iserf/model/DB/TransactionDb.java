@@ -3,7 +3,6 @@ package com.blogspot.iserf.model.DB;
 import com.blogspot.iserf.model.SendMoney;
 import com.blogspot.iserf.model.Transaction;
 import com.blogspot.iserf.model.TransactionDisplay;
-import com.blogspot.iserf.model.User;
 import com.blogspot.iserf.utility.DB;
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
@@ -172,7 +171,92 @@ public class TransactionDb {
 		return	transactionList;
 	}
 
-	public static ArrayList<TransactionDisplay> getTransactionDisplayList(int userId) {
+	public static ArrayList<TransactionDisplay> getTransactionDisplayList(int userId, String startDateRange, String endDateRange) {
+
+		ClassPathXmlApplicationContext contextBean = new ClassPathXmlApplicationContext("app-beans.xml");
+		DB connect = (DB) contextBean.getBean("DB");
+
+		ArrayList<TransactionDisplay> transactionList = new ArrayList<TransactionDisplay>();
+
+		try {
+
+			Connection connection = connect.getMysqlConnections();
+
+			// Execute SQL query
+			String sql;
+			sql =   " SELECT " +
+					" transactions.*" +
+					", users.id as user_id " +
+					", users.firstname" +
+					", users.lastname" +
+					" FROM" +
+					" transactions" +
+					" INNER JOIN users_accounts" +
+					" ON (transactions.account_id = users_accounts.account_id)" +
+					" INNER JOIN users" +
+					" ON (users_accounts.user_id = users.id)";
+
+
+
+
+			boolean where = false;
+			if (userId>0){
+				where = true;
+				sql+= " WHERE users.id = " +userId;
+
+			}
+
+
+            if (startDateRange != null && endDateRange != null){
+
+				if (where) {
+					sql+= " AND ";
+				}else{
+					where = true;
+					sql+= " WHERE ";
+				}
+
+                sql+= " `date` >= " + "'"+startDateRange+"'";
+				sql+= " AND `date` <= " + "'"+endDateRange+"'";
+
+            }
+
+
+			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(sql);
+			System.out.println(preparedStatement);
+			ResultSet rs = preparedStatement.executeQuery();
+
+			// Extract data from result set
+			while (rs.next()) {
+
+				TransactionDisplay transaction = new TransactionDisplay();
+
+				transaction.setTransactionId(rs.getInt("transactions_id"));
+				transaction.setAccountId(rs.getInt("account_id"));
+				transaction.setOperation(rs.getString("operation"));
+				transaction.setDate(rs.getDate("date").toString());
+				transaction.setMoney(rs.getDouble("money"));
+				transaction.setAccountOwnerFirstname(rs.getString("firstname"));
+				transaction.setAccountOwnerLastname(rs.getString("lastname"));
+				transaction.setUserId(rs.getInt("user_id"));
+
+				transactionList.add(transaction);
+			}
+
+			// Clean-up environment
+			rs.close();
+
+			connection.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return transactionList;
+	}
+
+
+	public static ArrayList<TransactionDisplay> getTransactionDisplayList() {
 
 		ClassPathXmlApplicationContext contextBean = new ClassPathXmlApplicationContext("app-beans.xml");
 		DB connect = (DB) contextBean.getBean("DB");
@@ -199,14 +283,8 @@ public class TransactionDb {
 
 
 			PreparedStatement preparedStatement;
+			preparedStatement = (PreparedStatement) connection.prepareStatement(sql);
 
-			if (userId>0){
-				sql+= " WHERE users.id = ?";
-				preparedStatement = (PreparedStatement) connection.prepareStatement(sql);
-				preparedStatement.setInt(1, userId);
-			}else{
-				preparedStatement = (PreparedStatement) connection.prepareStatement(sql);
-			}
 
 
 			ResultSet rs = preparedStatement.executeQuery();
@@ -240,23 +318,7 @@ public class TransactionDb {
 		return transactionList;
 	}
 
-	public static ArrayList<User> getUserListByTransactionList(ArrayList<TransactionDisplay> transactionDisplayArrayList) {
 
-		ArrayList<User> userList = new ArrayList<User>();
-		for(int i=0; i<transactionDisplayArrayList.size(); i++){
-			TransactionDisplay transactionDisplay = transactionDisplayArrayList.get(i);
 
-			User user = new User();
-
-			user.setUserId(transactionDisplay.getUserId());
-			user.setFirstname(transactionDisplay.getAccountOwnerFirstname());
-			user.setLastname(transactionDisplay.getAccountOwnerLastname());
-
-			userList.add(user);
-
-		}
-
-		return  userList;
-	}
 
 }
