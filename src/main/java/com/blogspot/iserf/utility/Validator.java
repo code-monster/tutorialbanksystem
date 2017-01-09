@@ -10,7 +10,7 @@ import java.util.Date;
 public class Validator {
 
 	public static String checkUser(User user) {
-		
+	// TODO create "return Object" with message 	
 		if (user.getFirstname().length() < 1) {
 			return "Field Firstname should have more than 1 letters";
 

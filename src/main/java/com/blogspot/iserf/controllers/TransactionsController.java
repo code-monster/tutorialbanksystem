@@ -43,7 +43,7 @@ public class TransactionsController {
         if (context.getParameterMap().containsKey("account_id") == false  
         		|| Validator.isInteger(context.getParameter("account_id"))==false) {
             
-    		Message errorMessage = new Message("error", "Error in account_id param!");
+    		Message errorMessage = new Message(Message.ERROR, "Error in account_id param!");
     		model.addAttribute("message", errorMessage);
     		model.addAttribute("pageTitle", "Error page");	
     		return new ModelAndView("error");
@@ -51,7 +51,7 @@ public class TransactionsController {
         
         int userId = AccountDb.getUserIdByAccountId(new Integer(context.getParameter("account_id")));
 		if(userId == 0){
-    		Message errorMessage = new Message("error", "Error: account id is not connected for a user!");
+    		Message errorMessage = new Message(Message.ERROR, "Error: account id is not connected for a user!");
     		model.addAttribute("message", errorMessage);
     		model.addAttribute("pageTitle", "Error page");	
     		return new ModelAndView("error");	
@@ -112,7 +112,7 @@ public class TransactionsController {
 		
 		int newTransactiontId = TransactionDb.createTransaction(transactionAddMoney);
 		
-		Message message = new Message("update", "New Transactiont with id =" + newTransactiontId+ " was created");	
+		Message message = new Message(Message.UPDATE, "New Transactiont with id =" + newTransactiontId+ " was created");	
 		redirectAttributes.addFlashAttribute("message", message);
 
 		return new ModelAndView("redirect:/account-detail?account_id="+transactionAddMoney.getAccountId());
@@ -137,7 +137,7 @@ public class TransactionsController {
 
 		int newTransactiontId = TransactionDb.createTransaction(transactionSpendMoney);
 
-		Message message = new Message("update", "New Transactiont with id =" + newTransactiontId+ " was created");
+		Message message = new Message(Message.UPDATE, "New Transactiont with id =" + newTransactiontId+ " was created");
 		redirectAttributes.addFlashAttribute("message", message);
 
 		return new ModelAndView("redirect:/account-detail?account_id="+transactionSpendMoney.getAccountId());
@@ -162,9 +162,9 @@ public class TransactionsController {
 
         String sendMessage = TransactionDb.createSendTransaction(transactionSendMoney);
 
-		String messageStatus  = "error";
+		String messageStatus  = Message.ERROR;
 		if(sendMessage.equals("ok")){
-			messageStatus  = "update";
+			messageStatus  = Message.UPDATE;
 		}
 
         Message message = new Message(messageStatus, "Transactiont message =" + sendMessage);
