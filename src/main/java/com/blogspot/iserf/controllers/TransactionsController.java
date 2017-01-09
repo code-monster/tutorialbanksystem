@@ -22,155 +22,140 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
+
 /**
  * Handles requests for the application home page.
  */
 @Controller
-public class TransactionsController {
+public class TransactionsController extends AbstractController {
 
-	private static final Logger logger = LoggerFactory.getLogger(TransactionsController.class);
+    private static final Logger logger = LoggerFactory.getLogger(TransactionsController.class);
 
-	@Autowired
-	private HttpServletRequest context;
+    @Autowired
+    private HttpServletRequest context;
 
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
-	@RequestMapping(value = "/account-detail", method = RequestMethod.GET)
-	public ModelAndView editUser(HttpServletRequest request, Model model) 
-	{
+    /**
+     * Simply selects the home view to render by returning its name.
+     */
+    @RequestMapping(value = "/account-detail", method = RequestMethod.GET)
+    public ModelAndView editUser(HttpServletRequest request, Model model) {
 
-        if (context.getParameterMap().containsKey("account_id") == false  
-        		|| Validator.isInteger(context.getParameter("account_id"))==false) {
-            
-    		Message errorMessage = new Message(Message.ERROR, "Error in account_id param!");
-    		model.addAttribute("message", errorMessage);
-    		model.addAttribute("pageTitle", "Error page");	
-    		return new ModelAndView("error");
+        if (context.getParameterMap().containsKey("account_id") == false
+                || Validator.isInteger(context.getParameter("account_id")) == false) {
+
+            Message errorMessage = new Message(Message.ERROR, "Error in account_id param!");
+            model.addAttribute(ATTRIBUTE_MESSAGE, errorMessage);
+            model.addAttribute(ATTRIBUTE_PAGE_TITLE, "Error page");
+            return new ModelAndView("error");
         }
-        
+
         int userId = AccountDb.getUserIdByAccountId(new Integer(context.getParameter("account_id")));
-		if(userId == 0){
-    		Message errorMessage = new Message(Message.ERROR, "Error: account id is not connected for a user!");
-    		model.addAttribute("message", errorMessage);
-    		model.addAttribute("pageTitle", "Error page");	
-    		return new ModelAndView("error");	
-			
-		}
-		
+        if (userId == 0) {
+            Message errorMessage = new Message(Message.ERROR, "Error: account id is not connected for a user!");
+            model.addAttribute(ATTRIBUTE_MESSAGE, errorMessage);
+            model.addAttribute(ATTRIBUTE_PAGE_TITLE, "Error page");
+            return new ModelAndView("error");
 
-		ArrayList<Transaction> transactionList = TransactionDb.getTransactionList(new Integer(context.getParameter("account_id")));
+        }
 
+        ArrayList<Transaction> transactionList = TransactionDb.getTransactionList(new Integer(context.getParameter("account_id")));
 
+        if (!model.containsAttribute("transactionSpendMoney")) {
+            Transaction newTransactionSpendMoney = new Transaction(new Integer(context.getParameter("account_id")), false);
+            model.addAttribute("transactionSpendMoney", newTransactionSpendMoney);
+        }
 
-		if(!model.containsAttribute("transactionSpendMoney")) {
-			Transaction newTransactionSpendMoney = new Transaction(new Integer(context.getParameter("account_id")), false);
-			model.addAttribute("transactionSpendMoney", newTransactionSpendMoney);
-		}
+        if (!model.containsAttribute("transactionAddMoney")) {
+            Transaction newTransactionAddMoney = new Transaction(new Integer(context.getParameter("account_id")), true);
+            model.addAttribute("transactionAddMoney", newTransactionAddMoney);
+        }
 
-		if(!model.containsAttribute("transactionAddMoney")) {
-			Transaction newTransactionAddMoney = new Transaction(new Integer(context.getParameter("account_id")), true);
-			model.addAttribute("transactionAddMoney", newTransactionAddMoney);
-		}
+        if (!model.containsAttribute("transactionSendMoney")) {
+            SendMoney newTransactionSendMoney = new SendMoney(new Integer(context.getParameter("account_id")));
+            model.addAttribute("transactionSendMoney", newTransactionSendMoney);
+        }
 
-		if(!model.containsAttribute("transactionSendMoney")) {
-			SendMoney newTransactionSendMoney = new SendMoney(new Integer(context.getParameter("account_id")));
-			model.addAttribute("transactionSendMoney", newTransactionSendMoney);
-		}
-		
-		Breadcrumbs  breadcrumbs  = new Breadcrumbs(request);
-		
-		breadcrumbs.add("user-profile", "/user-profile?user_id="+userId);
-		breadcrumbs.add("account-detail");
+        Breadcrumbs breadcrumbs = new Breadcrumbs(request);
 
-		
-		model.addAttribute("breadcrumbs", breadcrumbs);
-		model.addAttribute("pageTitle", "View  transactions  in account id "+ context.getParameter("account_id"));
-		return new ModelAndView("account-detail", "transactionList", transactionList);
-	}
+        breadcrumbs.add("user-profile", "/user-profile?user_id=" + userId);
+        breadcrumbs.add("account-detail");
 
+        model.addAttribute(ATTRIBUTE_BREADCRUMBS, breadcrumbs);
+        model.addAttribute(ATTRIBUTE_PAGE_TITLE, "View  transactions  in account id " + context.getParameter("account_id"));
+        return new ModelAndView("account-detail", "transactionList", transactionList);
+    }
 
-
-	
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
-	
-	@RequestMapping(value = "/add-transaction-add-money", method = RequestMethod.POST)
-	public ModelAndView addTransactionAddMoney(@ModelAttribute("transactionAddMoney")  @Valid Transaction transactionAddMoney, BindingResult bindingResult, Model model,
-			RedirectAttributes redirectAttributes) throws Exception {
+    /**
+     * Simply selects the home view to render by returning its name.
+     */
+    @RequestMapping(value = "/add-transaction-add-money", method = RequestMethod.POST)
+    public ModelAndView addTransactionAddMoney(@ModelAttribute("transactionAddMoney") @Valid Transaction transactionAddMoney, BindingResult bindingResult, Model model,
+            RedirectAttributes redirectAttributes) throws Exception {
 
         if (bindingResult.hasErrors()) {
-        	
-        	redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.transactionAddMoney", bindingResult);
-        	redirectAttributes.addFlashAttribute("transactionAddMoney", transactionAddMoney);
-        	
-    		return new ModelAndView("redirect:/account-detail?account_id="+transactionAddMoney.getAccountId()+"#add-money");
-    		
+
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.transactionAddMoney", bindingResult);
+            redirectAttributes.addFlashAttribute(ATTRIBUTE_TRANSACTION_ADD_MONEY, transactionAddMoney);
+
+            return new ModelAndView("redirect:/account-detail?account_id=" + transactionAddMoney.getAccountId() + "#add-money");
+
         }
-		
-		
-		int newTransactiontId = TransactionDb.createTransaction(transactionAddMoney);
-		
-		Message message = new Message(Message.UPDATE, "New Transactiont with id =" + newTransactiontId+ " was created");	
-		redirectAttributes.addFlashAttribute("message", message);
 
-		return new ModelAndView("redirect:/account-detail?account_id="+transactionAddMoney.getAccountId());
-			
-	}
+        int newTransactiontId = TransactionDb.createTransaction(transactionAddMoney);
 
+        Message message = new Message(Message.UPDATE, "New Transactiont with id =" + newTransactiontId + " was created");
+        redirectAttributes.addFlashAttribute(ATTRIBUTE_MESSAGE, message);
 
+        return new ModelAndView("redirect:/account-detail?account_id=" + transactionAddMoney.getAccountId());
 
-	@RequestMapping(value = "/add-transaction-spend-money", method = RequestMethod.POST)
-	public ModelAndView addTransactionSpendMoney(@ModelAttribute("transactionSpendMoney")  @Valid Transaction transactionSpendMoney, BindingResult bindingResult, Model model,
-									   RedirectAttributes redirectAttributes) throws Exception {
+    }
 
-		if (bindingResult.hasErrors()) {
+    @RequestMapping(value = "/add-transaction-spend-money", method = RequestMethod.POST)
+    public ModelAndView addTransactionSpendMoney(@ModelAttribute("transactionSpendMoney") @Valid Transaction transactionSpendMoney, BindingResult bindingResult, Model model,
+            RedirectAttributes redirectAttributes) throws Exception {
 
-			redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.transactionSpendMoney", bindingResult);
-			redirectAttributes.addFlashAttribute("transactionSpendMoney", transactionSpendMoney);
+        if (bindingResult.hasErrors()) {
 
-			return new ModelAndView("redirect:/account-detail?account_id="+transactionSpendMoney.getAccountId()+"#spend-money");
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.transactionSpendMoney", bindingResult);
+            redirectAttributes.addFlashAttribute(ATTRIBUTE_TRANSACTION_SPEND_MONEY, transactionSpendMoney);
 
-		}
+            return new ModelAndView("redirect:/account-detail?account_id=" + transactionSpendMoney.getAccountId() + "#spend-money");
 
+        }
 
-		int newTransactiontId = TransactionDb.createTransaction(transactionSpendMoney);
+        int newTransactiontId = TransactionDb.createTransaction(transactionSpendMoney);
 
-		Message message = new Message(Message.UPDATE, "New Transactiont with id =" + newTransactiontId+ " was created");
-		redirectAttributes.addFlashAttribute("message", message);
+        Message message = new Message(Message.UPDATE, "New Transactiont with id =" + newTransactiontId + " was created");
+        redirectAttributes.addFlashAttribute(ATTRIBUTE_MESSAGE, message);
 
-		return new ModelAndView("redirect:/account-detail?account_id="+transactionSpendMoney.getAccountId());
+        return new ModelAndView("redirect:/account-detail?account_id=" + transactionSpendMoney.getAccountId());
 
-	}
-
-
+    }
 
     @RequestMapping(value = "/add-transaction-send-money", method = RequestMethod.POST)
-    public ModelAndView addTransactionSendMoney(@ModelAttribute("transactionSendMoney")  @Valid SendMoney transactionSendMoney, BindingResult bindingResult, Model model,
-                                                 RedirectAttributes redirectAttributes) throws Exception {
+    public ModelAndView addTransactionSendMoney(@ModelAttribute("transactionSendMoney") @Valid SendMoney transactionSendMoney, BindingResult bindingResult, Model model,
+            RedirectAttributes redirectAttributes) throws Exception {
 
         if (bindingResult.hasErrors()) {
 
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.transactionSendMoney", bindingResult);
-            redirectAttributes.addFlashAttribute("transactionSendMoney", transactionSendMoney);
+            redirectAttributes.addFlashAttribute(ATTRIBUTE_TRANSACTION_SEND_MONEY, transactionSendMoney);
 
-            return new ModelAndView("redirect:/account-detail?account_id="+transactionSendMoney.getAccountId()+"#send-money");
+            return new ModelAndView("redirect:/account-detail?account_id=" + transactionSendMoney.getAccountId() + "#send-money");
 
         }
 
-
         String sendMessage = TransactionDb.createSendTransaction(transactionSendMoney);
 
-		String messageStatus  = Message.ERROR;
-		if(sendMessage.equals("ok")){
-			messageStatus  = Message.UPDATE;
-		}
+        String messageStatus = Message.ERROR;
+        if (sendMessage.equals("ok")) {
+            messageStatus = Message.UPDATE;
+        }
 
         Message message = new Message(messageStatus, "Transactiont message =" + sendMessage);
-        redirectAttributes.addFlashAttribute("message", message);
+        redirectAttributes.addFlashAttribute(ATTRIBUTE_MESSAGE, message);
 
-        return new ModelAndView("redirect:/account-detail?account_id="+transactionSendMoney.getAccountId());
+        return new ModelAndView("redirect:/account-detail?account_id=" + transactionSendMoney.getAccountId());
 
     }
 
