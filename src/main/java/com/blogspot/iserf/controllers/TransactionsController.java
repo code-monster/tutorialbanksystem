@@ -23,9 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
 
-/**
- * Handles requests for the application home page.
- */
 @Controller
 public class TransactionsController extends AbstractController {
 
@@ -34,9 +31,6 @@ public class TransactionsController extends AbstractController {
     @Autowired
     private HttpServletRequest context;
 
-    /**
-     * Simply selects the home view to render by returning its name.
-     */
     @RequestMapping(value = "/account-detail", method = RequestMethod.GET)
     public ModelAndView editUser(HttpServletRequest request, Model model) {
 
@@ -60,19 +54,19 @@ public class TransactionsController extends AbstractController {
 
         ArrayList<Transaction> transactionList = TransactionDb.getTransactionList(new Integer(context.getParameter("account_id")));
 
-        if (!model.containsAttribute("transactionSpendMoney")) {
+        if (!model.containsAttribute(ATTRIBUTE_TRANSACTION_SPEND_MONEY)) {
             Transaction newTransactionSpendMoney = new Transaction(new Integer(context.getParameter("account_id")), false);
-            model.addAttribute("transactionSpendMoney", newTransactionSpendMoney);
+            model.addAttribute(ATTRIBUTE_TRANSACTION_SPEND_MONEY, newTransactionSpendMoney);
         }
 
-        if (!model.containsAttribute("transactionAddMoney")) {
+        if (!model.containsAttribute(ATTRIBUTE_TRANSACTION_ADD_MONEY)) {
             Transaction newTransactionAddMoney = new Transaction(new Integer(context.getParameter("account_id")), true);
-            model.addAttribute("transactionAddMoney", newTransactionAddMoney);
+            model.addAttribute(ATTRIBUTE_TRANSACTION_ADD_MONEY, newTransactionAddMoney);
         }
 
-        if (!model.containsAttribute("transactionSendMoney")) {
+        if (!model.containsAttribute(ATTRIBUTE_TRANSACTION_SEND_MONEY)) {
             SendMoney newTransactionSendMoney = new SendMoney(new Integer(context.getParameter("account_id")));
-            model.addAttribute("transactionSendMoney", newTransactionSendMoney);
+            model.addAttribute(ATTRIBUTE_TRANSACTION_SEND_MONEY, newTransactionSendMoney);
         }
 
         Breadcrumbs breadcrumbs = new Breadcrumbs(request);
@@ -85,16 +79,16 @@ public class TransactionsController extends AbstractController {
         return new ModelAndView("account-detail", "transactionList", transactionList);
     }
 
-    /**
-     * Simply selects the home view to render by returning its name.
-     */
     @RequestMapping(value = "/add-transaction-add-money", method = RequestMethod.POST)
-    public ModelAndView addTransactionAddMoney(@ModelAttribute("transactionAddMoney") @Valid Transaction transactionAddMoney, BindingResult bindingResult, Model model,
+    public ModelAndView addTransactionAddMoney(
+            @ModelAttribute(ATTRIBUTE_TRANSACTION_ADD_MONEY) @Valid Transaction transactionAddMoney,
+            BindingResult bindingResult,
+            Model model,
             RedirectAttributes redirectAttributes) throws Exception {
 
         if (bindingResult.hasErrors()) {
 
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.transactionAddMoney", bindingResult);
+            redirectAttributes.addFlashAttribute(ATTRIBUTE_ADD_ERROR_MASSAGE, bindingResult);
             redirectAttributes.addFlashAttribute(ATTRIBUTE_TRANSACTION_ADD_MONEY, transactionAddMoney);
 
             return new ModelAndView("redirect:/account-detail?account_id=" + transactionAddMoney.getAccountId() + "#add-money");
@@ -111,12 +105,12 @@ public class TransactionsController extends AbstractController {
     }
 
     @RequestMapping(value = "/add-transaction-spend-money", method = RequestMethod.POST)
-    public ModelAndView addTransactionSpendMoney(@ModelAttribute("transactionSpendMoney") @Valid Transaction transactionSpendMoney, BindingResult bindingResult, Model model,
+    public ModelAndView addTransactionSpendMoney(@ModelAttribute(ATTRIBUTE_TRANSACTION_SPEND_MONEY) @Valid Transaction transactionSpendMoney, BindingResult bindingResult, Model model,
             RedirectAttributes redirectAttributes) throws Exception {
 
         if (bindingResult.hasErrors()) {
 
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.transactionSpendMoney", bindingResult);
+            redirectAttributes.addFlashAttribute(ATTRIBUTE_SPEND_ERROR_MASSAGE, bindingResult);
             redirectAttributes.addFlashAttribute(ATTRIBUTE_TRANSACTION_SPEND_MONEY, transactionSpendMoney);
 
             return new ModelAndView("redirect:/account-detail?account_id=" + transactionSpendMoney.getAccountId() + "#spend-money");
@@ -133,12 +127,12 @@ public class TransactionsController extends AbstractController {
     }
 
     @RequestMapping(value = "/add-transaction-send-money", method = RequestMethod.POST)
-    public ModelAndView addTransactionSendMoney(@ModelAttribute("transactionSendMoney") @Valid SendMoney transactionSendMoney, BindingResult bindingResult, Model model,
+    public ModelAndView addTransactionSendMoney(@ModelAttribute(ATTRIBUTE_TRANSACTION_SEND_MONEY) @Valid SendMoney transactionSendMoney, BindingResult bindingResult, Model model,
             RedirectAttributes redirectAttributes) throws Exception {
 
         if (bindingResult.hasErrors()) {
 
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.transactionSendMoney", bindingResult);
+            redirectAttributes.addFlashAttribute(ATTRIBUTE_SEND_ERROR_MASSAGE, bindingResult);
             redirectAttributes.addFlashAttribute(ATTRIBUTE_TRANSACTION_SEND_MONEY, transactionSendMoney);
 
             return new ModelAndView("redirect:/account-detail?account_id=" + transactionSendMoney.getAccountId() + "#send-money");
