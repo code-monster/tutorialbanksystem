@@ -17,20 +17,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 @Controller
-public class TransactionListController {
+public class TransactionListController extends AbstractController {
 
     private static final Logger logger = LoggerFactory.getLogger(TransactionListController.class);
 
     @Autowired
     private HttpServletRequest context;
+    
+    protected String pageTitle = "Transactions list";
 
     @RequestMapping(value = "/transaction-list", method = RequestMethod.GET)
-    public ModelAndView editUser(Model model, @ModelAttribute("message") Message message) {
+    public ModelAndView editUser(Model model, @ModelAttribute(ATTRIBUTE_MESSAGE) Message message) {
 
         model.addAttribute("userList", UserDb.getUserList());
 
@@ -41,9 +41,9 @@ public class TransactionListController {
 
             if (Validator.isInteger(context.getParameter("showUserTransaction")) == false) {
 
-                Message errorMessage = new Message("error", "Error in showUserTransaction param!");
-                model.addAttribute("message", errorMessage);
-                model.addAttribute("pageTitle", "Error page");
+                Message errorMessage = new Message(Message.ERROR, "Error in showUserTransaction param!");
+                model.addAttribute(ATTRIBUTE_MESSAGE, errorMessage);
+                model.addAttribute(ATTRIBUTE_PAGE_TITLE, "Error page");
                 return new ModelAndView("error");
             } else {
                 userId = new Integer(context.getParameter("showUserTransaction"));
@@ -58,12 +58,12 @@ public class TransactionListController {
 
             if (Validator.isDate(context.getParameter("startDateRange")) == false || Validator.isDate(context.getParameter("endDateRange")) == false) {
 
-                Message errorMessage = new Message("error", "Error in startDateRange or endDateRange param!");
-                model.addAttribute("message", errorMessage);
-                model.addAttribute("pageTitle", "Error page");
+                Message errorMessage = new Message(Message.ERROR, "Error in startDateRange or endDateRange param!");
+                model.addAttribute(ATTRIBUTE_MESSAGE, errorMessage);
+                model.addAttribute(ATTRIBUTE_PAGE_TITLE, "Error page");
                 return new ModelAndView("error");
             } else {
-                DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
                 startDateRangeSql = context.getParameter("startDateRange");
                 endDateRangeSql = context.getParameter("endDateRange");
             }
@@ -73,10 +73,10 @@ public class TransactionListController {
         ArrayList<TransactionDisplay> transactionList = TransactionDb.getTransactionDisplayList(userId, startDateRangeSql, endDateRangeSql);
 
         Breadcrumbs breadcrumbs = new Breadcrumbs(context);
-        breadcrumbs.add("Transactions list");
-        model.addAttribute("breadcrumbs", breadcrumbs);
-        model.addAttribute("pageTitle", "Transactions list");
-        model.addAttribute("message", message);
+        breadcrumbs.add(pageTitle);
+        model.addAttribute(ATTRIBUTE_BREADCRUMBS, breadcrumbs);
+        model.addAttribute(ATTRIBUTE_PAGE_TITLE, pageTitle);
+        model.addAttribute(ATTRIBUTE_MESSAGE, message);
         return new ModelAndView("transaction-list", "transactionList", transactionList);
     }
 
