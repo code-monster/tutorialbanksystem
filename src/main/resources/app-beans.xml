@@ -6,5 +6,9 @@
 	<!-- Root Context: defines shared resources visible to all other web components -->
 
      <import resource="database-config.xml" />
-		
+              
+    <bean id="userDAO" class="com.blogspot.iserf.dao.UserDAOImpl">
+        <property name="dataSource" ref="dataSource" />
+    </bean>	
+                                                 		
 </beans>

@@ -45,7 +45,7 @@
     </interceptors>
 	
 	
-	
+	<context:annotation-config/>
 	<context:component-scan base-package="com.blogspot.iserf" />
 	
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
